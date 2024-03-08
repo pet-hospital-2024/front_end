@@ -14,7 +14,7 @@
   .carousel{
     img{
       width:100%;
-      height:600px;
+      height:30vh;
   }
   }
 

@@ -45,14 +45,14 @@ const goHome=()=>{
   position: fixed;
   z-index: 999;
   width: 100%;
-  height: 70px;
+  height: 8vh;
   background-color: rgb(255, 255, 255);
   display: flex;
   justify-content: center;
 
   .content {
-    width: 1200px;
-    height: 70px;
+    width: 80vw;
+    height:8vh;
     background-color: rgb(255, 255, 255);
     display: flex;
     justify-content: space-between;

@@ -2,7 +2,7 @@ import { createApp } from "vue";
 import App from "./App.vue";
 import "@/style/reset.scss";
 
-import HospitalTop from "@/components/hospital_top/index.vue";
+// import HospitalTop from "@/components/hospital_top/index.vue";
 //@ts-ignore
 import Modify from "@/components/modify/index.vue";
 import router from "@/router";
@@ -16,7 +16,7 @@ import pinia from "@/store";
 const app = createApp(App);
 
 //加载组件
-app.component("HospitalTop", HospitalTop);
+// app.component("HospitalTop", HospitalTop);
 app.component("Modify", Modify);
 
 app.use(router);
