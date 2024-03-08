@@ -1,24 +1,24 @@
-//常量路由：全部用户都可以访问
+//常量路由：全部用户都可以访问(暂时)
 export const constantRoute=[
     {
-      path: "/home",
-      component: () => import("@/views/home/index.vue"),
+      path: "/front_home",
+      component: () => import("@/views/front/home/index.vue"),
     },
     {
       path:"/study",
-      component:()=>import("@/views/study/index.vue"),
+      component:()=>import("@/views/front/study/index.vue"),
     },
     {
       path:"/role",
-      component:()=>import("@/views/role/index.vue"),
+      component:()=>import("@/views/front/role/index.vue"),
     },
     {
       path:"/case",
-      component:()=>import("@/views/case/index.vue"),
+      component:()=>import("@/views/front/case/index.vue"),
     },
     {
       path:"/test",
-      component:()=>import("@/views/test/index.vue"),
+      component:()=>import("@/views/front/test/index.vue"),
     },
     {
       path:"/login",
