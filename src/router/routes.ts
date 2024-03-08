@@ -4,6 +4,23 @@ export const constantRoute = [
     path: "/front_home",
     //@ts-ignore
     component: () => import("@/layout/front/index.vue"),
+    children: [
+      {
+        path: '/home',
+        //@ts-ignore
+        component: () => import('@/views/front/home/index.vue'),
+      },
+      {
+        path: "/study",
+        //@ts-ignore
+        component: () => import("@/views/front/study/index.vue"),
+      },
+      {
+        path: "/role",
+        //@ts-ignore
+        component: () => import("@/views/front/role/index.vue"),
+      },
+    ],
   },
   {
     path: "/study",
@@ -40,5 +57,6 @@ export const constantRoute = [
     // component:()=>import('@/layout/front/index.vue'),
     // name:'layout_front',
     redirect: "/login",
+    
   },
 ];

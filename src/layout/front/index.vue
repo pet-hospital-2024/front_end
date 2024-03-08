@@ -33,10 +33,10 @@ export default {
   //   }
 
   .layout_main {
-    margin-top: 60px;
+    margin-top: 8vh;
     width: 80vw;
     height: 92vh;
-    background-color: rgb(97, 97, 97);
+    background-color: rgb(255, 255, 255);
   }
 }
 </style>
