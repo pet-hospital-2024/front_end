@@ -18,11 +18,11 @@
 import { useRouter } from "vue-router";
 let $router = useRouter();
 const goRole = () => {
-  $router.push({ path: "/role" });
+  $router.push({ path: "/front/role" });
 };
 
 const goCase = () => {
-  $router.push({ path: "/case" });
+  $router.push({ path: "/front/case" });
 };
 </script>
 

@@ -3,7 +3,7 @@
     <div class="card">
       <el-card class="item1" shadow="hover">3D导览</el-card>
       <el-card class="item2" shadow="hover" @click="goStudy">职能学习</el-card>
-      <el-card class="item3" shadow="hover" @click="goCase">在线测试</el-card>
+      <el-card class="item3" shadow="hover" @click="goTest">在线测试</el-card>
     </div>
   </div>
 </template>
@@ -12,10 +12,10 @@
 import { useRouter } from "vue-router";
 let $router = useRouter();
 const goStudy = () => {
-  $router.push({ path: "/study" });
+  $router.push({ path: "/front/study" });
 };
-const goCase = () => {
-  $router.push({ path: "/case" });
+const goTest = () => {
+  $router.push({ path: "/front/test" });
 };
 </script>
 
