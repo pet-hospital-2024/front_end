@@ -30,7 +30,7 @@ import { ArrowDown } from "@element-plus/icons-vue";
 let $router = useRouter();
 
 const goHome=()=>{
-  $router.push({ path: "/home" });
+  $router.push({ path: "/front" });
 }
 </script>
 

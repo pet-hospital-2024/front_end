@@ -20,7 +20,7 @@ export default {
 
 <style scoped lang="scss">
 .layout_container {
-    height:100vh;
+  height: auto;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -35,7 +35,7 @@ export default {
   .layout_main {
     margin-top: 8vh;
     width: 80vw;
-    height: 92vh;
+    // height: 92vh;
     background-color: rgb(255, 255, 255);
   }
 }

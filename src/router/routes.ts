@@ -2,33 +2,38 @@
 export const constantRoute = [
   {
     path: "/front",
-    //@ts-ignore
     component: () => import("@/layout/front/index.vue"),
     redirect:'/front/home',
     children: [
       {
         path: '/front/home',
         name: "front_home",
-        //@ts-ignore
         component: () => import('@/views/front/home/index.vue'),
       },
       {
         path: "/front/study",
         name: "study",
-        //@ts-ignore
         component: () => import("@/views/front/study/index.vue"),
       },
       {
         path: "/front/role",
         name: "role",
-        //@ts-ignore
         component: () => import("@/views/front/role/index.vue"),
       },
       {
         path: "/front/case",
         name: "case",
-        //@ts-ignore
         component: () => import("@/views/front/case/index.vue"),
+      },
+      {
+        path: "/front/caseList",
+        name: "caseList",
+        component: () => import("@/views/front/caseList/index.vue"),
+      },
+      {
+        path: "/front/caseDetail",
+        name: "caseDetail",
+        component: () => import("@/views/front/caseDetail/index.vue"),
       },
     ],
   },
@@ -46,7 +51,7 @@ export const constantRoute = [
     path: "/",
     // component:()=>import('@/layout/front/index.vue'),
     // name:'layout_front',
-    redirect: "/login",
+    redirect: "/front",
     
   },
 ];

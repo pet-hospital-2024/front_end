@@ -10,5 +10,7 @@
 </script>
 
 <style scoped lang="scss">
-
+.content{
+    min-height: 92vh;
+}
 </style>

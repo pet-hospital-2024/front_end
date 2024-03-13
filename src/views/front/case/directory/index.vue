@@ -21,7 +21,7 @@
         <h1 class="cur">{{ type.categoryName }}</h1>
         <ul>
           <li
-            @click="goDetailCase"
+            @click="goCaseList"
             v-for="item in type.cases"
             :key="item.caseCode"
           >
@@ -35,7 +35,9 @@
 
 <script setup lang="ts">
 import { ref } from "vue";
+import { useRouter } from "vue-router";
 
+let $router=useRouter();
 //模拟病例数据
 const caseCategories = [
   {
@@ -116,7 +118,9 @@ const changeIndex = (index: number) => {
   });
 };
 
-const goDetailCase = () => {};
+const goCaseList = () => {
+  $router.push({path:'/front/caseList'})
+};
 </script>
 
 <style scoped lang="scss">
@@ -124,11 +128,11 @@ const goDetailCase = () => {};
   width: 80%;
   height: 70vh;
   display: flex;
-  margin-top: 30px;
+  margin-top: 40px;
 
   .leftNav {
     width: 100px;
-    height: 70%;
+    height: 75%;
     ul {
       height: 100%;
       width: 100%;
@@ -144,9 +148,9 @@ const goDetailCase = () => {};
         cursor: pointer;
 
         &.active {
-          border-left: 5px solid rgb(250, 139, 139);
+          border-right: 5px solid rgb(147, 192, 154);
           color: rgb(0, 0, 0);
-          background: rgb(250, 240, 240);
+          background: rgb(240, 250, 241);
         }
       }
     }
@@ -166,7 +170,7 @@ const goDetailCase = () => {};
         align-items: center;
         background-color: rgb(248, 248, 248);
         color: #7f7f7f;
-        height: 60px;
+        height: 50px;
         font-size: 18px;
         // text-align: center;
       }
@@ -175,13 +179,13 @@ const goDetailCase = () => {};
         flex-wrap: wrap;
         // background:gray;
         // margin-top: 10px;
-        margin-bottom: 20px;
+        margin-bottom: 10px;
         li {
-          margin-top: 20px;
+          margin-top: 10px;
           color: #7f7f7f;
           // height: 60px;
           width: 24%;
-          line-height: 30px;
+          line-height: 40px;
           cursor: pointer;
           padding: 0px 30px;
         }

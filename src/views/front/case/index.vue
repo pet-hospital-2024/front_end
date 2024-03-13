@@ -2,15 +2,15 @@
     <div class="container">
         <div class="title">
           <h1>病例学习</h1>
-          <h3>描述</h3>
+          <!-- <h3>描述</h3> -->
         </div>
         <List></List>
     </div>
 </template>
 
 <script setup lang="ts">
-import List from "./list/index.vue"
-import { ref } from 'vue'
+import List from "./directory/index.vue"
+// import { ref } from 'vue'
 
 </script>
 
@@ -21,15 +21,18 @@ import { ref } from 'vue'
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  // background: rgb(212, 246, 233);
 
   .title{
     display: flex;
     flex-direction: column;
+    margin-top: 20px;
     h1{
+      color:gray;
       font-size: 48px;
     }
     h3{
-      margin-top: 20px;
+      margin-top: 10px;
       font-size: 16px;
     }
   }
