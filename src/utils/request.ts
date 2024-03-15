@@ -1,15 +1,20 @@
 import axios from 'axios';
 
 import { ElMessage } from 'element-plus';
-
+//引入用户相关仓库
+import useUserStore from '@/store/modules/user';
 const request=axios.create({
-    baseURL:import.meta.env.VITE_APP_BASE_API, //基础路径
+    //baseURL:import.meta.env.VITE_APP_BASE_API, //基础路径
+    baseURL:'/api',
     timeout:5000   //超时限制
 });
-
+//请求拦截器携带token头
 request.interceptors.request.use((config)=>{
-
-    
+      //获取用户相关小仓库:获取仓库内部token，登录成功后携带给服务器
+      let userStore=useUserStore();
+      if(userStore.token){
+            config.headers.token = userStore.token; 
+      }
     return config;
 })
 

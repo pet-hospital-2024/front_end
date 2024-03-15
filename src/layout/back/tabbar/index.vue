@@ -17,6 +17,11 @@
 import Breadcrumb from './breadcrumb/index.vue'//导入面包屑组件
 import Setting from './setting/index.vue'
 </script>
+<script lang="ts">
+export default{
+    name:'Tabbar'
+}
+</script>
 <style scoped lang="scss">
 .tabbar{
     width: 100%;
@@ -25,7 +30,7 @@ import Setting from './setting/index.vue'
     justify-content: space-between;//一左一右
     //tabbar背景渐变色，后期UI设计加上
     //background-image: linear-gradient(to right,white,black,white);
-
+    border-bottom: 1px solid grey;
     .tabbar_left{
         display: flex;
         align-items: center;

@@ -3,6 +3,13 @@ export interface LoginData {
   username: String;
   password: String;
 }
+interface dataType{
+  token:string,
+}
+export interface LoginResponseData{
+  code:number,
+  data:dataType
+}
 
 //用户注册接口
 export interface RegisterData {

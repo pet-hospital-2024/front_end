@@ -73,7 +73,6 @@ export const constantRoute = [
     redirect: "/front",
     
   },*/
-
   {
     path: '/login',
     component: () => import('@/views/login/index.vue'),
@@ -93,7 +92,7 @@ export const constantRoute = [
       hidden: false,
       icon: '',
     },
-    //redirect: '/home',
+    redirect: '/back/home',
     children: [
       {
         path: '/back/home',
@@ -112,6 +111,7 @@ export const constantRoute = [
     path: '/back/acl',
     component: () => import( '@/layout/back/index.vue' ),
     name:"backAcl",
+    redirect:'/back/acl/user',
     meta: {
       title: "权限管理",
       hidden: false,
@@ -125,6 +125,7 @@ export const constantRoute = [
         meta:{
           title:"用户管理",
           hidden:false, 
+          icon:'Lock',
         }
       },
       {
@@ -134,30 +135,44 @@ export const constantRoute = [
         meta:{
           title:"角色管理",
           hidden:false, 
+          icon:'User',
         }
       },
     ]
   },
   //病例管理相关界面跳转路由
   {
-    path:"/back/case",
-    component:()=>import('@/views/back/case/index.vue'),
-    name:"backCase",
+    path:'/back',
+    component:()=>import('@/layout/back/index.vue'),
+    name:'case_home',
     meta:{
-      title:"病例管理",
+      title:'',
       hidden:false,
-      icon:"Files",
+      icon:'',
     },
+    redirect:'/back/case',
+    children:[{
+      path:"/back/case",
+      component:()=>import('@/views/back/case/index.vue'),
+      name:"backCase",
+      meta:{
+        title:"病例管理",
+        hidden:false,
+        icon:"Files",
+      },
+    }]
+
   },
   //考试管理系统相关界面跳转路由
   {
     path:"/back/exam",
     component:()=>import('@/layout/back/index.vue'),
     name:"backExam",
+    redirect:'/back/exam/questions',
     meta:{
       title:'学习管理',
       hidden:false,
-      icon:"Reading",
+      icon:'Document',
     },
     children:[
       {
@@ -167,6 +182,7 @@ export const constantRoute = [
         meta:{
           title:'考题管理',
           hidden:false,
+          icon:'ToiletPaper'//后期待调整
         }
       },
       {
@@ -176,6 +192,7 @@ export const constantRoute = [
         meta:{
           title:'考试管理',
           hidden:false,
+          icon:"Reading",
         }
       },
       {
@@ -185,6 +202,7 @@ export const constantRoute = [
         meta:{
           title:'试卷管理',
           hidden:false,
+          icon:'Tickets'
         }
       },
     ]

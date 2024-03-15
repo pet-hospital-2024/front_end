@@ -125,9 +125,13 @@ let useStore = useUserStore();
 
 let $router = useRouter();
 //收集账号密码数据
-let loginForm = reactive({
-  username: "",
-  password: "",
+/*let loginForm = reactive({
+  username: "admin",
+  password: "123456",
+});*/
+let loginForm=reactive({
+  username:'',
+  password:'',
 });
 
 //获取登录el-form组件
@@ -161,7 +165,8 @@ const login = async () => {
   await loginForms.value.validate();
   try {
     await useStore.userLogin(loginForm);
-    $router.push("/");
+    $router.push("/back");
+    //$router.push("/front");
     ElNotification({
       type: "success",
       message: "登陆成功",
@@ -237,19 +242,19 @@ const registerRules = {
 //注册按钮
 const register = async () => {
   await registerForms.value.validate();
-  // try {
-  //   await useStore.userLogin(loginForm);
-  //   $router.push("/");
-  //   ElNotification({
-  //     type: "success",
-  //     message: "注册成功",
-  //   });
-  // } catch (error) {
-  //   ElNotification({
-  //     type: "error",
-  //     message: (error as Error).message,
-  //   });
-  // }
+  try {
+    await useStore.userLogin(loginForm);
+    $router.push("/");
+    ElNotification({
+      type: "success",
+      message: "注册成功",
+    });
+  } catch (error) {
+    ElNotification({
+      type: "error",
+      message: (error as Error).message,
+    });
+  }
 };
 </script>
 

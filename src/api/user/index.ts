@@ -6,9 +6,9 @@ import type{
   UserInfoResponseData
 }from './type'
 enum API {
-  LOGIN_URL = "user/login",
-  REGISTER_URL = "user/register",
-  USERINFO_URL="user/getinfo"
+  LOGIN_URL = "/user/login",
+  REGISTER_URL = "/user/register",
+  USERINFO_URL="/user/info"
 }
 
 export const reqLogin=(data:LoginData)=>
@@ -16,7 +16,9 @@ export const reqLogin=(data:LoginData)=>
 
 export const reqRegister=(data:RegisterData)=>
   request.post<any,LoginResponseData>(API.REGISTER_URL,data)
-
-export const reqUserInfo=(userid:string)=>
-  request.get<any,UserInfoResponseData>(API.USERINFO_URL+userid)
+//暂时修改请求用户信息方法
+/*export const reqUserInfo=(userid:string)=>
+  request.get<any,UserInfoResponseData>(API.USERINFO_URL+userid)*/
+export const reqUserInfo=()=>
+  request.get<any,UserInfoResponseData>(API.USERINFO_URL)
 

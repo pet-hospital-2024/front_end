@@ -33,4 +33,7 @@ app.use(pinia);
 for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
   app.component(key, component)
 }
+//引入路由鉴权文件
+import './permission';
+
 app.mount("#app");

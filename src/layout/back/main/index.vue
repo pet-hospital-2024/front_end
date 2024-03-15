@@ -13,6 +13,11 @@
 <script setup lang="ts">
 
 </script>
+<script lang="ts">
+export default{
+    name:'main'
+}
+</script>
 <!--添加过渡动画-->
 <style scoped>
 .fade-enter-from{

@@ -5,16 +5,16 @@ import path from 'path';
 import { viteMockServe } from 'vite-plugin-mock'
 
 // https://vitejs.dev/config/
+import { ConfigEnv, UserConfigExport, loadEnv } from 'vite'
 
 
-
-export default defineConfig(({command,mode})=>{
+export default ({ command, mode }: ConfigEnv): UserConfigExport => {
   return{
     plugins: [
-      vue()
-    /*  viteMockServe({
+      vue(),
+       viteMockServe({
         localEnabled: command === 'serve',//保证开发阶段可以使用mock接口
-      })*/
+      })
     ],
     
     resolve: {
@@ -34,5 +34,5 @@ export default defineConfig(({command,mode})=>{
   },
   }
   
-})
+}
 

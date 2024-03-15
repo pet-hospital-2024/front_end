@@ -1,8 +1,6 @@
 <!--对Menu组件进行封装，@menuList:路由信息，在routes.ts中定义-->
 <!--未使用element-plus的icon，详情教学见P24,P25,P41-->
 <script setup lang="ts">
-
-
 defineProps(['menuList']);
 import { useRouter } from 'vue-router';
 const $router=useRouter();
@@ -37,14 +35,15 @@ export default{
         v-if="!item.children[0].meta.hidden"
         :index="item.children[0].path"
         @click="goRoute">
-
         <template #title>
-            <el-icon><Promotion /></el-icon>
+            <el-icon>
+                <component :is="item.children[0].meta.icon"></component>
+            </el-icon>
           <span>{{ item.children[0].meta.title }}</span>
         </template>
       </el-menu-item>
     </template>
-        <template v-if="item.children && item.children.lenth == 1 && item.path!=='/'">
+        <template v-if="item.children && item.children.lenth == 1 && item.path!=='/back'">
             <el-menu-item v-if="!item.children[0].meta.hidden" :index="item.children[0].path" @click="goRoute">
                 <template #title>
                     <el-icon>
