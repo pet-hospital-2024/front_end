@@ -3,7 +3,7 @@ import axios from 'axios';
 import { ElMessage } from 'element-plus';
 
 const request=axios.create({
-    baseURL:'api', //基础路径
+    baseURL:import.meta.env.VITE_APP_BASE_API, //基础路径
     timeout:5000   //超时限制
 });
 

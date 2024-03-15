@@ -13,6 +13,11 @@ import "element-plus/dist/index.css";
 import zhCn from "element-plus/dist/locale/zh-cn.mjs";
 import pinia from "@/store";
 
+// 引入element-plus图标
+import * as ElementPlusIconsVue from '@element-plus/icons-vue'
+
+
+
 const app = createApp(App);
 
 //加载组件
@@ -24,5 +29,8 @@ app.use(ElementPlus, {
   locale: zhCn,
 });
 app.use(pinia);
-
+//全局使用
+for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
+  app.component(key, component)
+}
 app.mount("#app");

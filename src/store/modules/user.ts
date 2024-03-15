@@ -3,12 +3,16 @@ import { reqLogin } from "@/api/user";
 import type { LoginData, LoginResponseData } from "@/api/user/type";
 import type { UserState } from "./types/type";
 import { SET_TOKEN, GET_TOKEN } from "@/utils/token";
+//引入常量路由
+import { constantRoute } from "@/router/routes";
+
 //用户小仓库
 let useUserStore = defineStore("User", {
   //存储数据
   state: (): UserState => {
     return {
       token: GET_TOKEN(),
+      menuRoutes:constantRoute,//仓库存储菜单生成需要数组（路由）
     };
   },
   actions: {
@@ -27,3 +31,4 @@ let useUserStore = defineStore("User", {
 });
 
 export default useUserStore;
+
