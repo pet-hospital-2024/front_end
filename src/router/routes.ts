@@ -35,23 +35,20 @@ export const constantRoute = [
         name: "caseDetail",
         component: () => import("@/views/front/caseDetail/index.vue"),
       },
+      {
+        path: "/front/test",
+        name: "test",
+        component: () => import("@/views/front/test/index.vue"),
+      },
     ],
   },
   {
     path: "/login",
     component: () => import("@/views/login/index.vue"),
     name: "login",
-    // meta: {
-    //   title: "登录", //菜单标题
-    //   hidden: false, //代表路由标题在菜单中是否隐藏  true:隐藏 false:不隐藏
-    //   icon: "Promotion", //菜单文字左侧的图标,支持element-plus全部图标
-    // },
   },
   {
     path: "/",
-    // component:()=>import('@/layout/front/index.vue'),
-    // name:'layout_front',
-    redirect: "/front",
-    
+    redirect: "/front/test",
   },
 ];

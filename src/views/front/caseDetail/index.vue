@@ -1,5 +1,6 @@
 <template>
   <div class="content">
+    <p>病例名称</p>
     <div class="caseCard">
       <el-tabs type="border-card">
         <el-tab-pane label="接诊">
@@ -178,7 +179,13 @@ const videoUrls = [
 <style scoped lang="scss">
 .content {
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+
+  p{
+    font-size: 32px;
+    margin-bottom: 10px;
+  }
   .caseCard {
     width: 90%;
     margin-top: 10px;
@@ -195,6 +202,7 @@ const videoUrls = [
       font-weight: bold;
     }
     p {
+      font-size: 16px;
       margin-top: 20px;
       line-height: 1.5;
     }
