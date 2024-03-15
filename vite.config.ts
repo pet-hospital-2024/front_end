@@ -5,13 +5,16 @@ import path from 'path';
 import { viteMockServe } from 'vite-plugin-mock'
 
 // https://vitejs.dev/config/
+
+
+
 export default defineConfig(({command,mode})=>{
   return{
     plugins: [
-      vue(),
-      viteMockServe({
+      vue()
+    /*  viteMockServe({
         localEnabled: command === 'serve',//保证开发阶段可以使用mock接口
-      })
+      })*/
     ],
     
     resolve: {
@@ -19,7 +22,17 @@ export default defineConfig(({command,mode})=>{
         // '@': fileURLToPath(new URL('./src', import.meta.url))
         "@": path.resolve(__dirname, 'src')
       }
-    }
+    },
+  //scss 全局变量配置
+  css: {
+    preprocessorOptions: {
+      scss: {
+        javascriptEnabled: true,
+        additionalData: '@import "./src/style/variable.scss";',
+      },
+    },
+  },
   }
   
 })
+
