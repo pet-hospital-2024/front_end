@@ -1,7 +1,7 @@
 <!--封装面包屑组件-->
 <template>
     <el-icon :size="20" style="margin-right:10px;cursor: pointer" @click="changeIcon" >
-        <Expand/>
+            <component :is=" LayoutSettingStore.fold?'Fold':'Expand'"></component>
     </el-icon>
     <!--顶部左侧面包屑导航栏-->
     <el-breadcrumb :separator-icon="ArrowRight">
@@ -11,10 +11,16 @@
 </template>
 <script setup lang="ts">
 import { ArrowRight } from '@element-plus/icons-vue'
-import { ref } from 'vue';
-//定义一个响应式数据切换图标
-let fold= ref(false);
+//从仓库获取
+import useBackLayoutSettingStore from '@/store/modules/setting';
+let LayoutSettingStore=useBackLayoutSettingStore();
+
 const changeIcon= ()=>{
-    fold.value=!fold.value
+    LayoutSettingStore.fold=!LayoutSettingStore.fold;
+}
+</script>
+<script lang="ts">
+export default{
+    name:'Breadcrumb',
 }
 </script>

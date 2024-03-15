@@ -1,4 +1,79 @@
+//常量路由：全部用户都可以访问(暂时)
 export const constantRoute = [
+  {
+    path: "/front",
+    component: () => import("@/layout/front/index.vue"),
+    redirect:'/front/home',
+    meta:{
+      hidden:true,
+      title:"",
+    },
+    children: [
+      {
+        path: '/front/home',
+        name: "front_home",
+        component: () => import('@/views/front/home/index.vue'),
+        meta:{
+          hidden:true,
+          title:"",
+        },
+      },
+      {
+        path: "/front/study",
+        name: "study",
+        component: () => import("@/views/front/study/index.vue"),
+        meta:{
+          hidden:true,
+          title:"",
+        },
+      },
+      {
+        path: "/front/role",
+        name: "role",
+        component: () => import("@/views/front/role/index.vue"),
+        meta:{
+          hidden:true,
+          title:"",
+        },
+      },
+      {
+        path: "/front/case",
+        name: "case",
+        component: () => import("@/views/front/case/index.vue"),
+        meta:{
+          hidden:true,
+          title:"",
+        },
+      },
+      {
+        path: "/front/caseList",
+        name: "caseList",
+        component: () => import("@/views/front/caseList/index.vue"),
+        meta:{
+          hidden:true,
+          title:"",
+        },
+      },
+      {
+        path: "/front/caseDetail",
+        name: "caseDetail",
+        component: () => import("@/views/front/caseDetail/index.vue"),
+        meta:{
+          hidden:true,
+          title:"",
+        },  
+      },
+    ],
+  },
+
+  /*{
+    path: "/",
+    // component:()=>import('@/layout/front/index.vue'),
+    // name:'layout_front',
+    redirect: "/front",
+    
+  },*/
+
   {
     path: '/login',
     component: () => import('@/views/login/index.vue'),
@@ -10,18 +85,18 @@ export const constantRoute = [
   },
   //后台layout和home page
   {
-    path: '/',
-    component: () => import('@/layout/index.vue'),
+    path: '/back',
+    component: () => import('@/layout/back/index.vue'),
     name: 'backLayout',
     meta: {
       title: '',
       hidden: false,
       icon: '',
     },
-    redirect: '/home',
+    //redirect: '/home',
     children: [
       {
-        path: '/home',
+        path: '/back/home',
         component: () => import('@/views/back/home/index.vue'),
         name:"backHome",
         meta: {
@@ -34,8 +109,8 @@ export const constantRoute = [
   },
   //管理员相关界面路由
   {
-    path: '/acl',
-    component: () => import( '@/layout/index.vue' ),
+    path: '/back/acl',
+    component: () => import( '@/layout/back/index.vue' ),
     name:"backAcl",
     meta: {
       title: "权限管理",
@@ -44,7 +119,7 @@ export const constantRoute = [
     },
     children:[
       {
-        path:"/acl/user",
+        path:"/back/acl/user",
         component:()=>import('@/views/back/acl/user/index.vue'),
         name:"backUser",
         meta:{
@@ -53,7 +128,7 @@ export const constantRoute = [
         }
       },
       {
-        path:"/acl/role",
+        path:"/back/acl/role",
         component:()=>import('@/views/back/acl/role/index.vue'),
         name:"backRole",
         meta:{
@@ -65,7 +140,7 @@ export const constantRoute = [
   },
   //病例管理相关界面跳转路由
   {
-    path:"/case",
+    path:"/back/case",
     component:()=>import('@/views/back/case/index.vue'),
     name:"backCase",
     meta:{
@@ -76,8 +151,8 @@ export const constantRoute = [
   },
   //考试管理系统相关界面跳转路由
   {
-    path:"/exam",
-    component:()=>import('@/layout/index.vue'),
+    path:"/back/exam",
+    component:()=>import('@/layout/back/index.vue'),
     name:"backExam",
     meta:{
       title:'学习管理',
@@ -86,7 +161,7 @@ export const constantRoute = [
     },
     children:[
       {
-        path:'/exam/questions',
+        path:'/back/exam/questions',
         component:()=>import('@/views/back/exam/questions/index.vue'),
         name:'backQuestions',
         meta:{
@@ -95,7 +170,7 @@ export const constantRoute = [
         }
       },
       {
-        path:'/exam/test',
+        path:'/back/exam/test',
         component:()=>import('@/views/back/exam/test/index.vue'),
         name:'backTest',
         meta:{
@@ -104,7 +179,7 @@ export const constantRoute = [
         }
       },
       {
-        path:'/exam/paper',
+        path:'/back/exam/paper',
         component:()=>import('@/views/back/exam/paper/index.vue'),
         name:'backPaper',
         meta:{
@@ -114,6 +189,4 @@ export const constantRoute = [
       },
     ]
   }
-
-
 ]

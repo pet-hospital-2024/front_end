@@ -16,7 +16,7 @@ export default{
 }
 </script>
 <template>
-    <template v-for="(item,index) in menuList" :key="item.path">
+    <template v-for="(item,index) in menuList" :key="item.path" >
         <!--没有子路由-->
         <!--不使用v-show是因为v-show初始会渲染，有性能损耗-->
         <template v-if="!item.children">
@@ -31,7 +31,7 @@ export default{
         </template>
          <!-- 有子路由但只有一个 /home -->
         <template
-      v-if="item.children && item.children.length === 1 && item.path === '/'"
+      v-if="item.children && item.children.length === 1 && item.path === '/back'"
     >
       <el-menu-item
         v-if="!item.children[0].meta.hidden"
@@ -55,7 +55,7 @@ export default{
             </el-menu-item>
         </template>
         <!--有多个子路由-->
-        <el-sub-menu v-if="item.children && item.children.length > 1" :index="item.path">
+        <el-sub-menu v-if="item.children && item.children.length > 1 && item.path!=='/front'" :index="item.path">
             <template #title>
                 <el-icon>
                     <component :is="item.meta.icon"></component>

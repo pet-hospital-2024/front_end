@@ -1,42 +1,40 @@
 <template>
-    <div>
-        <el-menu
-    :default-active="activeIndex"
-    class="el-menu-demo"
-    mode="horizontal"
-    :ellipsis="false"
-    @select="handleSelect"
-  >
-    <el-menu-item index="0" --active-color="#ffffff">
-      <img
-        style="width: 50px"
-        src="@/assets/logo.svg"
-        alt="Element logo"
-      />
-    </el-menu-item>
-    <div class="flex-grow" />
-    <el-menu-item index="1">Processing Center</el-menu-item>
-    <el-sub-menu index="2">
-      <template #title>Workspace</template>
-      <el-menu-item index="2-1">item one</el-menu-item>
-      <el-menu-item index="2-2">item two</el-menu-item>
-      <el-menu-item index="2-3">item three</el-menu-item>
-    </el-sub-menu>
-  </el-menu>
+    <div class="container">
+        <div class="title">
+          <h1>病例学习</h1>
+          <!-- <h3>描述</h3> -->
+        </div>
+        <List></List>
     </div>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import List from "./directory/index.vue"
+// import { ref } from 'vue'
 
-const activeIndex = ref('1')
-const handleSelect = (key: string, keyPath: string[]) => {
-  console.log(key, keyPath)
-}
 </script>
 
 <style scoped lang="scss">
-.flex-grow {
-  flex-grow: 1;
+.container{
+  height:100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  // background: rgb(212, 246, 233);
+
+  .title{
+    display: flex;
+    flex-direction: column;
+    margin-top: 20px;
+    h1{
+      color:gray;
+      font-size: 48px;
+    }
+    h3{
+      margin-top: 10px;
+      font-size: 16px;
+    }
+  }
 }
 </style>

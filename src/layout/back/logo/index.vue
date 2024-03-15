@@ -1,11 +1,13 @@
 <template>
     <div class="logo">
-        <img src="../../../public/layout/logo.png" alt="logo.png">
+        <img src="../../../../public/layout/logo.png" alt="logo.png">
         <p>虚拟宠物医院</p>
     </div>
 </template>
-<script setup lang="ts">
-
+<script lang="ts">
+export default{
+    name:'Logo',
+}
 </script>
 <style scoped lang="scss">
 .logo{

@@ -3,7 +3,7 @@
     <div class="card">
       <el-card class="item1" shadow="hover">3D导览</el-card>
       <el-card class="item2" shadow="hover" @click="goStudy">职能学习</el-card>
-      <el-card class="item3" shadow="hover" @click="goCase">在线测试</el-card>
+      <el-card class="item3" shadow="hover" @click="goTest">在线测试</el-card>
     </div>
   </div>
 </template>
@@ -12,10 +12,10 @@
 import { useRouter } from "vue-router";
 let $router = useRouter();
 const goStudy = () => {
-  $router.push({ path: "/study" });
+  $router.push({ path: "/front/study" });
 };
-const goCase = () => {
-  $router.push({ path: "/case" });
+const goTest = () => {
+  $router.push({ path: "/front/test" });
 };
 </script>
 
@@ -24,7 +24,7 @@ const goCase = () => {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
-  margin-top: 20px;
+  margin-top: 3vh;
   font-size: 36px;
 
   .item1 {
@@ -33,7 +33,7 @@ const goCase = () => {
     align-items: center;
     justify-content: center;
     width: 33%;
-    height: 100px;
+    height: 14vh;
     background-color: rgb(137, 218, 252);
     cursor: pointer;
     // border-radius: 30px;
@@ -47,7 +47,7 @@ const goCase = () => {
     align-items: center;
     justify-content: center;
     width: 33%;
-    height: 100px;
+    height: 14vh;
     // background-color: rgb(255, 160, 160);
     background-image: linear-gradient(to right, #97d1b5, #98c5e3);
     cursor: pointer;
@@ -60,7 +60,7 @@ const goCase = () => {
     align-items: center;
     justify-content: center;
     width: 33%;
-    height: 100px;
+    height: 14vh;
     // background-color: rgb(149, 149, 255);
     cursor: pointer;
     margin-right: 0px;

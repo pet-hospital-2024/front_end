@@ -17,7 +17,11 @@
     </el-dropdown>
 </template>
 <script setup lang="ts">
-import { Avatar } from '@element-plus/icons-vue/dist/types';
 
 
+</script>
+<script lang="ts">
+export default{
+    name:'Setting',
+}
 </script>
