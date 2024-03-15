@@ -15,7 +15,7 @@ const goStudy = () => {
   $router.push({ path: "/front/study" });
 };
 const goTest = () => {
-  $router.push({ path: "/front/test" });
+  $router.push({ path: "/front/testDetail" });
 };
 </script>
 

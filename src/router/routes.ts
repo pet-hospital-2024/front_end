@@ -63,6 +63,15 @@ export const constantRoute = [
           title:"",
         },  
       },
+      {
+        path: "/front/testDetail",
+        name: "test",
+        component: () => import("@/views/front/testDetail/index.vue"),
+        meta:{
+          hidden:true,
+          title:"",
+        },  
+      },
     ],
   },
 
