@@ -75,13 +75,17 @@ export const constantRoute = [
     ],
   },
 
-  /*{
+  {
     path: "/",
-    // component:()=>import('@/layout/front/index.vue'),
-    // name:'layout_front',
-    redirect: "/front",
+    component:()=>import('@/layout/front/index.vue'),
+    name:'',
+    redirect: "/login",
+    meta:{
+      title:'',
+      hidden:true,
+    }
     
-  },*/
+  },
   {
     path: '/login',
     component: () => import('@/views/login/index.vue'),
@@ -117,34 +121,24 @@ export const constantRoute = [
   },
   //管理员相关界面路由
   {
-    path: '/back/acl',
+    path: '/back',
     component: () => import( '@/layout/back/index.vue' ),
     name:"backAcl",
     redirect:'/back/acl/user',
     meta: {
-      title: "权限管理",
+      title: "",
       hidden: false,
-      icon:"Avatar",
+      icon:'',
     },
     children:[
       {
-        path:"/back/acl/user",
-        component:()=>import('@/views/back/acl/user/index.vue'),
+        path:"/back/user",
+        component:()=>import('@/views/back/user/index.vue'),
         name:"backUser",
         meta:{
           title:"用户管理",
           hidden:false, 
-          icon:'Lock',
-        }
-      },
-      {
-        path:"/back/acl/role",
-        component:()=>import('@/views/back/acl/role/index.vue'),
-        name:"backRole",
-        meta:{
-          title:"角色管理",
-          hidden:false, 
-          icon:'User',
+          icon:"Avatar",
         }
       },
     ]
@@ -189,7 +183,7 @@ export const constantRoute = [
         component:()=>import('@/views/back/exam/questions/index.vue'),
         name:'backQuestions',
         meta:{
-          title:'考题管理',
+          title:'试题管理',
           hidden:false,
           icon:'ToiletPaper'//后期待调整
         }

@@ -7,7 +7,7 @@
             <el-scrollbar class="scrollbar">
                 <!--el-menu：background-color：16进制 -->
                 <!--UI优化详见element-plus Menu组件-->
-                <el-menu :collapse="LayoutSettingStore.fold?true:false" :default-active="$route.path" background-color="#20BBA1" active-text-color="#A0CDCC" text-color="white">
+                <el-menu :collapse="LayoutSettingStore.fold?true:false" :default-active="$route.path" background-color="#20BBA1" active-text-color="#A0CDCC" text-color="white" :router="true">
                     
                     <Menu :menuList="userStore.menuRoutes"></Menu>
                 </el-menu>
@@ -50,6 +50,7 @@ export default{
 }
 </script>
 <style scoped lang="scss">
+
 .layout_container{
     width:100%;
     height: 100vh;
@@ -60,7 +61,7 @@ export default{
         width: 260px;
         height: 100vh;
         background-color:#20BBA1;
-        overflow: hidden;//存在问题：折叠时字体展示
+        //overflow: hidden;//存在问题：折叠时字体展示
         transition:all 0.3s;
         .scrollbar{
             width: 100%;
@@ -70,9 +71,8 @@ export default{
                 border-right:none;
             }//美观，消除右侧边框
         }
-
         &.fold{
-            width: 50px;//折叠后左侧显示的宽度
+            width: 62px;//折叠后左侧显示的宽度
             
         }
     }
@@ -87,8 +87,8 @@ export default{
         transition:all 0.3s;
         &.fold{
             //tabbar折叠后对应伸缩，width为100vw-fold宽度（50px）
-            width: calc(100vw - 50px);
-            left:50px;
+            width: calc(100vw - 62px);
+            left:62px;
         }
     }//padding=20px,展示过长内容出现滚动条 overflow=auto
     .layout_main{
@@ -103,11 +103,13 @@ export default{
         transition: all 0.3s;
         &.fold{
             //应与tabbar相同
-            width: calc(100vw - 50px);
-            left:50px;
+            width: calc(100vw - 62px);
+            left:62px;
+            
         }
     }
     
 
 }
+
 </style>
