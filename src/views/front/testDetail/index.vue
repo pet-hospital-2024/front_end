@@ -14,9 +14,12 @@
             >
               <div class="questionTitle">
                 <span>{{ question.order + "." }}</span>
-                <span>{{ question.question_body }}</span>
+                <span>{{ question.question_body+"("+question.value+"分)" }}</span>
               </div>
-              <el-radio-group v-model="question.selectedOpt" @change="()=>updateQuestionStatus(question)">
+              <el-radio-group
+                v-model="question.selectedOpt"
+                @change="() => updateQuestionStatus(question)"
+              >
                 <el-radio
                   v-for="opt in question.options"
                   :key="opt.optCode"
@@ -43,7 +46,7 @@
           <div class="stateBox">
             <div class="state">
               <div
-                v-for="(question,index) in questionList"
+                v-for="(question, index) in questionList"
                 :key="question.order"
                 :class="['status-box', question.status]"
                 @click="setCurrentQuestion(index)"
@@ -55,7 +58,7 @@
           </div>
 
           <div class="optBtn">
-            <div style="width: 80%; margin-top: 50px">
+            <div style="width: 80%; margin-top: 50px" v-show="stateSwitch">
               <el-button
                 type="primary"
                 plain
@@ -65,6 +68,17 @@
                 >提交</el-button
               >
             </div>
+            <p
+              v-show="!stateSwitch"
+              style="
+                font-size: 30px;
+                color: red;
+                margin-bottom: 20px;
+                margin-top: 30px;
+              "
+            >
+              得分：{{ score }}
+            </p>
             <div style="width: 80%; margin-top: 20px">
               <el-button
                 type="primary"
@@ -77,7 +91,7 @@
             </div>
           </div>
           <!-- <div class="spacer"></div> -->
-          <div class="leftTime">
+          <div class="leftTime" v-show="stateSwitch">
             <!-- <p>剩余时间:</p> -->
             <p>{{ formattedTime }}</p>
           </div>
@@ -88,73 +102,112 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted,onUnmounted,reactive,Ref,ref} from "vue";
+import { onMounted, onUnmounted, reactive, ref } from "vue";
 import { ElMessageBox } from "element-plus";
 import { useRouter } from "vue-router";
 
 let $router = useRouter();
 
+//提交按钮和分数切换
+let stateSwitch = ref<boolean>(true);
+//记录成绩
+let score = ref<number>(0);
+
 //提交试卷
-const submit=() => {
+const submit = () => {
   if (intervalId !== undefined) clearInterval(intervalId);
-  localStorage.removeItem(examStartTimeKey);
+  // localStorage.removeItem(examStartTimeKey);
   localStorage.removeItem(examStartedKey);
-  // localStorage.removeItem('remainingTime'); 
-}
+  // localStorage.removeItem('remainingTime');
+  localStorage.setItem("isSubmitted", "true"); // 保存提交状态
+
+  calculateScore();
+
+  stateSwitch.value = false;
+};
+
+//计算答案
+const calculateScore = () => {
+  score.value = 0;
+  questionList.forEach((question) => {
+    if (question.selectedOpt === question.right_choice) {
+      score.value += question.value; // 假设每个问题1分
+      question.status = "correct"; // 回答正确
+    } else {
+      question.status = "wrong"; // 回答错误
+    }
+  });
+};
 
 //题目状态相关
-const updateQuestionStatus=(question:any) =>{
-  question.status = question.selectedOpt ? 'done' : 'pending';
-}
+const updateQuestionStatus = (question: any) => {
+  question.status = question.selectedOpt ? "done" : "pending";
+};
 
 //倒计时相关
 const totalExamTime: number = 1 * 60;
-let remainingTime= ref<number>(totalExamTime);
-const formattedTime= ref<string>('');
+let remainingTime = ref<number>(totalExamTime);
+const formattedTime = ref<string>("");
 
-const examStartedKey: string = 'examStarted';
-const examStartTimeKey: string = 'examStartTime';
+const examStartedKey: string = "examStarted";
+const examStartTimeKey: string = "examStartTime";
 
 let intervalId: number | undefined;
 
-const updateTime=(): void=> {
+const updateTime = (): void => {
   if (remainingTime.value > 0) {
     remainingTime.value--;
-    localStorage.setItem('remainingTime', remainingTime.value.toString());
+    localStorage.setItem("remainingTime", remainingTime.value.toString());
   } else {
     // 考试时间结束的额外处理
     submit();
   }
   // 更新格式化的时间显示
   formattedTime.value = formatTime(remainingTime.value);
-}
+};
 
 //格式化倒计时
 const formatTime = (seconds: number): string => {
-  const hours: string = Math.floor(seconds / 3600).toString().padStart(2, '0');
-  const minutes: string = Math.floor((seconds % 3600) / 60).toString().padStart(2, '0');
-  const secs: string = Math.floor(seconds % 60).toString().padStart(2, '0');
+  const hours: string = Math.floor(seconds / 3600)
+    .toString()
+    .padStart(2, "0");
+  const minutes: string = Math.floor((seconds % 3600) / 60)
+    .toString()
+    .padStart(2, "0");
+  const secs: string = Math.floor(seconds % 60)
+    .toString()
+    .padStart(2, "0");
   return `${hours}:${minutes}:${secs}`;
-}
+};
 
 onMounted(() => {
+  //成绩展示部分
+  const isSubmitted = localStorage.getItem("isSubmitted");
+  if (isSubmitted === "true") {
+    stateSwitch.value = false; // 如果已提交，隐藏提交按钮，显示成绩
+  }
+
   //倒计时部分
   const examStarted: string | null = localStorage.getItem(examStartedKey);
   // if (examStarted) {
-    const startTime: number = parseInt(localStorage.getItem(examStartTimeKey) || '0', 10);
-    const currentTime: number = Date.now();
-    const elapsedTime: number = Math.floor((currentTime - startTime) / 1000);
+  const startTime: number = parseInt(
+    localStorage.getItem(examStartTimeKey) || "0",
+    10
+  );
+  const currentTime: number = Date.now();
+  const elapsedTime: number = Math.floor((currentTime - startTime) / 1000);
 
-    remainingTime.value = Math.max(totalExamTime - elapsedTime, 0);
+  remainingTime.value = Math.max(totalExamTime - elapsedTime, 0);
   // }
 
   formattedTime.value = formatTime(remainingTime.value);
-  if(remainingTime.value>0) {
+  if (remainingTime.value > 0 && examStarted) {
     intervalId = window.setInterval(updateTime, 1000);
   }
 
   //挂载
-  window.addEventListener('beforeunload', handleBeforeUnload);
+  window.addEventListener("beforeunload", handleBeforeUnload);
+  window.addEventListener('popstate', handlePopState);
 });
 
 onUnmounted(() => {
@@ -162,15 +215,23 @@ onUnmounted(() => {
   if (intervalId !== undefined) clearInterval(intervalId);
 
   // 组件卸载时移除事件监听器
-  window.removeEventListener('beforeunload', handleBeforeUnload);
+  window.removeEventListener("beforeunload", handleBeforeUnload);
+  window.removeEventListener('popstate', handlePopState);
 });
-
 
 //退出提醒
 const handleBeforeUnload = (event: BeforeUnloadEvent) => {
   event.preventDefault();
 };
+//返回上一页提醒
+const handlePopState = () => {
+  // 用户点击浏览器后退按钮时的处理逻辑
+  exit();
+};
 
+const exit=() => {
+  $router.replace({ path: '/front/testList' });
+}
 //定位到题目
 let currentIndex = ref<number>(0);
 const setCurrentQuestion = (index: number) => {
@@ -181,7 +242,6 @@ const setCurrentQuestion = (index: number) => {
     behavior: "smooth",
     block: "start",
   });
-  // window.scrollBy({ top: -10, behavior: "smooth" });
 };
 
 //提交确认
@@ -202,21 +262,23 @@ const submitConfirm = () => {
 };
 //退出确认
 const confirmExit = () => {
-  ElMessageBox.confirm(
-    "考试进度将不会被保存，你确定要继续退出吗？",
-    "Warning",
-    {
-      confirmButtonText: "确定退出",
-      cancelButtonText: "继续测试",
-      type: "warning",
-    }
-  )
-    .then(() => {
-      $router.replace({
-        path: "/front/testList",
-      });
-    })
-    .catch(() => {});
+  if (stateSwitch.value) {
+    ElMessageBox.confirm(
+      "考试进度将不会被保存，你确定要继续退出吗？",
+      "Warning",
+      {
+        confirmButtonText: "确定退出",
+        cancelButtonText: "继续测试",
+        type: "warning",
+      }
+    )
+      .then(() => {
+        exit();
+      })
+      .catch(() => {});
+  } else {
+    exit();
+  }
 };
 
 const questionList = reactive([
@@ -236,9 +298,9 @@ const questionList = reactive([
       { optCode: "C", optContent: "选项C" },
       { optCode: "D", optContent: "选项D" },
     ],
-    right_choice: "2",
+    right_choice: "B",
     judgement: "1",
-    value: "5",
+    value: 10,
     selectedOpt: null,
     status: "pending",
   },
@@ -256,7 +318,7 @@ const questionList = reactive([
     ],
     right_choice: "2",
     judgement: "1",
-    value: "5",
+    value: 10,
     selectedOpt: "1",
     status: "pending",
   },
@@ -267,12 +329,12 @@ const questionList = reactive([
       "题目二的题干内容题目二的题干内容题目二的题干内容题目二的题干内容题目二的题干内容题目二的题干内容题目二的题干内容",
     type: "choice",
     options: [
-      { optCode: "1", optContent: "对" },
-      { optCode: "2", optContent: "错" },
+      { optCode: "A", optContent: "对" },
+      { optCode: "B", optContent: "错" },
     ],
-    right_choice: "2",
+    right_choice: "B",
     judgement: "1",
-    value: "5",
+    value: 10,
     selectedOpt: null,
     status: "pending",
   },
@@ -288,9 +350,9 @@ const questionList = reactive([
       { optCode: "C", optContent: "选项C" },
       { optCode: "D", optContent: "选项D" },
     ],
-    right_choice: "2",
+    right_choice: "D",
     judgement: "1",
-    value: "5",
+    value: 10,
     selectedOpt: null,
     status: "pending",
   },
@@ -306,9 +368,9 @@ const questionList = reactive([
       { optCode: "C", optContent: "选项C" },
       { optCode: "D", optContent: "选项D" },
     ],
-    right_choice: "2",
+    right_choice: "A",
     judgement: "1",
-    value: "5",
+    value: 10,
     selectedOpt: null,
     status: "pending",
   },
@@ -324,9 +386,9 @@ const questionList = reactive([
       { optCode: "C", optContent: "选项C" },
       { optCode: "D", optContent: "选项D" },
     ],
-    right_choice: "2",
+    right_choice: "D",
     judgement: "1",
-    value: "5",
+    value: 10,
     selectedOpt: null,
     status: "pending",
   },
@@ -429,12 +491,14 @@ const questionList = reactive([
         background-color: #c3e1f8;
       } /* 蓝色 */
       .correct {
+        border: 2px solid;
         border-color: rgb(126, 216, 126);
-        background-color: #b1e4b2;
+        background-color: #defcdf;
       } /* 绿色 */
       .wrong {
+        border: 2px solid;
         border-color: rgb(246, 103, 103);
-        background-color: #e3a5a1;
+        background-color: #ffd7d3;
       } /* 红色 */
     }
     .space {

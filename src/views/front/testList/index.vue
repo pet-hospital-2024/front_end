@@ -86,6 +86,7 @@ const goExam = () => {
   });
   localStorage.setItem('examStarted', "true");
   localStorage.setItem('examStartTime', Date.now().toString());
+  localStorage.setItem('isSubmitted',"false"); // 重置提交状态
 };
 </script>
 

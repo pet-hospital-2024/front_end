@@ -6,15 +6,22 @@
             <p class="description">描述</p>
         </div>
       <div class="card">
-        <el-card class="item1" shadow="hover">前台</el-card>
-        <el-card class="item2" shadow="hover">医助</el-card>
-        <el-card class="item3" shadow="hover">兽医</el-card>
+        <el-card class="item1" shadow="hover" @click="goDetail">前台</el-card>
+        <el-card class="item2" shadow="hover" @click="goDetail">医助</el-card>
+        <el-card class="item3" shadow="hover" @click="goDetail">兽医</el-card>
       </div>
     </div>
   </div>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { useRouter } from "vue-router";
+
+let $router = useRouter();
+const goDetail=()=>{
+  $router.push({path:"/front/roleDetail"});
+};
+</script>
 
 <style scoped>
 .content{

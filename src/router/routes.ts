@@ -37,6 +37,15 @@ export const constantRoute = [
         },
       },
       {
+        path: "/front/roleDetail",
+        name: "roleDetail",
+        component: () => import("@/views/front/roleDetail/index.vue"),
+        meta:{
+          hidden:true,
+          title:"",
+        },
+      },
+      {
         path: "/front/case",
         name: "case",
         component: () => import("@/views/front/case/index.vue"),
