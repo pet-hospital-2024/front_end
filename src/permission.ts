@@ -12,15 +12,27 @@ router.beforeEach(async (to, from, next) => {
   nprogress.start();
   let token = userStore.token;
   if (token) {
+    // 从状态管理获取最新的身份信息
+    await userStore.userInfo();
+    const identity = userStore.identity;
     if (to.path === "/login") {
-      console.log(token);
-      // 用户已登录，尝试访问登录页时，根据用户身份重定向
-      await userStore.userInfo();
-      const identity = userStore.identity; // 从状态管理获取最新的身份信息
       console.log(identity);
+      // 用户已登录，尝试访问登录页时，根据用户身份重定向
       next(identity === "user" ? "/front" : "/back");
       // next("/front");
+      return;
     } else {
+      if (identity === "user" && to.path.startsWith("/front")) {
+        // 允许用户身份为"user"访问"/front"及其子路由
+        next();
+      } else if (identity !== "user" && to.path.startsWith("/back")) {
+        // 允许其他身份访问"/back"及其子路由
+        next();
+      } else {
+        // 如果访问不匹配，则重定向到合适的路径
+        next(identity === "user" ? "/front" : "/back");
+        return;
+      }
       if (!userStore.username) {
         // 如果 token 存在但用户名未加载，尝试加载用户信息
         try {
@@ -31,6 +43,7 @@ router.beforeEach(async (to, from, next) => {
           // 错误处理，例如 token 无效
           await userStore.userLogout();
           next({ path: "/login", query: { redirect: to.path } });
+          return;
         }
       } else {
         // 用户名已加载，直接允许访问
@@ -41,11 +54,11 @@ router.beforeEach(async (to, from, next) => {
     // 用户未登录，重定向到登录页
     if (to.path !== "/login") {
       next({ path: "/login", query: { redirect: to.path } });
+      return;
     } else {
       next(); // 允许访问登录页
     }
   }
-  
 });
 // 全局后置守卫
 
