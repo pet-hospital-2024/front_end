@@ -7,15 +7,15 @@
       <div class="right">
         <el-dropdown>
           <span class="el-dropdown-link">
-            用户名
+            {{userStore.username}}
             <el-icon class="el-icon--right">
               <arrow-down />
             </el-icon>
           </span>
           <template #dropdown>
             <el-dropdown-menu>
-              <el-dropdown-item>修改密码</el-dropdown-item>
-              <el-dropdown-item>退出登录</el-dropdown-item>
+              <el-dropdown-item @click="modifyPw">修改密码</el-dropdown-item>
+              <el-dropdown-item @click="logout">退出登录</el-dropdown-item>
             </el-dropdown-menu>
           </template>
         </el-dropdown>
@@ -27,10 +27,29 @@
 <script setup lang="ts">
 import { useRouter } from "vue-router";
 import { ArrowDown } from "@element-plus/icons-vue";
+
+//获取用户相关小仓库
+import useUserStore from '@/store/modules/user';
+import usemodifyStore from '@/store/modules/modifyPw';
+let userStore=useUserStore();
+let modifyStore=usemodifyStore();
+
 let $router = useRouter();
 
+//修改密码
+const modifyPw=()=>{
+  modifyStore.show();
+}
+
+//返回前台首页
 const goHome=()=>{
   $router.push({ path: "/front" });
+}
+
+//退出登录
+const logout=()=>{
+  userStore.userLogout();
+  $router.replace({ path: "/login" });
 }
 </script>
 

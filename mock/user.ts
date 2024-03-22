@@ -26,6 +26,18 @@ function createUserList() {
         routes: ['home'],
         token: 'Expert Token',
       },
+      {
+        userId: 3,
+        avatar:
+          'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif',
+        username: 'user',
+        password: '123456',
+        desc: '系统管理员',
+        identity: 'user',//实习生角色
+        buttons: ['cuser.detail', 'cuser.user'],
+        routes: ['home'],
+        token: 'User Token',
+      },
     ]
   }
   

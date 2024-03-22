@@ -4,12 +4,16 @@
     <!-- <div class="content"> -->
       <router-view ></router-view>
     <!-- </div> -->
-    <!-- <Modify/> -->
+    <Modify v-if="modifyStore.isVisible" />
     
   </div>
 </template>
 
 <script setup lang="ts">
+import Modify from "@/components/modify/index.vue";
+import useModifyStore from "./store/modules/modifyPw";
+let modifyStore = useModifyStore();
+
 
 </script>
 

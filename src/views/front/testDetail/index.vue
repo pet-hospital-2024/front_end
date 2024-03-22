@@ -230,6 +230,10 @@ const handlePopState = () => {
 };
 
 const exit=() => {
+  localStorage.removeItem(examStartTimeKey);
+  localStorage.removeItem(examStartedKey);
+  localStorage.removeItem('remainingTime');
+  localStorage.removeItem('isSubmitted');
   $router.replace({ path: '/front/testList' });
 }
 //定位到题目
