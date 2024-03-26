@@ -1,10 +1,10 @@
 <template>
   <div>
     <div class="content">
-        <div class="top">
+        <!-- <div class="top">
             <p class="title">角色扮演</p>
             <p class="description">描述</p>
-        </div>
+        </div> -->
       <div class="card">
         <el-card class="item1" shadow="hover" @click="goDetail">前台</el-card>
         <el-card class="item2" shadow="hover" @click="goDetail">医助</el-card>
@@ -27,12 +27,12 @@ const goDetail=()=>{
 .content{
     width:100%;
     display: flex;
-    flex-direction: column;
+    /* flex-direction: column; */
     justify-content: center;
 }
 
-.top{
-    margin-top: 80px;
+/* .top{
+    margin-top: 50px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -41,14 +41,14 @@ const goDetail=()=>{
         font-size: 48px;
     }
     .description{
-        margin-top: 50px;
+        margin-top: 30px;
         font-size:24px;
     }
-}
+} */
 .card {
+  width:40vw;
   display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
+  flex-direction: column;
   margin-top: 100px;
   font-size: 36px;
 
@@ -56,10 +56,10 @@ const goDetail=()=>{
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 25%;
-    height: 200px;
-    background-color: rgb(167, 197, 167);
-    margin-right: 70px;
+    /* width: 25%; */
+    height: 80px;
+    margin-top: 10px;
+    background-color: rgb(185, 196, 185);
     cursor: pointer;
   }
 
@@ -67,10 +67,10 @@ const goDetail=()=>{
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 25%;
-    height: 200px;
-    background-color: rgb(211, 134, 134);
-    margin-right: 70px;
+    /* width: 25%; */
+    height: 80px;
+    margin-top: 20px;
+    background-color: rgb(209, 209, 209);
     cursor: pointer;
   }
 
@@ -78,9 +78,10 @@ const goDetail=()=>{
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 25%;
-    height: 200px;
-    background-color: rgb(95, 95, 146);
+    /* width: 25%; */
+    height: 80px;
+    margin-top: 20px;
+    background-color: rgb(157, 157, 157);
     cursor: pointer;
   }
 }

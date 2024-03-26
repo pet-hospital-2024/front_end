@@ -33,8 +33,8 @@ const goTest = () => {
     align-items: center;
     justify-content: center;
     width: 33%;
-    height: 14vh;
-    background-color: rgb(137, 218, 252);
+    height: 12vh;
+    background-color: rgb(20,20,20);
     cursor: pointer;
     // border-radius: 30px;
     margin-left: 0px;
@@ -47,8 +47,8 @@ const goTest = () => {
     align-items: center;
     justify-content: center;
     width: 33%;
-    height: 14vh;
-    // background-color: rgb(255, 160, 160);
+    height: 12vh;
+    background-color: rgb(20,20,20);
     background-image: linear-gradient(to right, #97d1b5, #98c5e3);
     cursor: pointer;
     // border-radius: 10px;
@@ -60,12 +60,13 @@ const goTest = () => {
     align-items: center;
     justify-content: center;
     width: 33%;
-    height: 14vh;
-    // background-color: rgb(149, 149, 255);
+    height: 12vh;
+    background-color: rgb(20, 20, 20);
     cursor: pointer;
     margin-right: 0px;
     // border-radius: 30px;
     background-image: linear-gradient(to right, #98c5e3, #878ab0);
   }
 }
+
 </style>

@@ -29,7 +29,7 @@ import List from "./directory/index.vue"
     margin-top: 20px;
     h1{
       color:gray;
-      font-size: 48px;
+      font-size: 40px;
     }
     h3{
       margin-top: 10px;

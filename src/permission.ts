@@ -25,29 +25,15 @@ router.beforeEach(async (to, from, next) => {
       if (identity === "user" && to.path.startsWith("/front")) {
         // 允许用户身份为"user"访问"/front"及其子路由
         next();
+        return;
       } else if (identity !== "user" && to.path.startsWith("/back")) {
         // 允许其他身份访问"/back"及其子路由
         next();
+        return;
       } else {
         // 如果访问不匹配，则重定向到合适的路径
         next(identity === "user" ? "/front" : "/back");
         return;
-      }
-      if (!userStore.username) {
-        // 如果 token 存在但用户名未加载，尝试加载用户信息
-        try {
-          await userStore.userInfo();
-          // 加载成功后，根据最新的身份信息决定是否需要重定向
-          next();
-        } catch (error) {
-          // 错误处理，例如 token 无效
-          await userStore.userLogout();
-          next({ path: "/login", query: { redirect: to.path } });
-          return;
-        }
-      } else {
-        // 用户名已加载，直接允许访问
-        next();
       }
     }
   } else {
