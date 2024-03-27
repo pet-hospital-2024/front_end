@@ -97,7 +97,12 @@ export const constantRoute = [
     path: "/",
     // component:()=>import('@/layout/front/index.vue'),
     // name:'layout_front',
-    redirect: "/front",
+    redirect: "/login",
+    name:'',
+    meta:{
+      title:'',
+      hidden:true,
+    }
     
   },*/
   {
@@ -135,10 +140,10 @@ export const constantRoute = [
   },
   //管理员相关界面路由
   {
-    path: '/back/acl',
+    path: '/back',
     component: () => import( '@/layout/back/index.vue' ),
     name:"backAcl",
-    redirect:'/back/acl/user',
+    redirect:'/back/user',
     meta: {
       title: "",
       hidden: false,
@@ -146,23 +151,13 @@ export const constantRoute = [
     },
     children: [
       {
-        path:"/back/acl/user",
-        component:()=>import('@/views/back/acl/user/index.vue'),
+        path:"/back/user",
+        component:()=>import('@/views/back/user/index.vue'),
         name:"backUser",
         meta:{
           title:"用户管理",
           hidden:false, 
           icon:'Lock',
-        }
-      },
-      {
-        path:"/back/acl/role",
-        component:()=>import('@/views/back/acl/role/index.vue'),
-        name:"backRole",
-        meta:{
-          title:"角色管理",
-          hidden:false, 
-          icon:'User',
         }
       },
     ],
@@ -173,9 +168,9 @@ export const constantRoute = [
     component:()=>import('@/layout/back/index.vue'),
     name:'case_home',
     meta:{
-      title:'',
+      title:'医院管理',
       hidden:false,
-      icon:'',
+      icon:'Files',
     },
     redirect:'/back/case',
     children:[{
@@ -187,7 +182,18 @@ export const constantRoute = [
         hidden:false,
         icon:"Files",
       },
-    }]
+    },
+    {
+      path:"/back/department",
+      component:()=>import('@/views/back/department/index.vue'),
+      name:"backDepartment",
+      meta:{
+        title:"科室管理",
+        hidden:false,
+        icon:"Files",
+      },
+    }
+  ]
 
   },
   
@@ -243,6 +249,11 @@ export const constantRoute = [
 
   {
     path: "/",
+    name:'',
+    meta:{
+      title:'',
+      hidden:true,
+    },
     redirect: "/login",
   },
 ];
