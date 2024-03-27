@@ -1,6 +1,6 @@
 <template>
     <!--顶部搜索-->
-  <el-card style="height: 80px">
+  <el-card style="height: 80px" shadow="hover">
     <el-form :inline="true" class="form">
       <el-form-item label="用户名:">
         <el-input placeholder="请你输入搜索用户名" v-model="keyword"></el-input>

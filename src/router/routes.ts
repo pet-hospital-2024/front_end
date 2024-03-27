@@ -149,9 +149,9 @@ export const constantRoute = [
     component:()=>import('@/layout/back/index.vue'),
     name:'case_home',
     meta:{
-      title:'',
+      title:'医院管理',
       hidden:false,
-      icon:'',
+      icon:'Help',
     },
     redirect:'/back/case',
     children:[{
@@ -163,9 +163,25 @@ export const constantRoute = [
         hidden:false,
         icon:"Files",
       },
+    },
+      {
+        path:"/back/department",
+        component:()=>import('@/views/back/department/index.vue'),
+        name:"backDepartment",
+        meta:{
+          title:"科室管理",
+          hidden:false,
+          icon:"Files",
+        },
     }]
 
   },
+  
+
+  //科室管理
+
+
+
   //考试管理系统相关界面跳转路由
   {
     path:"/back/exam",

@@ -148,7 +148,6 @@
 <script setup lang="ts">
 import {Delete, Edit, ZoomIn} from '@element-plus/icons-vue'
 import { computed, ref} from 'vue'
-import Detail from './detail/index.vue'
 //分页器当前页码
 
 interface ChoiceQuestion {
