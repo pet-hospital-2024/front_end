@@ -1,5 +1,5 @@
 import request from "@/utils/request";
-import type { TestDetailResponseData,TestListResponseData } from "./type";
+import type { TestDetailResponseData,ExamListResponseData } from "./type";
 
 enum API{
     TESTLIST_URL="/paper/getpaperlist",
@@ -8,7 +8,7 @@ enum API{
 
 //返回前台的考试列表
 export const reqTestList=()=>
-    request.get<any,TestListResponseData>(API.TESTLIST_URL);
+    request.get<any,ExamListResponseData>(API.TESTLIST_URL);
 
 
 //返回考试详情

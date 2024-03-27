@@ -4,15 +4,15 @@ export interface ResponseData {
 }
 
 export interface Disease{
-    disCode: string;
-    disName: string;
+    disease_id: string;
+    disease_name: string;
 }
 
 //科室的数据
 export interface Category{
-    categoryCode: string;
-    categoryName: string;
-    case?:Disease[];
+    kind_id: string;
+    kind_name: string;
+    diseases?:Disease[];
 }
 
 //科室数组类型
@@ -25,7 +25,7 @@ export interface CategoryResponseData extends ResponseData {
 
 //根据疾病返回病例接口
 export interface CaseGenInfo{
-    id:string;
+    uuid:string;
     name:string;
     intro:string;
 }

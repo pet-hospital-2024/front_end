@@ -4,7 +4,7 @@ export interface ResponseData {
 }
 
 //前台的考试列表
-interface TestItem {
+interface ExamItem {
     exam_id: string,
     paper_id: string,
     paper_name: string,
@@ -13,10 +13,10 @@ interface TestItem {
     exam_end: string,
 }
 
-export type TestListArr=TestItem[];
+export type ExamListArr=ExamItem[];
 
-export interface TestListResponseData extends ResponseData {
-    data: TestListArr;
+export interface ExamListResponseData extends ResponseData {
+    data: ExamListArr;
 }
 
 //试卷详情
