@@ -14,15 +14,15 @@ let useUserStore = defineStore("User", {
       token: GET_TOKEN(),
       menuRoutes:constantRoute,//仓库存储菜单生成需要数组（路由）
       username:'',//存储用户姓名和头像
-      identity:'',//存储用户身份
+      identity:''//存储用户身份
     };
   },
   actions: {
     async userLogin(data: LoginData) {
       let result: LoginResponseData = await reqLogin(data);
       if (result.code == 200) {
-        this.token = result.data.Token as string;
-        SET_TOKEN(result.data.Token as string);
+        this.token = result.data.token as string;
+        SET_TOKEN(result.data.token as string);
         // //本地持久化存储
         // localStorage.setItem("TOKEN",result.data.token);
         return "ok";
