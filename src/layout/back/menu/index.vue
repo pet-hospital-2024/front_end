@@ -19,12 +19,12 @@ export default{
         <!--不使用v-show是因为v-show初始会渲染，有性能损耗-->
         <template v-if="!item.children">
             <el-menu-item :index="item.path" v-if="!item.meta.hidden" @click="goRoute" >
-                <template #title>
+                
                     <el-icon>
                         <component :is="item.meta.icon"></component>
                     </el-icon>
                     <span>{{item.meta.title }}</span>
-                </template>
+                
             </el-menu-item>
         </template>
          <!-- 有子路由但只有一个 /home -->
@@ -35,22 +35,22 @@ export default{
         v-if="!item.children[0].meta.hidden"
         :index="item.children[0].path"
         @click="goRoute">
-        <template #title>
+        
             <el-icon>
                 <component :is="item.children[0].meta.icon"></component>
             </el-icon>
           <span>{{ item.children[0].meta.title }}</span>
-        </template>
+        
       </el-menu-item>
     </template>
         <template v-if="item.children && item.children.lenth == 1 && item.path!=='/back'">
             <el-menu-item v-if="!item.children[0].meta.hidden" :index="item.children[0].path" @click="goRoute">
-                <template #title>
+                
                     <el-icon>
                         <component :is="item.meta.icon"></component>
                     </el-icon>
                     <span>{{ item.children[0].meta.title }}</span>
-                </template>
+                
             </el-menu-item>
         </template>
         <!--有多个子路由-->
@@ -65,5 +65,8 @@ export default{
         </el-sub-menu>
     </template>
 </template>
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+
+
+</style>
 

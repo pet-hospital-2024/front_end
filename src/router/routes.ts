@@ -93,10 +93,22 @@ export const constantRoute = [
     ],
   },
 
+  /*{
+    path: "/",
+    // component:()=>import('@/layout/front/index.vue'),
+    // name:'layout_front',
+    redirect: "/login",
+    name:'',
+    meta:{
+      title:'',
+      hidden:true,
+    }
+    
+  },*/
   {
-    path: "/login",
-    component: () => import("@/views/login/index.vue"),
-    name: "login",
+    path: '/login',
+    component: () => import('@/views/login/index.vue'),
+    name: 'login',
     meta: {
       title: "login",
       hidden: true, //隐藏与后台无关页面
@@ -128,62 +140,68 @@ export const constantRoute = [
   },
   //管理员相关界面路由
   {
-    path: "/back/acl",
-    component: () => import("@/layout/back/index.vue"),
-    name: "backAcl",
-    redirect: "/back/acl/user",
+    path: '/back',
+    component: () => import( '@/layout/back/index.vue' ),
+    name:"backAcl",
+    redirect:'/back/user',
     meta: {
-      title: "权限管理",
+      title: "",
       hidden: false,
-      icon: "Avatar",
+      icon:"Avatar",
     },
     children: [
       {
-        path: "/back/acl/user",
-        component: () => import("@/views/back/acl/user/index.vue"),
-        name: "backUser",
-        meta: {
-          title: "用户管理",
-          hidden: false,
-          icon: "Lock",
-        },
-      },
-      {
-        path: "/back/acl/role",
-        component: () => import("@/views/back/acl/role/index.vue"),
-        name: "backRole",
-        meta: {
-          title: "角色管理",
-          hidden: false,
-          icon: "User",
-        },
+        path:"/back/user",
+        component:()=>import('@/views/back/user/index.vue'),
+        name:"backUser",
+        meta:{
+          title:"用户管理",
+          hidden:false, 
+          icon:'Lock',
+        }
       },
     ],
   },
   //病例管理相关界面跳转路由
   {
-    path: "/back",
-    component: () => import("@/layout/back/index.vue"),
-    name: "case_home",
-    meta: {
-      title: "",
-      hidden: false,
-      icon: "",
+    path:'/back',
+    component:()=>import('@/layout/back/index.vue'),
+    name:'case_home',
+    meta:{
+      title:'医院管理',
+      hidden:false,
+      icon:'Files',
     },
-    redirect: "/back/case",
-    children: [
-      {
-        path: "/back/case",
-        component: () => import("@/views/back/case/index.vue"),
-        name: "backCase",
-        meta: {
-          title: "病例管理",
-          hidden: false,
-          icon: "Files",
-        },
+    redirect:'/back/case',
+    children:[{
+      path:"/back/case",
+      component:()=>import('@/views/back/case/index.vue'),
+      name:"backCase",
+      meta:{
+        title:"病例管理",
+        hidden:false,
+        icon:"Files",
       },
-    ],
+    },
+    {
+      path:"/back/department",
+      component:()=>import('@/views/back/department/index.vue'),
+      name:"backDepartment",
+      meta:{
+        title:"科室管理",
+        hidden:false,
+        icon:"Files",
+      },
+    }
+  ]
+
   },
+  
+
+  //科室管理
+
+
+
   //考试管理系统相关界面跳转路由
   {
     path: "/back/exam",
@@ -197,14 +215,14 @@ export const constantRoute = [
     },
     children: [
       {
-        path: "/back/exam/questions",
-        component: () => import("@/views/back/exam/questions/index.vue"),
-        name: "backQuestions",
-        meta: {
-          title: "考题管理",
-          hidden: false,
-          icon: "ToiletPaper", //后期待调整
-        },
+        path:'/back/exam/questions',
+        component:()=>import('@/views/back/exam/questions/index.vue'),
+        name:'backQuestions',
+        meta:{
+          title:'考题管理',
+          hidden:false,
+          icon:'ToiletPaper'//后期待调整
+        }
       },
       {
         path: "/back/exam/test",
@@ -231,6 +249,11 @@ export const constantRoute = [
 
   {
     path: "/",
+    name:'',
+    meta:{
+      title:'',
+      hidden:true,
+    },
     redirect: "/login",
   },
 ];
