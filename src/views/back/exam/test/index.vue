@@ -11,13 +11,13 @@
             <el-table-column  label="考试时长" width="80" prop="last_time" align="center"/>
             <el-table-column label="操作">
                 <template #default="scope">
-                    <el-button size="small" @click="handleEdit(scope.$index, scope.row)"
+                    <el-button size="small" @click="handleEditTest(scope.$index, scope.row)"
                     >编辑</el-button
                     >
                     <el-button
                     size="small"
                     type="danger"
-                    @click="handleDelete(scope.$index, scope.row)"
+                    @click="handleDeleteTest(scope.$index, scope.row)"
                     >删除</el-button
                     >
                 </template>
@@ -81,6 +81,7 @@ const AddDialogVisible=ref<boolean>(false);
 const handleAddTest=()=>{
     AddDialogVisible.value=true;
 }
+
 const testArr=[
     {
         start_time:'2024.1.4',
@@ -103,4 +104,30 @@ const testArr=[
         last_time:'1h',
     },
 ]
+
+
+import { ElMessage, ElMessageBox } from 'element-plus'
+const handleDeleteTest = ()=>{
+  ElMessageBox.confirm(
+    '您确定删除该考试吗？',
+    '提示',
+    {
+      confirmButtonText: '确认',
+      cancelButtonText: '取消',
+      type: 'warning',
+    }
+  )
+    .then(() => {
+      ElMessage({
+        type: 'success',
+        message: '成功删除',
+      })
+    })
+    .catch(() => {
+      ElMessage({
+        type: 'info',
+        message: '删除失败',
+      })
+    })
+}
 </script>

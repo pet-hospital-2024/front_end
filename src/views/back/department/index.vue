@@ -11,18 +11,40 @@
                 <el-button @click="handleShowDetail(index, row)" size="small" :icon="ZoomIn">详情</el-button>
             </template>
         </el-table-column>
-        <el-table-column align="center" prop="操作">
-          <template>
-
+        <el-table-column align="center" label="操作">
+          <template v-slot="{ row, index}">
             <el-button size="small" @click="handleEditQuestion(index,row)" :icon="Edit" type="info">编辑
                 </el-button>
-                <el-button size="small" type="danger" @click="handleDeleteQuestion(index,row)" 
+                <el-button size="small" type="danger" @click="handleDeleteDepartment(index,row)" 
                   :icon="Delete">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
     </el-card>
+
+
+<el-dialog v-model="AddDialogVisible" title="添加科室" width="600" align-center>
+
+<el-form  style="max-width: 400px" :model="ruleForm" ref="formRef">
+  <el-form-item label="科室名称">
+    <el-input/>
+  </el-form-item>
+  <el-form-item label="科室描述">
+    <el-input placeholder="简单描述,小于250个字"/>
+  </el-form-item>
+</el-form>
+<template #footer>
+  <div class="dialog-footer">
+    <el-button type="primary">提交</el-button>
+    <el-button>重置</el-button>
+  </div>
+</template>
+</el-dialog>
+
+
+
   </template>
+
   <script setup lang="ts">
   
   
@@ -95,4 +117,34 @@
         ]
     },
   ]
+  import { ref } from 'vue';
+  const AddDialogVisible=ref<boolean>(false);
+  const handleAddDepartment=()=>{
+    AddDialogVisible.value=true;
+  }
+
+  import { ElMessage, ElMessageBox } from 'element-plus'
+const handleDeleteDepartment = ()=>{
+  ElMessageBox.confirm(
+    '您确定删除该科室吗？',
+    '提示',
+    {
+      confirmButtonText: '确认',
+      cancelButtonText: '取消',
+      type: 'warning',
+    }
+  )
+    .then(() => {
+      ElMessage({
+        type: 'success',
+        message: '成功删除',
+      })
+    })
+    .catch(() => {
+      ElMessage({
+        type: 'info',
+        message: '删除失败',
+      })
+    })
+}
   </script>

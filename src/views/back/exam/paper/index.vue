@@ -12,9 +12,9 @@
             <el-table-column align="center" class="operation" label="操作">
             <template v-slot="{ row, index }">
               <el-button @click="handleShowDetail(index, row)" size="small" :icon="ZoomIn">详情</el-button>
-              <el-button size="small" @click="handleEditQuestion(index,row)" :icon="Edit" type="info">编辑
+              <el-button size="small" @click="handleEditPaper(index,row)" :icon="Edit" type="info">编辑
               </el-button>
-              <el-button size="small" type="danger" @click="handleDeleteQuestion(index,row)" 
+              <el-button size="small" type="danger" @click="handleDeletePaper(index,row)" 
                 :icon="Delete">删除</el-button>
             </template>
 
@@ -36,11 +36,9 @@
         <el-form-item label="试卷名称">
             <input>
         </el-form-item>
-        <el-form-item label="题目数量">
-            <input>
-        </el-form-item>
     </el-form>
-    <el-button type="primary" size="default" icon="Plus" style="margin-bottom: 20px;">添加试题</el-button>
+    <el-button type="primary" size="default" icon="Plus" @click="handleAddQuestion2NewPaper"
+     style="margin-bottom: 20px;">添加试题</el-button>
     <el-table :data="paperDetailArr" height="300" style="width: 100%">
 
         <el-table-column type="index" label="序号" width="80" align="center"/>
@@ -65,7 +63,13 @@
     </template>
  </el-dialog>
 
+  <!--创建试卷后点击添加试题按钮-->
+    <el-dialog v-model="AddQuestion2PaperDialogVisible" title="试题库" width="800" height="400" align-center>
+      111
+      <el-table>
 
+      </el-table>
+    </el-dialog>
 <!--detail详情对话框-->
 <el-dialog title="试题详情" width="600" align-center v-model="showDetail" :QuestionInfo="QuestionInfo">
 <el-form>
@@ -153,4 +157,34 @@ const paperDetailArr=[
 
     }
 ]
+
+import { ElMessage, ElMessageBox } from 'element-plus'
+const handleDeletePaper = ()=>{
+  ElMessageBox.confirm(
+    '您确定删除该试卷吗？',
+    '提示',
+    {
+      confirmButtonText: '确认',
+      cancelButtonText: '取消',
+      type: 'warning',
+    }
+  )
+    .then(() => {
+      ElMessage({
+        type: 'success',
+        message: '成功删除',
+      })
+    })
+    .catch(() => {
+      ElMessage({
+        type: 'info',
+        message: '删除失败',
+      })
+    })
+}
+
+const AddQuestion2PaperDialogVisible=ref<boolean>(false);
+const handleAddQuestion2NewPaper=()=>{
+  AddQuestion2PaperDialogVisible.value=true;
+}
 </script>
