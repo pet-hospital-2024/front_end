@@ -29,6 +29,7 @@
           </li>
         </ul>
       </div>
+      <div class="space"></div>
     </div>
   </div>
 </template>
@@ -160,6 +161,7 @@ const goCaseList = () => {
     margin-left: 20px;
     height: 100%;
     overflow: auto;
+    padding-bottom: 60vh;
     &::-webkit-scrollbar {
       display: none;
     }

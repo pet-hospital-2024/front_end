@@ -23,8 +23,8 @@ let useUserStore = defineStore("User", {
       if (result.code == 200) {
         this.token = result.data.token as string;
         SET_TOKEN(result.data.token as string);
-        //本地持久化存储
-        localStorage.setItem("TOKEN",result.data.token);
+        // //本地持久化存储
+        // localStorage.setItem("TOKEN",result.data.token);
         return "ok";
       } else {
         return Promise.reject(new Error(result.message));

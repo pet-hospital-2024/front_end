@@ -129,9 +129,9 @@ let $router = useRouter();
   username: "admin",
   password: "123456",
 });*/
-let loginForm=reactive({
-  username:'',
-  password:'',
+let loginForm = reactive({
+  username: "",
+  password: "",
 });
 
 //获取登录el-form组件
@@ -164,13 +164,21 @@ const loginRules = {
 const login = async () => {
   await loginForms.value.validate();
   try {
-    await useStore.userLogin(loginForm);
-    $router.push("/back");
+    const loginResult = await useStore.userLogin(loginForm);
+    if (loginResult === "ok") {
+      // 登录成功，调用获取用户信息
+      const userInfoResult = await useStore.userInfo();
+      if (userInfoResult === "ok") {
+        // 根据身份重定向
+        $router.replace(useStore.identity === "user" ? "/front" : "/back");
+        ElNotification({
+          type: "success",
+          message: "登陆成功",
+        });
+      }
+    }
+    // $router.push("/back");
     //$router.push("/front");
-    ElNotification({
-      type: "success",
-      message: "登陆成功",
-    });
   } catch (error) {
     ElNotification({
       type: "error",

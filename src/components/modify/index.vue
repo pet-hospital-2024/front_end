@@ -1,7 +1,7 @@
 <template>
   <div class="modify_container">
     <el-dialog
-      v-model="dialogFormVisible"
+      v-model="usemodifyStore"
       title="修改密码"
       ref="dialog"
       width="500"
@@ -18,8 +18,8 @@
       </div>
       <template #footer>
         <div class="dialog-footer">
-          <el-button @click="dialogFormVisible = false">取消</el-button>
-          <el-button type="primary" @click="dialogFormVisible = false">
+          <el-button @click="hideModify">取消</el-button>
+          <el-button type="primary" @click="hideModify">
             确认
           </el-button>
         </div>
@@ -30,12 +30,18 @@
 
 <script setup lang="ts">
 import { reactive,ref } from "vue";
+import usemodifyStore from '@/store/modules/modifyPw';
+let modifyStore=usemodifyStore();
+
 let pwParam = reactive({
   oldPassword: "",
   newPassword: "",
 });
 
-const dialogFormVisible = ref(true);
+const hideModify = () => {
+  modifyStore.hide();
+};
+
 </script>
 
 <style scoped lang="scss">
