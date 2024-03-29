@@ -11,7 +11,7 @@
 
 <script setup lang="ts">
 import Modify from "@/components/modify/index.vue";
-import useModifyStore from "./store/modules/modifyPw";
+import useModifyStore from "./store/front/modifyPw";
 let modifyStore = useModifyStore();
 
 
@@ -32,4 +32,4 @@ let modifyStore = useModifyStore();
     background-color: white;
   }
 }
-</style>
+</style>./store/front/modifyPw

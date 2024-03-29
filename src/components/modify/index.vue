@@ -30,7 +30,7 @@
 
 <script setup lang="ts">
 import { reactive,ref } from "vue";
-import usemodifyStore from '@/store/modules/modifyPw';
+import usemodifyStore from '@/store/front/modifyPw';
 let modifyStore=usemodifyStore();
 
 let pwParam = reactive({
@@ -50,3 +50,4 @@ const hideModify = () => {
   // border: 1px solid #ccc;
 }
 </style>
+@/store/front/modifyPw

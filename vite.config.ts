@@ -12,9 +12,9 @@ export default ({ command, mode }: ConfigEnv): UserConfigExport => {
   return{
     plugins: [
       vue(),
-       viteMockServe({
-        localEnabled: command === 'serve',//保证开发阶段可以使用mock接口
-      })
+      //  viteMockServe({
+      //   localEnabled: command === 'serve',//保证开发阶段可以使用mock接口
+      // })
     ],
     
     resolve: {
@@ -23,16 +23,26 @@ export default ({ command, mode }: ConfigEnv): UserConfigExport => {
         "@": path.resolve(__dirname, 'src')
       }
     },
-  //scss 全局变量配置
-  css: {
-    preprocessorOptions: {
-      scss: {
-        javascriptEnabled: true,
-        additionalData: '@import "./src/style/variable.scss";',
-      },
-    },
-  },
+    server:{
+      proxy: {
+        '/api': {
+          target: 'http://localhost:8081',
+          changeOrigin: true,
+          rewrite: (path)=> path.replace(/^\/api/, ''),
+        },
+      }
+    }
   }
+  // //scss 全局变量配置
+  // css: {
+  //   preprocessorOptions: {
+  //     scss: {
+  //       javascriptEnabled: true,
+  //       additionalData: '@import "./src/style/variable.scss";',
+  //     },
+  //   },
+  // },
+  // }
   
 }
 

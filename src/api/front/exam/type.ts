@@ -33,12 +33,20 @@ export interface questionItem {
     options: optItem[],
     right_choice: string,
     value: number,
-    selectedOpt: null|string,
-    status: string,
+    // selectedOpt: null|string,
+    // status: string,
 }
 
 export type QuestionListArr=questionItem[];
 
+interface TestDetail{
+    paper_id: string,
+    paper_name: string,
+    duration: number,
+    question_number: number,
+    value: number,
+    questions: QuestionListArr;
+}
 export interface TestDetailResponseData extends ResponseData {
-    data: QuestionListArr;
+    data: TestDetail;
 }

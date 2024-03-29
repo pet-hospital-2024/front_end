@@ -30,7 +30,8 @@ import { ArrowDown } from "@element-plus/icons-vue";
 
 //获取用户相关小仓库
 import useUserStore from '@/store/modules/user';
-import usemodifyStore from '@/store/modules/modifyPw';
+//@ts-ignore
+import usemodifyStore from '@/store/front/modifyPw';
 let userStore=useUserStore();
 let modifyStore=usemodifyStore();
 
@@ -108,3 +109,4 @@ const logout=()=>{
   }
 }
 </style>
+@/store/front/modifyPw

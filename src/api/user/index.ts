@@ -8,7 +8,7 @@ import type{
 enum API {
   LOGIN_URL = "/user/login",
   REGISTER_URL = "/user/register",
-  USERINFO_URL="/user/info"
+  USERINFO_URL="/user/getinfo"
 }
 
 export const reqLogin=(data:LoginData)=>
