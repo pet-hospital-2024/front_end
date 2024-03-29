@@ -19,7 +19,7 @@
       <template #footer>
         <div class="dialog-footer">
           <el-button @click="hideModify">取消</el-button>
-          <el-button type="primary" @click="hideModify">
+          <el-button type="primary" @click="modifyPwd">
             确认
           </el-button>
         </div>
@@ -31,7 +31,9 @@
 <script setup lang="ts">
 import { reactive,ref } from "vue";
 import usemodifyStore from '@/store/front/modifyPw';
+import useUserStore from "@/store/modules/user";
 let modifyStore=usemodifyStore();
+let userStore=useUserStore();
 
 let pwParam = reactive({
   oldPassword: "",
@@ -39,6 +41,11 @@ let pwParam = reactive({
 });
 
 const hideModify = () => {
+  modifyStore.hide();
+};
+
+const modifyPwd = () => {
+  userStore.modify(pwParam);
   modifyStore.hide();
 };
 

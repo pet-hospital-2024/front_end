@@ -1,4 +1,13 @@
 <template>
+  <el-page-header
+    :icon="ArrowLeft"
+    @back="goBack"
+    style="margin: 15px 0 0 15px"
+  >
+    <template #content>
+      <span class="title"> </span>
+    </template>
+  </el-page-header>
   <div class="content">
     <p>病例名称</p>
     <div class="caseCard">
@@ -7,7 +16,7 @@
           <div class="container">
             <h2 style="margin-top: 10px">基本情况</h2>
             <p>
-              这是一段病例基本情况介绍这是一段病例基本情况介绍这是一段病例基本情况介绍这是一段病例基本情况介绍这是一段病例基本情况介绍这是一段病例基本情况介绍
+              {{ useStore.caseDetail?.case_introduction }}
             </p>
           </div>
           <el-divider />
@@ -43,9 +52,9 @@
         </el-tab-pane>
         <el-tab-pane label="病例检查">
           <div class="container">
-            <h2 style="margin-top: 10px">基本情况</h2>
+            <h2 style="margin-top: 10px">检查情况</h2>
             <p>
-              这是一段病例基本情况介绍这是一段病例基本情况介绍这是一段病例基本情况介绍这是一段病例基本情况介绍这是一段病例基本情况介绍这是一段病例基本情况介绍
+              {{ useStore.caseDetail?.case_examination }}
             </p>
           </div>
           <el-divider />
@@ -81,9 +90,9 @@
         </el-tab-pane>
         <el-tab-pane label="诊断结果">
           <div class="container">
-            <h2 style="margin-top: 10px">基本情况</h2>
+            <h2 style="margin-top: 10px">诊断结果</h2>
             <p>
-              这是一段病例基本情况介绍这是一段病例基本情况介绍这是一段病例基本情况介绍这是一段病例基本情况介绍这是一段病例基本情况介绍这是一段病例基本情况介绍
+              {{ useStore.caseDetail?.case_result }}
             </p>
           </div>
           <el-divider />
@@ -119,9 +128,9 @@
         </el-tab-pane>
         <el-tab-pane label="治疗方案">
           <div class="container">
-            <h2 style="margin-top: 10px">基本情况</h2>
+            <h2 style="margin-top: 10px">治疗方案</h2>
             <p>
-              这是一段病例基本情况介绍这是一段病例基本情况介绍这是一段病例基本情况介绍这是一段病例基本情况介绍这是一段病例基本情况介绍这是一段病例基本情况介绍
+              {{ useStore.caseDetail?.case_treatment }}
             </p>
           </div>
           <el-divider />
@@ -161,6 +170,20 @@
 </template>
 
 <script setup lang="ts">
+import useFrontCaseStore from "@/store/front/case";
+import { ArrowLeft } from "@element-plus/icons-vue";
+import { onMounted } from "vue";
+import {useRoute,useRouter} from "vue-router";
+let useStore=useFrontCaseStore();
+let $router = useRouter();
+let $route = useRoute();
+onMounted(()=>{
+  useStore.getCaseText($route.query.case_id as string);
+})
+const goBack = () => {
+  // $router.replace({ path: "/front/study" });
+  $router.go(-1);
+};
 const imgUrls = [
   "https://fuss10.elemecdn.com/a/3f/3302e58f9a181d2509f3dc0fa68b0jpeg.jpeg",
   "https://fuss10.elemecdn.com/1/34/19aa98b1fcb2781c4fba33d850549jpeg.jpeg",

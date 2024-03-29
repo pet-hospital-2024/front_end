@@ -76,10 +76,10 @@
                     size="large"
                   ></el-input>
                 </el-form-item>
-                <el-form-item prop="phone">
+                <el-form-item prop="phone_number">
                   <el-input
                     :prefix-icon="Cellphone"
-                    v-model="registerForm.phone"
+                    v-model="registerForm.phone_number"
                     placeholder="Number"
                     size="large"
                   ></el-input>
@@ -191,8 +191,9 @@ const login = async () => {
 let registerForm = reactive({
   username: "",
   password: "",
+  identity:"user",
+  phone_number: "",
   email: "",
-  phone: "",
 });
 
 //获取注册el-form组件
@@ -244,14 +245,14 @@ const registerRules = {
   username: [{ trigger: "change", validator: validatorUserName }],
   password: [{ trigger: "change", validator: validatorPassword }],
   email: [{ trigger: "change", validator: validatorEmail }],
-  phone: [{ trigger: "change", validator: validatorPhone }],
+  phone_number: [{ trigger: "change", validator: validatorPhone }],
 };
 
 //注册按钮
 const register = async () => {
   await registerForms.value.validate();
   try {
-    await useStore.userLogin(loginForm);
+    await useStore.register(registerForm);
     $router.push("/");
     ElNotification({
       type: "success",
