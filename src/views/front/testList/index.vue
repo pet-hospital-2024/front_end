@@ -34,9 +34,18 @@
 <script setup lang="ts">
 import { Timer } from "@element-plus/icons-vue";
 import { useRouter } from "vue-router";
+import {onMounted} from "vue";
+//@ts-ignore
+import { useFrontExamStore } from "@/store/front/exam";
+let useStore = useFrontExamStore();
+
+onMounted(async() => {
+  await useStore.getTestListArr();
+});
 
 let $router = useRouter();
 
+//暂时的数据
 const paperInfo = [
   {
     exam_id: "000",

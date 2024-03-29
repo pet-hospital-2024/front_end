@@ -10,12 +10,11 @@ export interface LoginData {
   password: String;
 }
 
-
 //用户注册接口
 export interface RegisterData {
   username: string;
   password: string;
-  identity:string;
+  identity: string;
   phone_number: string;
   email: string;
 }
@@ -32,13 +31,13 @@ export interface UserInfo {
   token: null | string;
 }
 
-interface dataType{
-  Token:string,
-}
+// interface dataType{
+//   Token:string,
+// }
 
 //定义登录接口返回数据类型
 export interface LoginResponseData extends ResponseData {
-  data:dataType
+  data: string;
 }
 
 // 定义data字段的接口
@@ -50,4 +49,3 @@ interface InfoData {
 export interface UserInfoResponseData extends ResponseData {
   data: InfoData;
 }
-

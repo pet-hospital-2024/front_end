@@ -3,34 +3,40 @@
 function createUserList() {
     return [
       {
-        user_id: 1,
+        userId: 1,
+        avatar:
+          'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif',
         username: 'admin',
         password: '123456',
+        desc: '平台管理员',
         identity: 'admin',//管理员角色
-        phone_number:'123456789',
-        email:'123457@qq.com',
-        timestamp:'2024-3-29',
-        Token: 'Admin Token 2024-3-29',
+        buttons: ['cuser.detail'],
+        routes: ['home'],
+        token: 'Admin Token',
       },
       {
-        user_id: 2,
+        userId: 2,
+        avatar:
+          'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif',
         username: 'expert',
         password: '123456',
+        desc: '系统管理员',
         identity: 'expert',//专家角色
-        phone_number:'987654321',
-        email:'7654321@qq.com',
-        timestamp:'2024-3-29',
-        Token: 'Expert Token 2024-3-29',
+        buttons: ['cuser.detail', 'cuser.user'],
+        routes: ['home'],
+        token: 'Expert Token',
       },
       {
-        user_id: 3,
+        userId: 3,
+        avatar:
+          'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif',
         username: 'user',
         password: '123456',
+        desc: '系统管理员',
         identity: 'user',//实习生角色
-        phone_number:'37579951',
-        email:'132835@qq.com',
-        timestamp:'2024-3-29',
-        Token: 'User Token 2024-3-29',
+        buttons: ['cuser.detail', 'cuser.user'],
+        routes: ['home'],
+        token: 'User Token',
       },
     ]
   }
@@ -38,25 +44,25 @@ function createUserList() {
   //对外暴露数组：包含2个接口
   export default [
     // 用户登录接口
-    {
-      url: '/api/user/login', //请求地址
-      method: 'post', //请求方式
-      response: ({ body }) => {
-        //获取请求体携带过来的用户名与密码
-        const { username, password } = body
-        //调用获取用户信息函数,用于判断是否有此用户
-        const checkUser = createUserList().find(
-          (item) => item.username === username && item.password === password,
-        )
-        //没有用户返回失败信息
-        if (!checkUser) {
-          return { code: 201, message: '账号或者密码不正确',data: {  } }
-        }
-        //如果有返回成功信息
-        const { Token } = checkUser
-        return { code: 200, message:'',data: { Token } }
-      },
-    },
+    // {
+    //   url: '/api/user/login', //请求地址
+    //   method: 'post', //请求方式
+    //   response: ({ body }) => {
+    //     //获取请求体携带过来的用户名与密码
+    //     const { username, password } = body
+    //     //调用获取用户信息函数,用于判断是否有此用户
+    //     const checkUser = createUserList().find(
+    //       (item) => item.username === username && item.password === password,
+    //     )
+    //     //没有用户返回失败信息
+    //     if (!checkUser) {
+    //       return { code: 201, data: { message: '账号或者密码不正确' } }
+    //     }
+    //     //如果有返回成功信息
+    //     const { token } = checkUser
+    //     return { code: 200, data: { token } }
+    //   },
+    // },
     // 获取用户信息
     {
       url: '/api/user/info',
@@ -65,13 +71,13 @@ function createUserList() {
         //获取请求头携带token
         const token = request.headers.token
         //查看用户信息是否包含有次token用户
-        const checkUser = createUserList().find((item) => item.Token == token)
+        const checkUser = createUserList().find((item) => item.token === token)
         //没有返回失败的信息
         if (!checkUser) {
-          return { code: 201,message: '获取用户信息失败', data: { } }
+          return { code: 201, data: { message: '获取用户信息失败' } }
         }
         //如果有返回成功信息
-        return { code: 200, message:'success', data:  checkUser  }
+        return { code: 200, data: { checkUser } }
       },
     },
   ]

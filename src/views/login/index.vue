@@ -119,10 +119,7 @@ import { useRouter } from "vue-router";
 //@ts-ignore
 import useUserStore from "@/store/modules/user";
 
-import { onMounted } from "vue";
-onMounted(()=>{
-  localStorage.removeItem('TOKEN');
-})
+
 const tabPosition = ref("top");
 
 let useStore = useUserStore();
@@ -171,15 +168,15 @@ const login = async () => {
     const loginResult = await useStore.userLogin(loginForm);
     if (loginResult === "ok") {
       // 登录成功，调用获取用户信息
-      const userInfoResult = await useStore.userInfo();
-      if (userInfoResult === "ok") {
+      // const userInfoResult = await useStore.userInfo();
+      // if (userInfoResult === "ok") {
         // 根据身份重定向
-        $router.replace(useStore.identity === "user" ? "/front" : "/back");
+        $router.replace(useStore.userData?.identity === "user" ? "/front" : "/back");
         ElNotification({
           type: "success",
           message: "登陆成功",
         });
-      }
+    // }
     }
     // $router.push("/back");
     //$router.push("/front");

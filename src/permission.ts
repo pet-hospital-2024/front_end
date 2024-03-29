@@ -13,8 +13,8 @@ router.beforeEach(async (to, from, next) => {
   let token = userStore.token;
   if (token) {
     // 从状态管理获取最新的身份信息
-    await userStore.userInfo();
-    const identity = userStore.identity;
+    await userStore.getUserIdentity();
+    const identity = userStore.userData?.identity;
     if (to.path === "/login") {
       console.log(identity);
       // 用户已登录，尝试访问登录页时，根据用户身份重定向

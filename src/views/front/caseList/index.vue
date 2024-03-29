@@ -1,9 +1,9 @@
 <template>
   <div class="caseTable">
     <el-table :data="tableData" size="large" stripe style="width: 90%" max-height="500">
-      <el-table-column prop="id" label="ID" width="100" />
-      <el-table-column prop="name" label="病例名称" width="200" />
-      <el-table-column prop="info" label="基本情况" width="600" />
+      <el-table-column prop="case_id" label="ID" width="100" />
+      <el-table-column prop="case_name" label="病例名称" width="200" />
+      <el-table-column prop="case_introduction" label="基本情况" width="600" />
       <el-table-column prop="operation" label="操作">
         <template #default>
           <el-button link type="primary" size="default" @click="goDetailedCase"
@@ -22,26 +22,30 @@ let $router = useRouter();
 //测试用例
 const tableData = [
   {
-    id: "001",
-    name: "犬蕴热",
-    info:"5岁小狗豆豆"
+    case_id: "001",
+    case_name: "犬蕴热",
+    case_introduction:"5岁小狗豆豆"
   },
   {
-    id: "001",
-    name: "犬蕴热",
+    case_id: "001",
+    case_name: "犬蕴热",
+    case_introduction:"5岁小狗豆豆"
   },
   {
-    id: "001",
-    name: "犬蕴热",
+    case_id: "001",
+    case_name: "犬蕴热",
+    case_introduction:"5岁小狗豆豆"
   },
   {
-    id: "001",
-    name: "犬蕴热",
+    case_id: "001",
+    case_name: "犬蕴热",
+    case_introduction:"5岁小狗豆豆"
   },
   {
-    id: "001",
-    name: "犬蕴热",
-  },
+    case_id: "001",
+    case_name: "犬蕴热",
+    case_introduction:"5岁小狗豆豆"
+  }
 ];
 
 const goDetailedCase = () => {
