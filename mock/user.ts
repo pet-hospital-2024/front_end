@@ -3,40 +3,34 @@
 function createUserList() {
     return [
       {
-        userId: 1,
-        avatar:
-          'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif',
+        user_id: 1,
         username: 'admin',
         password: '123456',
-        desc: '平台管理员',
         identity: 'admin',//管理员角色
-        buttons: ['cuser.detail'],
-        routes: ['home'],
-        token: 'Admin Token',
+        phone_number:'123456789',
+        email:'123457@qq.com',
+        timestamp:'2024-3-29',
+        Token: 'Admin Token 2024-3-29',
       },
       {
-        userId: 2,
-        avatar:
-          'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif',
+        user_id: 2,
         username: 'expert',
         password: '123456',
-        desc: '系统管理员',
         identity: 'expert',//专家角色
-        buttons: ['cuser.detail', 'cuser.user'],
-        routes: ['home'],
-        token: 'Expert Token',
+        phone_number:'987654321',
+        email:'7654321@qq.com',
+        timestamp:'2024-3-29',
+        Token: 'Expert Token 2024-3-29',
       },
       {
-        userId: 3,
-        avatar:
-          'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif',
+        user_id: 3,
         username: 'user',
         password: '123456',
-        desc: '系统管理员',
         identity: 'user',//实习生角色
-        buttons: ['cuser.detail', 'cuser.user'],
-        routes: ['home'],
-        token: 'User Token',
+        phone_number:'37579951',
+        email:'132835@qq.com',
+        timestamp:'2024-3-29',
+        Token: 'User Token 2024-3-29',
       },
     ]
   }
@@ -56,11 +50,11 @@ function createUserList() {
         )
         //没有用户返回失败信息
         if (!checkUser) {
-          return { code: 201, data: { message: '账号或者密码不正确' } }
+          return { code: 201, message: '账号或者密码不正确',data: {  } }
         }
         //如果有返回成功信息
-        const { token } = checkUser
-        return { code: 200, data: { token } }
+        const { Token } = checkUser
+        return { code: 200, message:'',data: { Token } }
       },
     },
     // 获取用户信息
@@ -71,13 +65,13 @@ function createUserList() {
         //获取请求头携带token
         const token = request.headers.token
         //查看用户信息是否包含有次token用户
-        const checkUser = createUserList().find((item) => item.token === token)
+        const checkUser = createUserList().find((item) => item.Token == token)
         //没有返回失败的信息
         if (!checkUser) {
-          return { code: 201, data: { message: '获取用户信息失败' } }
+          return { code: 201,message: '获取用户信息失败', data: { } }
         }
         //如果有返回成功信息
-        return { code: 200, data: { checkUser } }
+        return { code: 200, message:'success', data:  checkUser  }
       },
     },
   ]

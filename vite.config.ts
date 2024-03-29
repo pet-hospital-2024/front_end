@@ -32,6 +32,17 @@ export default ({ command, mode }: ConfigEnv): UserConfigExport => {
       },
     },
   },
+      // 代理跨域
+     /* server: {
+        proxy: {
+          '/api': { // 匹配以 /api 开头的请求
+            target: 'http://localhost:8081', // 本地后端服务器地址
+            changeOrigin: true, // 支持跨域请求
+            rewrite: (path) => path.replace(/^\/api/, ''), // 去除路径中的 /api 前缀
+          },
+        },
+      },*/
+      
   }
   
 }

@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 import { reqLogin, reqUserInfo, } from '@/api/user'
-import type { LoginData, LoginResponseData } from "@/api/user/type";
+import type { LoginData, LoginResponseData, UserInfoResponseData } from "@/api/user/type";
 import type { UserState } from "./types/type";
 import { SET_TOKEN, GET_TOKEN, REMOVE_TOKEN } from "@/utils/token";
 //引入常量路由
@@ -21,25 +21,37 @@ let useUserStore = defineStore("User", {
     async userLogin(data: LoginData) {
       let result: LoginResponseData = await reqLogin(data);
       if (result.code == 200) {
-        this.token = result.data.token as string;
-        SET_TOKEN(result.data.token as string);
+        this.token = result.data.Token as string;
+        SET_TOKEN(result.data.Token as string);
+        console.log(result.data.Token);
+        console.log(result.code);
         // //本地持久化存储
-        // localStorage.setItem("TOKEN",result.data.token);
+         localStorage.setItem("TOKEN",result.data.Token);
         return "ok";
       } else {
+        console.log(result.data.Token);
+        console.log(result.code);
         return Promise.reject(new Error(result.message));
       } 
     },
     //获取用户信息的方法
     async userInfo() {
-      let res: any = await reqUserInfo();
-      //console.log(res.data.checkUser.username);
 
-      if (res.code === 200) {
-        this.username = res.data.checkUser.username as string;
-        this.identity = res.data.checkUser.identity as string;
+      let res: UserInfoResponseData = await reqUserInfo();
+      //console.log(res.data.ch);
+
+     if (res.code == 200) {
+        this.username = res.data.info.username as string;
+        this.identity = res.data.info.identity as string;
+        console.log(res.data.info.email)
+        //console.log(res.data.Token);
+        console.log(res.code);
         return 'ok';
+        
       } else {
+        console.log(res.data.info.email)
+        //console.log(res.data.token);
+        console.log(+res.code);
         return Promise.reject(new Error(res.message))
       }
     },

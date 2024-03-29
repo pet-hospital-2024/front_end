@@ -65,10 +65,28 @@
 
   <!--创建试卷后点击添加试题按钮-->
     <el-dialog v-model="AddQuestion2PaperDialogVisible" title="试题库" width="800" height="400" align-center>
-      111
-      <el-table>
+      <el-table  style="margin:10px 0" stripe 
+        empty-text="无题干!" >
+            <el-table-column type="index" label="序号" width="80" align="center"/>
+            <el-table-column label="题目类型" width="100" align="center">
+                <template v-slot="{ row }">
+                    {{ row.type === 'choice' ? '选择题' : '判断题' }}
+                </template>
+            </el-table-column>
+            <el-table-column prop="disease_kind" label="疾病类型" width="100" align="center"/>
+            <el-table-column prop="question_body" label="题目描述" align="center" width="300" />
+            <el-table-column align="center" class="operation">
+            <template v-slot="{ row, index }">
+              <el-button @click="handleShowDetail(index, row)" size="small" :icon="ZoomIn">详情</el-button>
+              <el-button size="small" @click="handleEditQuestion(index,row)" :icon="Edit" type="info">编辑
+              </el-button>
+              <el-button size="small" type="danger" @click="handleDeleteQuestion(index,row)" 
+                :icon="Delete">删除</el-button>
+            </template>
 
-      </el-table>
+
+            </el-table-column>
+        </el-table>
     </el-dialog>
 <!--detail详情对话框-->
 <el-dialog title="试题详情" width="600" align-center v-model="showDetail" :QuestionInfo="QuestionInfo">

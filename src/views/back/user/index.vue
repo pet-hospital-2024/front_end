@@ -126,7 +126,7 @@
     </template>
 </el-dialog>
 <!--查看用户详情对话框-->
-<el-dialog
+<el-drawer
     v-model="dialogShowUserDetail"
     title="用户详情"
     width="500"
@@ -167,7 +167,7 @@
         </el-button>
       </div>
     </template>
-</el-dialog>
+</el-drawer>
 </template>
 
 <script setup lang="ts">

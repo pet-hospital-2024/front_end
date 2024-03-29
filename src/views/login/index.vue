@@ -119,6 +119,10 @@ import { useRouter } from "vue-router";
 //@ts-ignore
 import useUserStore from "@/store/modules/user";
 
+import { onMounted } from "vue";
+onMounted(()=>{
+  localStorage.removeItem('TOKEN');
+})
 const tabPosition = ref("top");
 
 let useStore = useUserStore();

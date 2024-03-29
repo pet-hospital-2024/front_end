@@ -32,28 +32,17 @@
         <el-form-item label="考试时长">
             <input>
         </el-form-item>
-        <el-form-item>
-            <div class="demo-time-range">
-    <el-time-select
-      v-model="startTime"
-      style="width: 240px"
-      :max-time="endTime"
-      class="mr-4"
-      placeholder="开始日期"
-      start="08:30"
-      step="00:15"
-      end="18:30"
-    />
-    <el-time-select
-      v-model="endTime"
-      style="width: 240px"
-      :min-time="startTime"
-      placeholder="截至日期"
-      start="08:30"
-      step="00:15"
-      end="18:30"
-    />
-  </div>
+        <el-form-item label="考试日期">
+          <div class="block">
+            
+            <el-date-picker
+              v-model="value1"
+              type="datetimerange"
+              start-placeholder="Start Date"
+              end-placeholder="End Date"
+              :default-time="defaultTime1"
+            />
+          </div>
         </el-form-item>
         <el-form-item label="选择试卷">
             

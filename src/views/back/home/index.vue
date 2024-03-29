@@ -1,6 +1,6 @@
 <template>
     <p class="container">欢迎回来,亲爱的{{ userStore.identity }} {{ userStore.username }}</p>
-    <p></p>
+    <el-button type="primary" @click="open = true">Begin Tour</el-button>
     
 </template>
 <script setup lang="ts">
