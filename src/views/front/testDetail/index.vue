@@ -4,7 +4,7 @@
       <el-col :span="18" style="background-color: rgb(255, 255, 255)">
         <div class="left">
           <div class="title">
-            <p>考试名称</p>
+            <p>{{useStore.testData?.paper_name}}</p>
           </div>
           <div class="paper">
             <div
@@ -14,7 +14,9 @@
             >
               <div class="questionTitle">
                 <span>{{ question.order + "." }}</span>
-                <span>{{ question.question_body+"("+question.value+"分)" }}</span>
+                <span>{{
+                  question.question_body + "(" + question.value + "分)"
+                }}</span>
               </div>
               <el-radio-group
                 v-model="question.selectedOpt"
@@ -104,9 +106,11 @@
 <script setup lang="ts">
 import { onMounted, onUnmounted, reactive, ref } from "vue";
 import { ElMessageBox } from "element-plus";
-import { useRouter } from "vue-router";
-
+import { useRouter, useRoute } from "vue-router";
+import { useFrontExamStore } from "@/store/front/exam";
+let useStore = useFrontExamStore();
 let $router = useRouter();
+let $route = useRoute();
 
 //提交按钮和分数切换
 let stateSwitch = ref<boolean>(true);
@@ -145,7 +149,7 @@ const updateQuestionStatus = (question: any) => {
 };
 
 //倒计时相关
-const totalExamTime: number = 1 * 60;
+const totalExamTime: number = useStore.testData?.duration as number * 60;
 let remainingTime = ref<number>(totalExamTime);
 const formattedTime = ref<string>("");
 
@@ -181,6 +185,9 @@ const formatTime = (seconds: number): string => {
 };
 
 onMounted(() => {
+  //初始化试卷
+  useStore.getQuestionListArr($route.query.paper_id as string);
+
   //成绩展示部分
   const isSubmitted = localStorage.getItem("isSubmitted");
   if (isSubmitted === "true") {
@@ -190,24 +197,40 @@ onMounted(() => {
   //倒计时部分
   const examStarted: string | null = localStorage.getItem(examStartedKey);
   // if (examStarted) {
-  const startTime: number = parseInt(
-    localStorage.getItem(examStartTimeKey) || "0",
-    10
-  );
-  const currentTime: number = Date.now();
-  const elapsedTime: number = Math.floor((currentTime - startTime) / 1000);
+  // const startTime: number = parseInt(
+  //   localStorage.getItem(examStartTimeKey) || "0",
+  //   10
+  // );
+  // const currentTime: number = Date.now();
+  // const elapsedTime: number = Math.floor((currentTime - startTime) / 1000);
 
-  remainingTime.value = Math.max(totalExamTime - elapsedTime, 0);
+  // remainingTime.value = Math.max(totalExamTime - elapsedTime, 0);
+  // // }
+
+  // formattedTime.value = formatTime(remainingTime.value);
+  // if (remainingTime.value > 0 && examStarted) {
+  //   intervalId = window.setInterval(updateTime, 1000);
   // }
-
-  formattedTime.value = formatTime(remainingTime.value);
-  if (remainingTime.value > 0 && examStarted) {
-    intervalId = window.setInterval(updateTime, 1000);
+  if (examStarted === "true" && isSubmitted === "false") {
+    // 考试已开始且未提交，计算剩余时间
+    const startTime = parseInt(localStorage.getItem('examStartTime') || '0', 10);
+    const currentTime = Date.now();
+    const elapsedTime = Math.floor((currentTime - startTime) / 1000);
+    remainingTime.value = Math.max(totalExamTime - elapsedTime, 0);
+    console.log(remainingTime.value,"***",elapsedTime,"***",totalExamTime);
+    // 如果有剩余时间，开始倒计时
+    if (remainingTime.value > 0 && examStarted) {
+      formattedTime.value = formatTime(remainingTime.value);
+      intervalId = window.setInterval(updateTime, 1000);
+    } else {
+      // 如果没有剩余时间，直接提交
+      // submit();
+    }
   }
 
   //挂载
   window.addEventListener("beforeunload", handleBeforeUnload);
-  window.addEventListener('popstate', handlePopState);
+  window.addEventListener("popstate", handlePopState);
 });
 
 onUnmounted(() => {
@@ -216,7 +239,7 @@ onUnmounted(() => {
 
   // 组件卸载时移除事件监听器
   window.removeEventListener("beforeunload", handleBeforeUnload);
-  window.removeEventListener('popstate', handlePopState);
+  window.removeEventListener("popstate", handlePopState);
 });
 
 //退出提醒
@@ -229,13 +252,13 @@ const handlePopState = () => {
   exit();
 };
 
-const exit=() => {
+const exit = () => {
   localStorage.removeItem(examStartTimeKey);
   localStorage.removeItem(examStartedKey);
-  localStorage.removeItem('remainingTime');
-  localStorage.removeItem('isSubmitted');
-  $router.replace({ path: '/front/testList' });
-}
+  localStorage.removeItem("remainingTime");
+  localStorage.removeItem("isSubmitted");
+  $router.replace({ path: "/front/testList" });
+};
 //定位到题目
 let currentIndex = ref<number>(0);
 const setCurrentQuestion = (index: number) => {
