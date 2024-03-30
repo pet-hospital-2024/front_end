@@ -1,4 +1,5 @@
 import axios from 'axios';
+import logout from './logout';
 
 import { ElMessage } from 'element-plus';
 //引入用户相关仓库
@@ -13,7 +14,7 @@ request.interceptors.request.use((config)=>{
       //获取用户相关小仓库:获取仓库内部token，登录成功后携带给服务器
       let userStore=useUserStore();
       if(userStore.token){
-            config.headers.token = userStore.token; 
+            config.headers.Authorization = userStore.token; 
       }
     return config;
 })
@@ -44,6 +45,7 @@ request.interceptors.response.use((response) => {
                       type: 'error',
                       message: '参数有误'
                 })
+                logout();
                 break;
     }
     return Promise.reject(new Error(error.message))

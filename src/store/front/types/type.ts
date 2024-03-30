@@ -1,5 +1,5 @@
 import type { CategoryArr,CaseList,CaseDetailInfo } from "@/api/front/case/type";
-import type { TestListArr,QuestionListArr} from "@/api/front/exam/type"
+import type { TestListArr,QuestionListArr,TestDetail} from "@/api/front/exam/type"
 
 export interface FrontCaseState{
     categoryArr:CategoryArr;
@@ -10,4 +10,5 @@ export interface FrontCaseState{
 export interface FrontExamState{
     testListArr:TestListArr;
     questionListArr:QuestionListArr;
+    testData:TestDetail|null;
 }

@@ -10,13 +10,13 @@
 </template>
 
 <script setup lang="ts">
-import { ArrowLeft } from "@element-plus/icons-vue";
 import Card from "./card/index.vue";
+import { ArrowLeft } from "@element-plus/icons-vue";
 import { useRouter } from "vue-router";
 
 let $route = useRouter();
 const goBack = () => {
-  $route.replace({ path: "/front/study" });
+  $route.go(-1);
 };
 </script>
 
