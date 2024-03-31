@@ -27,7 +27,7 @@
             plain
             color=" rgb(100, 220, 255)"
             style="width: 100%"
-            @click="goExam(paper.paper_id)"
+            @click="goExam(paper.paper_id,paper.duration)"
             >进入考试</el-button
           >
         </div>
@@ -99,13 +99,14 @@ onMounted(async() => {
 //   },
 // ];
 
-const goExam = (paper_id:string) => {
+const goExam = (paper_id:string,duration:number) => {
   $router.push({
     path: "/front/testDetail",query:{paper_id:paper_id}
   });
   localStorage.setItem('examStarted', "true");
   localStorage.setItem('examStartTime', Date.now().toString());
   localStorage.setItem('isSubmitted',"false"); // 重置提交状态
+  localStorage.setItem('totalExamTime', duration.toString()); 
 };
 </script>
 

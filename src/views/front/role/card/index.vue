@@ -6,9 +6,9 @@
             <p class="description">描述</p>
         </div> -->
       <div class="card">
-        <el-card class="item1" shadow="hover" @click="goDetail">前台</el-card>
-        <el-card class="item2" shadow="hover" @click="goDetail">医助</el-card>
-        <el-card class="item3" shadow="hover" @click="goDetail">兽医</el-card>
+        <el-card class="item1" shadow="hover" @click="goDetail('3')">前台</el-card>
+        <el-card class="item2" shadow="hover" @click="goDetail('2')">医助</el-card>
+        <el-card class="item3" shadow="hover" @click="goDetail('1')">兽医</el-card>
       </div>
     </div>
   </div>
@@ -18,8 +18,10 @@
 import { useRouter } from "vue-router";
 
 let $router = useRouter();
-const goDetail=()=>{
-  $router.push({path:"/front/roleDetail"});
+
+const goDetail=(role_id:string)=>{
+  // console.log(role_id);
+  $router.push({path:"/front/roleDetail", query:{role_id:role_id}});
 };
 </script>
 

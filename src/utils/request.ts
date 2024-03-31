@@ -22,10 +22,19 @@ request.interceptors.request.use((config)=>{
 //响应拦截器
 request.interceptors.response.use((response) => {
     //响应拦截器成功的回调,一般会进行简化数据
+    console.log(response);
+    if(response.data.code==-1){
+      logout();
+      ElMessage({
+            type: 'error',
+            message: '您的身份信息已过期，请重新登录'
+      })
+    }
     return response.data;
 }, (error) => {
     //处理http网络错误
     let status = error.response.status;
+//     console.log(status);
     switch (status) {
           case 404:
                 //错误提示信息
@@ -45,7 +54,7 @@ request.interceptors.response.use((response) => {
                       type: 'error',
                       message: '参数有误'
                 })
-                logout();
+                
                 break;
     }
     return Promise.reject(new Error(error.message))

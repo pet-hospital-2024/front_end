@@ -1,27 +1,36 @@
 <template>
+  <el-page-header
+      :icon="ArrowLeft"
+      @back="goBack"
+      style="margin: 15px 0 0 15px"
+    >
+      <template #content>
+        <span class="title">{{ roleName(role) }} </span>
+      </template>
+    </el-page-header>
   <div class="container">
     <div class="content">
       <el-tabs v-model="activeName" class="demo-tabs">
         <el-tab-pane label="岗位责任" name="first">
-          <el-table :data="dutyData" style="width: 100%">
-            <el-table-column prop="depart" label="科室" width="300" />
-            <el-table-column prop="duty" label="职责" />
+          <el-table :data="useStore.dutyListArr" style="width: 100%">
+            <el-table-column prop="location_name" label="科室" width="300" />
+            <el-table-column prop="learn_duty" label="职责" />
           </el-table>
         </el-tab-pane>
         <el-tab-pane label="工作流程" name="second">
           <div class="process-list">
             <ul>
-            <li v-for="(item, index) in processData" :key="index">
-              <span>{{ item.id }}.</span>
-              <span>{{ " "+item.content }}</span>
+            <li v-for="(item, index) in useStore.processListArr" :key="index">
+              <span>{{ item.process_order }}.</span>
+              <span>{{ " "+item.process_name }}</span>
             </li>
           </ul>
           </div>
         </el-tab-pane>
         <el-tab-pane label="模拟操作" name="third">
-          <el-table :data="opData" style="width: 100%">
-            <el-table-column prop="depart" label="科室" width="300" />
-            <el-table-column prop="detail" label="详情" />
+          <el-table :data="useStore.locationListArr" style="width: 100%">
+            <el-table-column prop="location_name" label="科室" width="300" />
+            <el-table-column prop="location_introduction" label="详情" />
             <el-table-column prop="operation" label="操作" width="200">
               <template #default>
                 <el-button plain type="primary" size="default"
@@ -37,14 +46,45 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref,onMounted } from "vue";
+import { ArrowLeft } from "@element-plus/icons-vue";
+import { useRouter,useRoute } from "vue-router";
+let $router = useRouter();
+let $route = useRoute();
+import useFrontRoleStore from "@/store/front/role";
 // import type { TabsPaneContext } from "element-plus";
+
+let useStore=useFrontRoleStore();
 
 const activeName = ref("first");
 
-// const handleClick = (tab: TabsPaneContext, event: Event) => {
-//   console.log(tab, event);
-// };
+let role=$route.query.role_id as string;
+
+const roleName = ((role:String) => {
+  switch (role) {
+    case "1":
+      return "兽医";
+    case "2":
+      return "医助";
+    case "3":
+      return "前台";
+    default:
+      return "未知职位";
+  }
+});
+
+onMounted(async() => {
+
+  console.log(role);
+  await useStore.getDutyList(role);
+  await useStore.getProcessList(role);
+  await useStore.getLocationList();
+});
+
+const goBack = () => {
+  // $router.replace({ path: "/front/study" });
+  $router.go(-1);
+};
 
 const dutyData = [
   {

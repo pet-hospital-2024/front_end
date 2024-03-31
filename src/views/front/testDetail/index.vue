@@ -79,7 +79,7 @@
                 margin-top: 30px;
               "
             >
-              得分：{{ score }}
+              得分：{{ score+"/"+useStore.testData?.value }}
             </p>
             <div style="width: 80%; margin-top: 20px">
               <el-button
@@ -149,8 +149,8 @@ const updateQuestionStatus = (question: any) => {
 };
 
 //倒计时相关
-const totalExamTime: number = useStore.testData?.duration as number * 60;
-let remainingTime = ref<number>(totalExamTime);
+// const totalExamTime: number = useStore.testData?.duration as number * 60;
+let remainingTime = ref<number>(0);
 const formattedTime = ref<string>("");
 
 const examStartedKey: string = "examStarted";
@@ -196,35 +196,22 @@ onMounted(() => {
 
   //倒计时部分
   const examStarted: string | null = localStorage.getItem(examStartedKey);
-  // if (examStarted) {
-  // const startTime: number = parseInt(
-  //   localStorage.getItem(examStartTimeKey) || "0",
-  //   10
-  // );
-  // const currentTime: number = Date.now();
-  // const elapsedTime: number = Math.floor((currentTime - startTime) / 1000);
-
-  // remainingTime.value = Math.max(totalExamTime - elapsedTime, 0);
-  // // }
-
-  // formattedTime.value = formatTime(remainingTime.value);
-  // if (remainingTime.value > 0 && examStarted) {
-  //   intervalId = window.setInterval(updateTime, 1000);
-  // }
   if (examStarted === "true" && isSubmitted === "false") {
     // 考试已开始且未提交，计算剩余时间
-    const startTime = parseInt(localStorage.getItem('examStartTime') || '0', 10);
+    const examStartTime = parseInt(localStorage.getItem('examStartTime') || '0', 10);
+    const totalExamTime = parseInt(localStorage.getItem('totalExamTime') || '0', 10) * 60; // 转换为秒
     const currentTime = Date.now();
-    const elapsedTime = Math.floor((currentTime - startTime) / 1000);
+    const elapsedTime = Math.floor((currentTime - examStartTime) / 1000);
     remainingTime.value = Math.max(totalExamTime - elapsedTime, 0);
-    console.log(remainingTime.value,"***",elapsedTime,"***",totalExamTime);
+    formattedTime.value = formatTime(remainingTime.value);
+    // console.log(remainingTime.value,"***",elapsedTime,"***",totalExamTime);
     // 如果有剩余时间，开始倒计时
     if (remainingTime.value > 0 && examStarted) {
-      formattedTime.value = formatTime(remainingTime.value);
+      // formattedTime.value = formatTime(remainingTime.value);
       intervalId = window.setInterval(updateTime, 1000);
     } else {
       // 如果没有剩余时间，直接提交
-      // submit();
+      submit();
     }
   }
 
@@ -249,7 +236,7 @@ const handleBeforeUnload = (event: BeforeUnloadEvent) => {
 //返回上一页提醒
 const handlePopState = () => {
   // 用户点击浏览器后退按钮时的处理逻辑
-  exit();
+  // exit();
 };
 
 const exit = () => {
@@ -258,6 +245,7 @@ const exit = () => {
   localStorage.removeItem("remainingTime");
   localStorage.removeItem("isSubmitted");
   $router.replace({ path: "/front/testList" });
+  // $router.go(-1);
 };
 //定位到题目
 let currentIndex = ref<number>(0);

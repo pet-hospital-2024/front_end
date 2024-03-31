@@ -18,7 +18,7 @@
 import { useRouter } from "vue-router";
 let $router = useRouter();
 const goRole = () => {
-  $router.push({ path: "/front/role" });
+  $router.push({ path: "/front/role"});
 };
 
 const goCase = () => {
