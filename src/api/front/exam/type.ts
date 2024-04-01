@@ -22,7 +22,7 @@ export interface TestListResponseData extends ResponseData {
 //试卷详情
 interface optItem{
     optCode: string;
-    optContent: string;
+    optContents: string;
 }
 
 export interface questionItem {
@@ -46,6 +46,8 @@ export interface TestDetail{
     question_number: number,
     value: number,
     questions: QuestionListArr;
+    selectedOpt: null|string;
+    status: string;
 }
 export interface TestDetailResponseData extends ResponseData {
     data: TestDetail;

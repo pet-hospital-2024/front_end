@@ -158,8 +158,17 @@ const processData = [
 <style scoped>
 .container {
   padding: 20px 40px;
+  /* width: 90%; */
+  li{
+    font-size: 24px;
+    margin-bottom: 10px;
+  }
 }
 
+.title{
+  font-size: 16px;
+  font-weight: 550;
+}
 
 ::v-deep .el-tabs__content {
   height: 90vh;

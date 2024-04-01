@@ -4,12 +4,12 @@
       <el-col :span="18" style="background-color: rgb(255, 255, 255)">
         <div class="left">
           <div class="title">
-            <p>{{useStore.testData?.paper_name}}</p>
+            <p>{{ useStore.testData?.paper_name }}</p>
           </div>
           <div class="paper">
             <div
               class="question"
-              v-for="(question, index) in questionList"
+              v-for="(question, index) in useStore.questionListArr"
               :key="question.question_id"
             >
               <div class="questionTitle">
@@ -33,9 +33,15 @@
                     margin-top: 10px;
                   "
                 >
-                  {{ opt.optCode + ". " + opt.optContent }}
+                  {{ opt.optCode + ". " + opt.optContents }}
                 </el-radio>
               </el-radio-group>
+              <div
+                style="font-size: 14px; margin-top: 15px; color: red"
+                v-if="useStore.isSubmitted"
+              >
+                正确答案：{{ question.right_choice.toUpperCase() }}
+              </div>
             </div>
           </div>
         </div>
@@ -48,7 +54,7 @@
           <div class="stateBox">
             <div class="state">
               <div
-                v-for="(question, index) in questionList"
+                v-for="(question, index) in useStore.questionListArr"
                 :key="question.order"
                 :class="['status-box', question.status]"
                 @click="setCurrentQuestion(index)"
@@ -60,7 +66,7 @@
           </div>
 
           <div class="optBtn">
-            <div style="width: 80%; margin-top: 50px" v-show="stateSwitch">
+            <div style="width: 80%; margin-top: 50px" v-show="!useStore.isSubmitted">
               <el-button
                 type="primary"
                 plain
@@ -71,7 +77,7 @@
               >
             </div>
             <p
-              v-show="!stateSwitch"
+              v-show="useStore.isSubmitted"
               style="
                 font-size: 30px;
                 color: red;
@@ -79,7 +85,7 @@
                 margin-top: 30px;
               "
             >
-              得分：{{ score+"/"+useStore.testData?.value }}
+              得分：{{ score + "/" + useStore.testData?.value }}
             </p>
             <div style="width: 80%; margin-top: 20px">
               <el-button
@@ -93,7 +99,7 @@
             </div>
           </div>
           <!-- <div class="spacer"></div> -->
-          <div class="leftTime" v-show="stateSwitch">
+          <div class="leftTime" v-show="!useStore.isSubmitted">
             <!-- <p>剩余时间:</p> -->
             <p>{{ formattedTime }}</p>
           </div>
@@ -108,12 +114,11 @@ import { onMounted, onUnmounted, reactive, ref } from "vue";
 import { ElMessageBox } from "element-plus";
 import { useRouter, useRoute } from "vue-router";
 import { useFrontExamStore } from "@/store/front/exam";
+// import type { QuestionListArr } from "@/api/front/exam";
 let useStore = useFrontExamStore();
 let $router = useRouter();
 let $route = useRoute();
 
-//提交按钮和分数切换
-let stateSwitch = ref<boolean>(true);
 //记录成绩
 let score = ref<number>(0);
 
@@ -126,15 +131,14 @@ const submit = () => {
   localStorage.setItem("isSubmitted", "true"); // 保存提交状态
 
   calculateScore();
-
-  stateSwitch.value = false;
+  useStore.submitAnswer();
 };
 
 //计算答案
 const calculateScore = () => {
   score.value = 0;
-  questionList.forEach((question) => {
-    if (question.selectedOpt === question.right_choice) {
+  useStore.questionListArr.forEach((question) => {
+    if (question.selectedOpt === question.right_choice.toUpperCase()) {
       score.value += question.value; // 假设每个问题1分
       question.status = "correct"; // 回答正确
     } else {
@@ -184,22 +188,24 @@ const formatTime = (seconds: number): string => {
   return `${hours}:${minutes}:${secs}`;
 };
 
+// let questions=<QuestionListArr>[];
 onMounted(() => {
   //初始化试卷
   useStore.getQuestionListArr($route.query.paper_id as string);
 
   //成绩展示部分
   const isSubmitted = localStorage.getItem("isSubmitted");
-  if (isSubmitted === "true") {
-    stateSwitch.value = false; // 如果已提交，隐藏提交按钮，显示成绩
-  }
 
   //倒计时部分
   const examStarted: string | null = localStorage.getItem(examStartedKey);
   if (examStarted === "true" && isSubmitted === "false") {
     // 考试已开始且未提交，计算剩余时间
-    const examStartTime = parseInt(localStorage.getItem('examStartTime') || '0', 10);
-    const totalExamTime = parseInt(localStorage.getItem('totalExamTime') || '0', 10) * 60; // 转换为秒
+    const examStartTime = parseInt(
+      localStorage.getItem("examStartTime") || "0",
+      10
+    );
+    const totalExamTime =
+      parseInt(localStorage.getItem("totalExamTime") || "0", 10) * 60; // 转换为秒
     const currentTime = Date.now();
     const elapsedTime = Math.floor((currentTime - examStartTime) / 1000);
     remainingTime.value = Math.max(totalExamTime - elapsedTime, 0);
@@ -227,6 +233,8 @@ onUnmounted(() => {
   // 组件卸载时移除事件监听器
   window.removeEventListener("beforeunload", handleBeforeUnload);
   window.removeEventListener("popstate", handlePopState);
+  // useStore.isSubmitted=false;
+  useStore.resetExamState();
 });
 
 //退出提醒
@@ -277,7 +285,7 @@ const submitConfirm = () => {
 };
 //退出确认
 const confirmExit = () => {
-  if (stateSwitch.value) {
+  if (!useStore.isSubmitted) {
     ElMessageBox.confirm(
       "考试进度将不会被保存，你确定要继续退出吗？",
       "Warning",

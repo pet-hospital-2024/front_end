@@ -12,6 +12,7 @@ export interface FrontExamState{
     testListArr:TestListArr;
     questionListArr:QuestionListArr;
     testData:TestDetail|null;
+    isSubmitted: boolean;
 }
 
 export interface FrontRoleState{

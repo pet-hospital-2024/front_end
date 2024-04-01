@@ -13,7 +13,8 @@ export const useFrontExamStore = defineStore("FrontExam", {
     return {
       testListArr: [],
       questionListArr: [],
-      testData:null,
+      testData: null,
+      isSubmitted: false,
     };
   },
   actions: {
@@ -31,15 +32,30 @@ export const useFrontExamStore = defineStore("FrontExam", {
       // console.log(111);
       console.log(res.data);
       if (res.code == 1) {
-        //在得到的数据的基础上加上已选择项和状态   
-        this.testData=res.data;    
+        //在得到的数据的基础上加上已选择项和状态
+        this.testData = res.data;
+        this.questionListArr = res.data.questions;
         this.questionListArr = res.data.questions.map((question) => ({
           ...question,
           selectedOpt: null,
-          status: "pending", 
+          status: "pending",
         }));
       }
+      return this.questionListArr;
     },
+    submitAnswer() {
+      // 提交答案的逻辑...
+      this.isSubmitted = true;
+    },
+    resetExamState() {
+      this.questionListArr = this.questionListArr.map((question) => ({
+        ...question,
+        selectedOpt: null,
+        status: "pending",
+      })); 
+      this.testData = null; 
+      this.isSubmitted = false;
+    }
   },
 });
 
