@@ -2,7 +2,7 @@
   <el-page-header
       :icon="ArrowLeft"
       @back="goBack"
-      style="margin: 15px 0 0 15px"
+      style="margin: 15px 0 0 30px"
     >
       <template #content>
         <span class="title">{{ roleName(role) }} </span>
@@ -157,7 +157,7 @@ const processData = [
 
 <style scoped>
 .container {
-  padding: 20px 40px;
+  padding: 20px 60px;
   /* width: 90%; */
   li{
     font-size: 24px;

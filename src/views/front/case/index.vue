@@ -2,15 +2,15 @@
   <el-page-header
     :icon="ArrowLeft"
     @back="goBack"
-    style="margin: 15px 0 0 15px"
+    style="margin: 15px 0 0 30px"
   >
     <template #content>
-      <span class="title"> </span>
+      <span class="title">病例学习</span>
     </template>
   </el-page-header>
   <div class="container">
     <div class="title">
-      <h1>病例学习</h1>
+      <!-- <h1>病例学习</h1> -->
       <!-- <h3>描述</h3> -->
     </div>
     <List></List>

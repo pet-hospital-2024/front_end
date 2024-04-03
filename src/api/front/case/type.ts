@@ -5,7 +5,9 @@ export interface ResponseData {
 
 export interface Disease {
   disease_id: string;
+  department_id: string;
   disease_name: string;
+  department:string | null;
 }
 
 //科室的数据

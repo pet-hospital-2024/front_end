@@ -1,5 +1,5 @@
 <template>
-  <el-page-header :icon="ArrowLeft" @back="goBack" style="margin:15px 0 0 15px;">
+  <el-page-header :icon="ArrowLeft" @back="goBack" style="margin:15px 0 0 30px;">
       <template #content>
         <span class="title"> 在线测试 </span>
       </template>
@@ -112,7 +112,7 @@ const goExam = (paper_id:string,duration:number) => {
 
 <style scoped lang="scss">
 .container {
-  padding: 30px;
+  padding: 30px 50px;
   background-color: rgb(255, 255, 255);
 
   .paperCard {

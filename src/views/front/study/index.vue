@@ -3,10 +3,10 @@
     <el-page-header
       :icon="ArrowLeft"
       @back="goBack"
-      style="margin: 15px 0 0 15px"
+      style="margin: 15px 0 0 30px"
     >
       <template #content>
-        <span class="title"> </span>
+        <span class="title">职能学习</span>
       </template>
     </el-page-header>
     <Card />

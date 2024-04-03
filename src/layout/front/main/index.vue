@@ -1,5 +1,5 @@
 <template>
-    <div class="content">
+    <div class="layout_content">
         <router-view>
         </router-view>
     </div>
@@ -10,7 +10,7 @@
 </script>
 
 <style scoped lang="scss">
-.content{
+.layout_content{
     min-height: 92vh;
 }
 </style>

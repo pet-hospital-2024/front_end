@@ -34,8 +34,9 @@ export default {
 
   .layout_main {
     margin-top: 8vh;
-    width: 80vw;
-    // height: 92vh;
+    // width: 80vw;
+    width: 100%;
+    height: 92vh;
     background-color: rgb(255, 255, 255);
   }
 }

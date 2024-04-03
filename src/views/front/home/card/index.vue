@@ -22,50 +22,48 @@ const goTest = () => {
 <style scoped lang="scss">
 .card {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap:nowrap;
   justify-content: space-between;
-  margin-top: 3vh;
+  // margin-top: 3vh;
   font-size: 36px;
 
   .item1 {
-    color:white;
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 33%;
-    height: 12vh;
-    background-color: rgb(20,20,20);
+    width: 25%;
+    height: 50vh;
+    margin-left: 150px;
+    border-radius: 15px;
+    opacity: 50%;
+    background-color: rgb(167, 197, 167);
     cursor: pointer;
-    // border-radius: 30px;
-    margin-left: 0px;
-    background-image: linear-gradient(to right, hwb(98 64% 16%), #97d1b5);
   }
 
   .item2 {
-    color:white;
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 33%;
-    height: 12vh;
-    background-color: rgb(20,20,20);
-    background-image: linear-gradient(to right, #97d1b5, #98c5e3);
+    width: 25%;
+    height: 50vh;
+    // margin-right: 50px;
+    border-radius: 15px;
+    opacity: 50%;
+    background-color: rgb(167, 197, 167);
     cursor: pointer;
-    // border-radius: 10px;
   }
 
   .item3 {
-    color:white;
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 33%;
-    height: 12vh;
-    background-color: rgb(20, 20, 20);
+    width: 25%;
+    height: 50vh;
+    margin-right: 150px;
+    border-radius: 15px;
+    opacity: 50%;
+    background-color: rgb(167, 197, 167);
     cursor: pointer;
-    margin-right: 0px;
-    // border-radius: 30px;
-    background-image: linear-gradient(to right, #98c5e3, #878ab0);
   }
 }
 

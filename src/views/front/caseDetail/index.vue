@@ -2,14 +2,14 @@
   <el-page-header
     :icon="ArrowLeft"
     @back="goBack"
-    style="margin: 15px 0 0 15px"
+    style="margin: 15px 0 0 30px"
   >
     <template #content>
       <span class="title"> </span>
     </template>
   </el-page-header>
   <div class="content">
-    <p>病例名称</p>
+    <p>{{ useStore.caseDetail?.case_name }}</p>
     <div class="caseCard">
       <el-tabs type="border-card">
         <el-tab-pane label="接诊">

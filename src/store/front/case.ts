@@ -23,7 +23,7 @@ const useFrontCaseStore =defineStore("FrontCase",{
         //根据疾病获取病例
         async getCaseList(disease_id:string){
             let res:CaseListResponseData= await reqGetCaseByDis(disease_id);
-            // console.log(res);
+            console.log(res);
             if(res.code==1){
                 this.caseList = res.data;
             }

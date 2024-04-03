@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <el-page-header :icon="ArrowLeft" @back="goBack" style="margin:15px 0 0 15px;">
+    <el-page-header :icon="ArrowLeft" @back="goBack" style="margin:15px 0 0 30px;">
       <template #content>
         <span class="title">  </span>
       </template>
