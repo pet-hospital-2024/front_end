@@ -55,7 +55,7 @@ const goTest = () => {
   // justify-content: center;
 
   .title {
-    height: 42vh;
+    height: 40vh;
     // padding: 70px;
     display: flex;
     flex-direction: column;

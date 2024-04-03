@@ -11,8 +11,8 @@
   <div class="content">
     <p>{{ useStore.caseDetail?.case_name }}</p>
     <div class="caseCard">
-      <el-tabs type="border-card">
-        <el-tab-pane label="接诊">
+      <el-tabs type="border-card" @tab-change="getList">
+        <el-tab-pane label="接诊" >
           <div class="container">
             <h2 style="margin-top: 10px">基本情况</h2>
             <p>
@@ -23,7 +23,7 @@
           <div class="container">
             <h2>照片</h2>
             <div class="imgContainer">
-              <div v-for="(url, index) in imgUrls" :key="url" class="block">
+              <div v-for="(url, index) in useStore.pictureList" :key="url" class="block">
                 <el-image
                   style="width: 100%; height: 100%"
                   :src="url"
@@ -42,7 +42,7 @@
           <div class="container">
             <h2>视频</h2>
             <div class="videoContainer">
-              <div v-for="(url, index) in videoUrls" :key="url" class="videoBlock">
+              <div v-for="(url, index) in useStore.videoList" :key="url" class="videoBlock">
                 <video width="100%" controls>
                   <source :src="url" type="video/mp4">
                 </video>
@@ -50,7 +50,7 @@
             </div>
           </div>
         </el-tab-pane>
-        <el-tab-pane label="病例检查">
+        <el-tab-pane label="病例检查" @click="getList('Examination')">
           <div class="container">
             <h2 style="margin-top: 10px">检查情况</h2>
             <p>
@@ -61,7 +61,7 @@
           <div class="container">
             <h2>照片</h2>
             <div class="imgContainer">
-              <div v-for="(url, index) in imgUrls" :key="url" class="block">
+              <div v-for="(url, index) in useStore.pictureList" :key="url" class="block">
                 <el-image
                   style="width: 100%; height: 100%"
                   :src="url"
@@ -80,7 +80,7 @@
           <div class="container">
             <h2>视频</h2>
             <div class="videoContainer">
-              <div v-for="(url, index) in videoUrls" :key="url" class="videoBlock">
+              <div v-for="(url, index) in useStore.videoList" :key="url" class="videoBlock">
                 <video width="100%" controls>
                   <source :src="url" type="video/mp4">
                 </video>
@@ -99,7 +99,7 @@
           <div class="container">
             <h2>照片</h2>
             <div class="imgContainer">
-              <div v-for="(url, index) in imgUrls" :key="url" class="block">
+              <div v-for="(url, index) in useStore.pictureList" :key="url" class="block">
                 <el-image
                   style="width: 100%; height: 100%"
                   :src="url"
@@ -118,7 +118,7 @@
           <div class="container">
             <h2>视频</h2>
             <div class="videoContainer">
-              <div v-for="(url, index) in videoUrls" :key="url" class="videoBlock">
+              <div v-for="(url, index) in useStore.videoList" :key="url" class="videoBlock">
                 <video width="100%" controls>
                   <source :src="url" type="video/mp4">
                 </video>
@@ -137,7 +137,7 @@
           <div class="container">
             <h2>照片</h2>
             <div class="imgContainer">
-              <div v-for="(url, index) in imgUrls" :key="url" class="block">
+              <div v-for="(url, index) in useStore.pictureList" :key="url" class="block">
                 <el-image
                   style="width: 100%; height: 100%"
                   :src="url"
@@ -156,7 +156,7 @@
           <div class="container">
             <h2>视频</h2>
             <div class="videoContainer">
-              <div v-for="(url, index) in videoUrls" :key="url" class="videoBlock">
+              <div v-for="(url, index) in useStore.videoList" :key="url" class="videoBlock">
                 <video width="100%" controls>
                   <source :src="url" type="video/mp4">
                 </video>
@@ -172,6 +172,7 @@
 <script setup lang="ts">
 import useFrontCaseStore from "@/store/front/case";
 import { ArrowLeft } from "@element-plus/icons-vue";
+import Tabs from "element-plus/es/components/tabs/src/tabs";
 import { onMounted } from "vue";
 import {useRoute,useRouter} from "vue-router";
 let useStore=useFrontCaseStore();
@@ -179,11 +180,29 @@ let $router = useRouter();
 let $route = useRoute();
 onMounted(()=>{
   useStore.getCaseText($route.query.case_id as string);
+  useStore.getMediaList($route.query.case_id as string,"Consultation");
 })
 const goBack = () => {
   // $router.replace({ path: "/front/study" });
   $router.go(-1);
 };
+
+const getList=(tab:any)=>{
+  console.log(tab);
+  if (tab==0){
+    useStore.getMediaList($route.query.case_id as string,"Consultation");
+  }
+  if (tab==1){
+    useStore.getMediaList($route.query.case_id as string,"Examination");
+  }
+  if (tab==2){
+    useStore.getMediaList($route.query.case_id as string,"Result");
+  }
+  if (tab==3){
+    useStore.getMediaList($route.query.case_id as string,"Treatment");
+  }
+}
+
 const imgUrls = [
   "https://fuss10.elemecdn.com/a/3f/3302e58f9a181d2509f3dc0fa68b0jpeg.jpeg",
   "https://fuss10.elemecdn.com/1/34/19aa98b1fcb2781c4fba33d850549jpeg.jpeg",

@@ -56,3 +56,18 @@ export interface CaseDetailInfo {
 export interface CaseDetailInfoResponseData extends ResponseData {
   data: CaseDetailInfo;
 }
+
+// interface MediaItem {
+//   case_id: string;
+//   media_id: string;
+//   media_url: string;
+//   media_name: string;
+//   media_type: 'image' | 'video';
+//   category: string;
+// }
+
+// export type MediaArr=MediaItem[];
+
+export interface MediaResponseData extends ResponseData {
+  data:Array<string>;
+}

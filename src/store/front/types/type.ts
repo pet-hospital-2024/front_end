@@ -6,6 +6,8 @@ export interface FrontCaseState{
     categoryArr:CategoryArr;
     caseList:CaseList;
     caseDetail:CaseDetailInfo|null;
+    pictureList:Array<string>;
+    videoList:Array<string>;
 }
 
 export interface FrontExamState{

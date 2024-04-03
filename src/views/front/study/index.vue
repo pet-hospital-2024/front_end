@@ -1,9 +1,9 @@
 <template>
-  <div>
+  <div class="container">
     <el-page-header
       :icon="ArrowLeft"
       @back="goBack"
-      style="margin: 15px 0 0 30px"
+      style="padding: 15px 0 0 30px;"
     >
       <template #content>
         <span class="title">职能学习</span>
@@ -25,4 +25,9 @@ const goBack = () => {
 };
 </script>
 
-<style scoped></style>
+<style scoped="scss">
+.container {
+  height: 92vh;
+  background-color: #f3f9f1;
+}
+</style>
