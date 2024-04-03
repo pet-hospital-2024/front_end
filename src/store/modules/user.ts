@@ -31,10 +31,10 @@ let useUserStore = defineStore("User", {
         console.log(this.userData.username);
         SET_TOKEN(this.token);
         // //本地持久化存储
-         localStorage.setItem("TOKEN",result.data.Token);
+         //localStorage.setItem("TOKEN",result.data);
         return "ok";
       } else {
-        console.log(result.data.Token);
+        console.log(result.data);
         console.log(result.code);
         return Promise.reject(new Error(result.message));
       } 
@@ -45,18 +45,7 @@ let useUserStore = defineStore("User", {
       // return this.userData?.identity;
     },
     //获取用户信息的方法
-    // async userInfo() {
-    //   let res: any = await reqUserInfo();
-    //   //console.log(res.data.checkUser.username);
 
-    //   if (res.code === 200) {
-    //     // this.username = res.data.checkUser.username as string;
-    //     // this.identity = res.data.checkUser.identity as string;
-    //     return 'ok';
-    //   } else {
-    //     return Promise.reject(new Error(res.message))
-    //   }
-    // },
     //退出登录
     userLogout(){
       //退出登录接口（or mock 接口）：通知服务器本地用户唯一标识符失效
