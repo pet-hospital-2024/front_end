@@ -1,6 +1,6 @@
 <template>
-    <p class="container">欢迎回来,亲爱的{{ userStore.identity }} {{ userStore.username }}</p>
-    <el-button type="primary" @click="open = true">Begin Tour</el-button>
+    <p class="container">欢迎回来,亲爱的{{ userStore.userData?.identity }} {{ userStore.userData?.username }}</p>
+    
     
 </template>
 <script setup lang="ts">
@@ -10,9 +10,7 @@ import { onMounted } from 'vue';
 import useUserStore from '@/store/modules/user';
 let userStore=useUserStore();
 //目前首页挂载完毕发请求获取用户信息
-onMounted(()=>{
-    userStore.userInfo();
-})
+
 </script>
 <style scoped>
 .container{

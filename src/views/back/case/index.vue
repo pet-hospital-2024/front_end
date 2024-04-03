@@ -95,15 +95,13 @@
 
 
 import type { UploadProps, UploadUserFile } from 'element-plus'
-import { onMounted } from 'vue';
+
 //获取仓库对象
 import useUserStore from '@/store/modules/user';
 import {Delete, Edit, ZoomIn} from '@element-plus/icons-vue'
 let userStore=useUserStore();
 //目前首页挂载完毕发请求获取用户信息
-onMounted(()=>{
-    userStore.userInfo();
-})
+
 
 import { ref } from 'vue';
 const addCaseDialogVisible=ref<boolean>(false);

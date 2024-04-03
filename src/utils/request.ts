@@ -1,4 +1,5 @@
 import axios from 'axios';
+import logout from './logout';
 
 import { ElMessage } from 'element-plus';
 //引入用户相关仓库
@@ -15,7 +16,7 @@ request.interceptors.request.use((config)=>{
       //获取用户相关小仓库:获取仓库内部token，登录成功后携带给服务器
       let userStore=useUserStore();
       if(userStore.token){
-            config.headers.token = userStore.token; 
+            config.headers.Authorization = userStore.token; 
       }
     return config;
 })
@@ -23,37 +24,42 @@ request.interceptors.request.use((config)=>{
 //响应拦截器
 request.interceptors.response.use((response) => {
     //响应拦截器成功的回调,一般会进行简化数据
-    /*if (response.status == 200) {
-      return Promise.resolve(response.data)
-    } else {
-      return Promise.reject(response.data)
-    }*/
+    console.log(response);
+    if(response.data.code==-1){
+      logout();
+      ElMessage({
+            type: 'error',
+            message: '您的身份信息已过期，请重新登录'
+      })
+    }
     return response.data;
 }, (error) => {
     //处理http网络错误
-      let status = error.response.status;
-      switch (status) {
-            case 404:
-                  //错误提示信息
-                  ElMessage({
-                        type: 'error',
-                        message: '请求失败路径出现问题'
-                  })
-                  break;
-            case 500 | 501 | 502 | 503 | 504 | 505:
-                  ElMessage({
-                        type: 'error',
-                        message: '服务器挂了'
-                  })
-                  break;
-            case 401:
-                  ElMessage({
-                        type: 'error',
-                        message: '参数有误'
-                  })
-                  break;
-      }
-     return Promise.reject(new Error(error.message))
+    let status = error.response.status;
+//     console.log(status);
+    switch (status) {
+          case 404:
+                //错误提示信息
+                ElMessage({
+                      type: 'error',
+                      message: '请求失败路径出现问题'
+                })
+                break;
+          case 500 | 501 | 502 | 503 | 504 | 505:
+                ElMessage({
+                      type: 'error',
+                      message: '服务器挂了'
+                })
+                break;
+          case 401:
+                ElMessage({
+                      type: 'error',
+                      message: '参数有误'
+                })
+                
+                break;
+    }
+    return Promise.reject(new Error(error.message))
 });
 
 export default request;

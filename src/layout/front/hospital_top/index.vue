@@ -15,7 +15,7 @@
           <template #dropdown>
             <el-dropdown-menu>
               <el-dropdown-item @click="modifyPw">修改密码</el-dropdown-item>
-              <el-dropdown-item @click="logout">退出登录</el-dropdown-item>
+              <el-dropdown-item @click="userLogout">退出登录</el-dropdown-item>
             </el-dropdown-menu>
           </template>
         </el-dropdown>
@@ -27,7 +27,7 @@
 <script setup lang="ts">
 import { useRouter } from "vue-router";
 import { ArrowDown } from "@element-plus/icons-vue";
-
+import logout from "@/utils/logout";
 //获取用户相关小仓库
 import useUserStore from '@/store/modules/user';
 //@ts-ignore
@@ -48,9 +48,8 @@ const goHome=()=>{
 }
 
 //退出登录
-const logout=()=>{
-  userStore.userLogout();
-  $router.replace({ path: "/login" });
+const userLogout=()=>{
+  logout();
 }
 </script>
 

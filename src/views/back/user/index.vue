@@ -171,7 +171,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted } from 'vue';
+
 //获取仓库对象
 import useUserStore from '@/store/modules/user';
 import { Delete, Edit,Plus,ZoomIn } from '@element-plus/icons-vue';
@@ -193,9 +193,7 @@ let pageSize = ref<number>(5)
 let total = ref<number>(0)
 let userStore=useUserStore();
 //目前首页挂载完毕发请求获取用户信息
-onMounted(()=>{
-    userStore.userInfo();
-})
+
 const userArr=[
     {
         id:'1',

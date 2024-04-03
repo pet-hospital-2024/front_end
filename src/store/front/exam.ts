@@ -13,28 +13,49 @@ export const useFrontExamStore = defineStore("FrontExam", {
     return {
       testListArr: [],
       questionListArr: [],
+      testData: null,
+      isSubmitted: false,
     };
   },
   actions: {
     //获取考试列表
     async getTestListArr() {
       let res: TestListResponseData = await reqTestList();
-      if (res.code == 200) {
+      if (res.code == 1) {
         this.testListArr = res.data;
+        // console.log(this.testListArr);
       }
     },
     //获取试卷详情
-    async getQuestionListArr(id: string) {
-      let res: TestDetailResponseData = await reqTestDetail(id);
-      if (res.code == 200) {
+    async getQuestionListArr(paper_id: string) {
+      let res: TestDetailResponseData = await reqTestDetail(paper_id);
+      // console.log(111);
+      console.log(res.data);
+      if (res.code == 1) {
         //在得到的数据的基础上加上已选择项和状态
+        this.testData = res.data;
+        this.questionListArr = res.data.questions;
         this.questionListArr = res.data.questions.map((question) => ({
           ...question,
           selectedOpt: null,
-          status: "pending", 
+          status: "pending",
         }));
       }
+      return this.questionListArr;
     },
+    submitAnswer() {
+      // 提交答案的逻辑...
+      this.isSubmitted = true;
+    },
+    resetExamState() {
+      this.questionListArr = this.questionListArr.map((question) => ({
+        ...question,
+        selectedOpt: null,
+        status: "pending",
+      })); 
+      this.testData = null; 
+      this.isSubmitted = false;
+    }
   },
 });
 

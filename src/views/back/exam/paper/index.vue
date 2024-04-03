@@ -134,15 +134,13 @@
 </el-dialog>
 </template>
 <script setup lang="ts">
-import { onMounted } from 'vue';
+
 //获取仓库对象
 import useUserStore from '@/store/modules/user';
 import {ZoomIn,Edit,Delete} from '@element-plus/icons-vue'
 let userStore=useUserStore();
 //目前首页挂载完毕发请求获取用户信息
-onMounted(()=>{
-    userStore.userInfo();
-})
+
 import { ref } from 'vue';
 const AddDialogVisible=ref<boolean>(false);
 const handleAddPaper=()=>{

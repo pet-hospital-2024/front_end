@@ -3,7 +3,9 @@ import { defineStore } from "pinia";
 
 let useModifyStore = defineStore("modify", {
   state: () => {
-    return { isVisible: false }; // 控制 modify 组件的可见性
+    return { 
+      isVisible: false, // 控制 modify 组件的可见性
+    }; 
   },
   actions: {
     show() {

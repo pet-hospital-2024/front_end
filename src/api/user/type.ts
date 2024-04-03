@@ -49,3 +49,20 @@ interface InfoData {
 export interface UserInfoResponseData extends ResponseData {
   data: InfoData;
 }
+
+//定义注册接口返回数据类型
+export interface RegisterResponseData extends ResponseData {
+  data: string;
+}
+
+//定义验证旧密码数据
+export interface CheckOldPasswordData {
+  user_id: string;
+  oldPassword: string;
+}
+
+//定义更新新密码数据
+export interface UpdateNewPasswordData {
+  user_id: string;
+  newPassword: string;
+}

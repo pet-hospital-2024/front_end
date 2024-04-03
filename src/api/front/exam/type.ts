@@ -7,10 +7,10 @@ export interface ResponseData {
 interface TestItem {
     exam_id: string,
     paper_id: string,
-    paper_name: string,
+    exam_name: string,
     duration: number,
-    exam_start: string,
-    exam_end: string,
+    exam_start: string|null,
+    exam_end: string|null,
 }
 
 export type TestListArr=TestItem[];
@@ -22,7 +22,7 @@ export interface TestListResponseData extends ResponseData {
 //试卷详情
 interface optItem{
     optCode: string;
-    optContent: string;
+    optContents: string;
 }
 
 export interface questionItem {
@@ -39,13 +39,15 @@ export interface questionItem {
 
 export type QuestionListArr=questionItem[];
 
-interface TestDetail{
+export interface TestDetail{
     paper_id: string,
     paper_name: string,
     duration: number,
     question_number: number,
     value: number,
     questions: QuestionListArr;
+    selectedOpt: null|string;
+    status: string;
 }
 export interface TestDetailResponseData extends ResponseData {
     data: TestDetail;

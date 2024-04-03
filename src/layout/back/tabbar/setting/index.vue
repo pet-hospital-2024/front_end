@@ -5,7 +5,7 @@
     <el-dropdown>
         <span class="el-dropdown-link" style="cursor:pointer">
             <!--动态加载username-->
-            {{ userStore.username }}
+            {{ userStore.userData?.username }}
             <el-icon class="el-icon--right">
                 <arrow-down />
             </el-icon>
