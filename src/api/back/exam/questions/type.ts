@@ -1,29 +1,22 @@
-export interface ChoiceQuestion {
-    disease_kind: string
-    type: 'choice'
-    question_body: string
-    A: string
-    B: string
-    C: string
-    D: string
-    right_choice: string
-    value:string
-  }
-export  interface JudgementQuestion {
-    disease_kind: string
-    type: 'judgement'
-    question_body: string
-    judgement: string
-    value:string
-  }
-export type Question = ChoiceQuestion | JudgementQuestion;
-export interface QuestionID{
-    question_id:string
+export interface responseData{
+  code:string;
+  message:string;
 }
-export interface AddQuestion{
-    authorization_header:string
+
+interface questionOptionItem{
+  optCode:string;
+  optContent:string;
+}
+type questionOptionArr=questionOptionItem[];
+interface questionItem{
+  question_id:string;
+  order:string;
+  question_body:string;
+  type:string;
+  options:questionOptionArr;
+  
+
 }
 export interface responseQuestionData{
-    question:Question;
-    
+
 }

@@ -8,9 +8,10 @@
 import { onMounted } from 'vue';
 //获取仓库对象
 import useUserStore from '@/store/modules/user';
+
 let userStore=useUserStore();
 //目前首页挂载完毕发请求获取用户信息
-
+console.log(userStore.userData);
 </script>
 <style scoped>
 .container{
@@ -20,4 +21,4 @@ let userStore=useUserStore();
     margin-top:100px;
     font-size: 30px;
 }
-</style>
+</style>@/store/back/role

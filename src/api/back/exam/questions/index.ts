@@ -2,10 +2,7 @@
 import request from "@/utils/request";
 //试题数据类型枚举
 import type{
-    reqChoiceQuestion,
-    reqJudgementQuestion,
-    reqQuestion,
-    QuestionID,
+  questionResponseData;
 }from './type'
 //接口地址枚举
 enum API {
