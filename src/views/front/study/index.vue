@@ -29,5 +29,7 @@ const goBack = () => {
 .container {
   height: 92vh;
   background-color: #f3f9f1;
+  display: flex;
+  flex-direction: column;
 }
 </style>

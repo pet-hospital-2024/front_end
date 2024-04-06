@@ -30,8 +30,6 @@
 </template>
 
 <script setup lang="ts">
-import Carousel from "./carousel/index.vue";
-import Card from "./card/index.vue";
 import { useRouter } from "vue-router";
 let $router = useRouter();
 const goStudy = () => {
