@@ -6,8 +6,8 @@
         </el-button>
         <el-table style="margin:10px 0" stripe :data="testArr">
             <el-table-column type="index" label="序号" width="80" align="center"/>
-            <el-table-column  label="考试起始时间" prop="start_time" width="100" align="center"/>
-            <el-table-column  label="考试截至时间" prop="end_time" width="100" align="center"/>
+            <el-table-column  label="考试起始时间" prop="start_time" width="150" align="center"/>
+            <el-table-column  label="考试截至时间" prop="end_time" width="150" align="center"/>
             <el-table-column  label="考试时长" width="80" prop="last_time" align="center"/>
             <el-table-column label="操作">
                 <template #default="scope">
@@ -59,8 +59,7 @@
 <script setup lang="ts">
 
 //获取仓库对象
-import useUserStore from '@/store/modules/user';
-let userStore=useUserStore();
+
 //目前首页挂载完毕发请求获取用户信息
 
 import { ref } from 'vue';
@@ -69,28 +68,28 @@ const handleAddTest=()=>{
     AddDialogVisible.value=true;
 }
 
-const testArr=[
-    {
-        start_time:'2024.1.4',
-        end_time:'2024.2.5',
-        last_time:'1h',
-    },
-    {
-        start_time:'2024.1.4',
-        end_time:'2024.2.5',
-        last_time:'1h',
-    },
-    {
-        start_time:'2024.1.4',
-        end_time:'2024.2.5',
-        last_time:'1h',
-    },
-    {
-        start_time:'2024.1.4',
-        end_time:'2024.2.5',
-        last_time:'1h',
-    },
-]
+// const testArr=[
+//     {
+//         start_time:'2024.1.4',
+//         end_time:'2024.2.5',
+//         last_time:'1h',
+//     },
+//     {
+//         start_time:'2024.1.4',
+//         end_time:'2024.2.5',
+//         last_time:'1h',
+//     },
+//     {
+//         start_time:'2024.1.4',
+//         end_time:'2024.2.5',
+//         last_time:'1h',
+//     },
+//     {
+//         start_time:'2024.1.4',
+//         end_time:'2024.2.5',
+//         last_time:'1h',
+//     },
+// ]
 
 
 import { ElMessage, ElMessageBox } from 'element-plus'

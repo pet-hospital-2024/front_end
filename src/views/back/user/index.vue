@@ -21,7 +21,7 @@
 
  <!--下方表单-->
   <el-card style="margin: 10px 0;">
-      <!--添加用户和批量删除-->
+      <!--添加用户-->
     <el-button type="primary" size="default" @click="handleAddUser" :icon="Plus">
       添加用户
     </el-button>
@@ -54,6 +54,7 @@
       layout="prev, pager, next, jumper, -> , total"
       :total="userInfoStore.total"
       @current-change="handlePageChange"
+      style="margin-top:20px"
 />
 
 <!--添加用户对话框-->
@@ -67,7 +68,7 @@
         <el-form-item  label="用户名" prop="username">
             <el-input v-model="userInfoForm.username"></el-input>
         </el-form-item>
-        <el-form-item label="身份" prop="identity">
+        <el-form-item label="身份" prop="identity" >
             <el-radio-group v-model="userInfoForm.identity">
                 <el-radio value="administrator" name="identity" size="large">管理员</el-radio>
                 <el-radio value="teacher" name="identity" size="large">专家</el-radio>
@@ -244,7 +245,7 @@ const reset= async ()=>{
 await userInfoStore.getAllUserInfo(pageNo.value,pageSize.value);
 }
 
-
+import { ElMessage, ElMessageBox } from 'element-plus'
 
 import type { FormInstance, FormRules ,} from 'element-plus'
 
@@ -307,7 +308,7 @@ const submitFormAddUser = async (formEl: FormInstance | undefined) => {
 
           }
   }else{
-      console.log('error submit!', fields)
+      
   }
 })}
 
@@ -346,16 +347,17 @@ let editUserInfoForm = reactive<EditRuleForm>({
 
 //编辑用户--Fail：(
 const handleEditUser = (index: any, row: any) => {
-  // 点击编辑后显示对话框
-  dialogEditUser.value = true;
-  
-  // 创建一个新的对象来代替原来的 userInfo 对象
   editUserInfoForm.user_id=row.user_id;
   editUserInfoForm.username=row.username;
   editUserInfoForm.password=row.password;
   editUserInfoForm.identity=row.identity;
   editUserInfoForm.phone_number=row.phone_number;
   editUserInfoForm.email=row.email;
+  // 点击编辑后显示对话框
+  dialogEditUser.value = true;
+  
+  // 创建一个新的对象来代替原来的 userInfo 对象
+
 
 };
 
@@ -363,16 +365,15 @@ const cancleEditUser = () => {
   // 关闭编辑对话框
   dialogEditUser.value = false;
 
-  // 重置 userInfo 对象的值为初始状态
-
 };
 const submitFormEditUser = async () => {
   // 进行用户添加操作，不进行表单验证直接提交
+  console.log("EditUser")
+  console.log(editUserInfoForm.identity);
   let result = await userInfoStore.alterUserInfo(editUserInfoForm);
   if (result === 'ok') {
-    await userInfoStore.getAllUserInfo(pageNo.value, pageSize.value);
+    userInfoStore.getAllUserInfo(pageNo.value, pageSize.value);
     dialogEditUser.value = false;
-
   }
 }
 
@@ -387,7 +388,7 @@ const handleShowUserDetail = (index:any,row:any)=>{
     
 }
 //点击“删除”
-import { ElMessage, ElMessageBox } from 'element-plus'
+
 import type { roleInfoItem } from '@/api/back/role/type';
 interface deleteUser{
   username:string;

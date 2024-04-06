@@ -1,8 +1,13 @@
 <template>
+  
     <el-card class="box-card">
         <el-button type="primary" size="default" icon="Plus" @click="handleAddQuestion">
             添加试题
         </el-button>
+
+
+
+
         <!--表格展示信息-->
         <el-table :data="QuestionInfoStore.questionInfoArr" style="margin:10px 0" stripe 
         empty-text="无题干!" >
@@ -13,12 +18,12 @@
                     {{ row.type === 'choice' ? '选择题' : '判断题' }}
                 </template>
             </el-table-column>
-            <!-- <el-table-column prop="disease_kind" label="疾病类型" width="100" align="center"/> -->
+
             <el-table-column prop="question_body" label="题目描述" align="center" width="400" />
             <el-table-column align="center" class="operation">
             <template v-slot="{ row, index }">
               <el-button @click="handleShowDetail(index, row)" size="small" :icon="ZoomIn">详情</el-button>
-              <el-button size="small" @click="handleEditQuestion(index,row)" :icon="Edit" type="info">编辑
+              <el-button size="small" @click="handleEditQuestion(row)" :icon="Edit" type="info">编辑
               </el-button>
               <el-button size="small" type="danger" @click="handleDeleteQuestion(index,row)" 
                 :icon="Delete">删除</el-button>
@@ -43,61 +48,153 @@
     <!--对话框组件-->
 
     <!--title动态，根据点击显示添加or修改-->
-    <!--点击添加或编辑弹出的对话框-->
-  <el-dialog v-model="AlterorAddDialogVisible" title="添加试题" width="600" align-center>
+    <!--点击添加弹出的对话框-->
+  <el-dialog v-model="AddDialogVisible" title="添加试题" width="500" align-center>
 
-    <el-form  style="max-width: 400px" :model="ruleForm" ref="formRef">
-      <el-form-item label="题目类型">
-        <el-radio-group v-model="addQuestionType">
-          <el-radio value="1" size="large" @click="handleTypeChoice">选择题</el-radio>
-          <el-radio value="2" size="large" @click="handleTypeJudgement">判断题</el-radio>
+    <el-form  style="max-width: 400px" :model="addQuestionForm" ref="formRef">
+      <el-form-item label="科室名称" required>
+        <el-select v-model="addQuestionForm.department_name" placeholder="选择科室" style="width: 240px" @change="handleChangeDepartment">
+          <el-option
+            v-for="item in QuestionInfoStore.diseaseAndDepartmentInfoArr"
+            :key="item.department_id"
+            :label="item.department_name"
+            :value="item.department_name"
+          />
+        </el-select>
+      </el-form-item>
+      <el-form-item label="疾病名称" required>
+        <el-select v-model="addQuestionForm.disease_name" placeholder="选择疾病" style="width: 240px" :disabled="!isDepartmentSelected">
+          <el-option
+            v-for="item in diseaseInfo"
+            :key="item.disease_id"
+            :label="item.disease_name"
+            :value="item.disease_name"
+          />
+        </el-select>
+
+      </el-form-item>
+      <el-form-item label="题目类型" required>
+        <el-radio-group v-model="addQuestionForm.type">
+          <el-radio value="choice" name="type" size="large" @click="handleTypeChoice">选择题</el-radio>
+          <el-radio value="judge" name="type" size="large" @click="handleTypeJudgement">判断题</el-radio>
         </el-radio-group>
       </el-form-item>
-      <el-form-item label="疾病类型" >
-        <el-input v-model="disease_kind" />
-      </el-form-item>
-      <el-form-item label="题目详情">
-        <el-input style="width: 240px;height: 100px;" :rows="4" type="textarea" placeholder="请输入题目详情" v-model="question_body"/>
+
+      <el-form-item label="题目详情" required>
+        <el-input style="width: 240px;height: 100px;" :rows="4" type="textarea" placeholder="请输入题目详情" v-model="addQuestionForm.question_body"/>
       </el-form-item>
       <!--如果是选择题-->
-      <el-form-item label="选项 A" v-if="isChoice">
-        <el-input label=""></el-input>
+      <el-form-item label="选项 A" v-if="isChoice" required>
+        <el-input label="" v-model="addQuestionForm.a"></el-input>
       </el-form-item>
-      <el-form-item label="选项 B" v-if="isChoice">
-        <el-input label=""></el-input>
+      <el-form-item label="选项 B" v-if="isChoice" required>
+        <el-input label="" v-model="addQuestionForm.b"></el-input>
       </el-form-item>
-      <el-form-item label="选项 C" v-if="isChoice">
-        <el-input label=""></el-input>
+      <el-form-item label="选项 C" v-if="isChoice" required>
+        <el-input label="" v-model="addQuestionForm.c"></el-input>
       </el-form-item>
-      <el-form-item label="选项 D" v-if="isChoice">
-        <el-input label=""></el-input>
+      <el-form-item label="选项 D" v-if="isChoice" required>
+        <el-input label="" v-model="addQuestionForm.d"></el-input>
       </el-form-item>
-      <el-form-item label="正确选项" v-if="isChoice">
-        <el-radio-group v-model="choiceCorrectAnswer">
-        <el-radio :value="0">A</el-radio>
-        <el-radio :value="1">B</el-radio>
-        <el-radio :value="2">C</el-radio>
-        <el-radio :value="3">D</el-radio>
+      <el-form-item label="正确选项" v-if="isChoice" required>
+        <el-radio-group v-model="addQuestionForm.right_choice">
+        <el-radio name="choice_ans" value="a">A</el-radio>
+        <el-radio name="choice_ans" value="b">B</el-radio>
+        <el-radio name="choice_ans" value="c">C</el-radio>
+        <el-radio name="choice_ans" value="d">D</el-radio>
       </el-radio-group>
       </el-form-item>
-      <el-form-item label="正确选项" v-if="isJudgement">
-        <el-radio-group v-model="choiceCorrectAnswer">
-          <el-radio :value="0"><el-icon><Check /></el-icon></el-radio>
-          <el-radio :value="1"><el-icon><Close /></el-icon></el-radio>
+      <el-form-item label="正确选项" v-if="isJudgement" required>
+        <el-radio-group v-model="addQuestionForm.right_choice">
+          <el-radio name="judgement_ans" value="a"><el-icon><Check /></el-icon></el-radio>
+          <el-radio name="judgement_ans" value="b"><el-icon><Close /></el-icon></el-radio>
         </el-radio-group>
-      </el-form-item>
-      <el-form-item label="分值">
-        <el-input></el-input>
       </el-form-item>
     </el-form>
     <template #footer>
       <div class="dialog-footer">
-        <el-button type="primary">提交</el-button>
-        <el-button>重置</el-button>
+        <el-button type="primary" @click="submitAddQuestionForm">提交</el-button>
+        <el-button @click="cancleAddQuestionForm" >取消</el-button>
+        
       </div>
     </template>
   </el-dialog>
 
+  <!-- 编辑试题对话框 -->
+  <el-dialog v-model="EditQuestionDialogVisible" title="编辑试题" width="500" align-center>
+
+<el-form  style="max-width: 400px" :model="editQuestionForm" ref="formRef">
+  <el-form-item label="题目ID" >
+    <el-input v-model="editQuestionForm.question_id" disabled/>
+  </el-form-item>
+  
+  <el-form-item label="科室名称" required>
+    <el-select v-model="editQuestionForm.department_name" placeholder="选择科室" style="width: 240px" @change="handleChangeDepartment">
+      <el-option
+        v-for="item in QuestionInfoStore.diseaseAndDepartmentInfoArr"
+        :key="item.department_id"
+        :label="item.department_name"
+        :value="item.department_name"
+      />
+    </el-select>
+  </el-form-item>
+  <el-form-item label="疾病名称" required>
+    <el-select v-model="editQuestionForm.disease_name" placeholder="选择疾病" style="width: 240px">
+      <el-option
+        v-for="item in diseaseInfo"
+        :key="item.disease_id"
+        :label="item.disease_name"
+        :value="item.disease_name"
+      />
+    </el-select>
+
+  </el-form-item>
+  <el-form-item label="题目类型" required>
+    <el-radio-group v-model="editQuestionForm.type">
+      <el-radio value="choice" name="type" size="large" @click="handleTypeChoice">选择题</el-radio>
+      <el-radio value="judge" name="type" size="large" @click="handleTypeJudgement">判断题</el-radio>
+    </el-radio-group>
+  </el-form-item>
+
+  <el-form-item label="题目详情" required>
+    <el-input style="width: 240px;height: 100px;" :rows="4" type="textarea" placeholder="请输入题目详情" v-model="editQuestionForm.question_body"/>
+  </el-form-item>
+  <!--如果是选择题-->
+  <el-form-item label="选项 A" v-if="isChoice" required>
+    <el-input label="" v-model="editQuestionForm.a"></el-input>
+  </el-form-item>
+  <el-form-item label="选项 B" v-if="isChoice" required>
+    <el-input label="" v-model="editQuestionForm.b"></el-input>
+  </el-form-item>
+  <el-form-item label="选项 C" v-if="isChoice" required>
+    <el-input label="" v-model="editQuestionForm.c"></el-input>
+  </el-form-item>
+  <el-form-item label="选项 D" v-if="isChoice" required>
+    <el-input label="" v-model="editQuestionForm.d"></el-input>
+  </el-form-item>
+  <el-form-item label="正确选项" v-if="isChoice" required>
+    <el-radio-group v-model="editQuestionForm.right_choice">
+    <el-radio name="choice_ans" value="a">A</el-radio>
+    <el-radio name="choice_ans" value="b">B</el-radio>
+    <el-radio name="choice_ans" value="c">C</el-radio>
+    <el-radio name="choice_ans" value="d">D</el-radio>
+  </el-radio-group>
+  </el-form-item>
+  <el-form-item label="正确选项" v-if="isJudgement" required>
+    <el-radio-group v-model="editQuestionForm.right_choice">
+      <el-radio name="judgement_ans" value="a"><el-icon><Check /></el-icon></el-radio>
+      <el-radio name="judgement_ans" value="b"><el-icon><Close /></el-icon></el-radio>
+    </el-radio-group>
+  </el-form-item>
+</el-form>
+<template #footer>
+  <div class="dialog-footer">
+    <el-button type="primary" @click="submitEditQuestionForm">提交</el-button>
+    <el-button @click="cancleEditQuestionForm" >取消</el-button>
+    
+  </div>
+</template>
+</el-dialog>
 
   <!--detail详情对话框-->
   <el-dialog title="试题详情" width="600" align-center v-model="showDetail" :QuestionInfo="QuestionInfo">
@@ -105,9 +202,13 @@
       <el-form-item label="题目类型:">
         <span>{{ QuestionInfo.type==='choice'?'选择题':'判断题' }}</span>
       </el-form-item>
-      <!-- <el-form-item label="疾病种类:">
-        <span>{{ QuestionInfo.disease_kind }}</span>
-      </el-form-item> -->
+      <el-form-item label="所属科室:">
+        <span>{{ QuestionInfo.department_name }}</span>
+      </el-form-item>
+      <el-form-item label="疾病种类:">
+        <span>{{ QuestionInfo.disease_name }}</span>
+      </el-form-item>
+
       <el-form-item label="题目详情:">
         <span>{{ QuestionInfo.question_body }}</span>
       </el-form-item>
@@ -149,18 +250,19 @@
 <!--相关配置-->
 <script setup lang="ts">
 import useBackQuestionStore from "@/store/back/question"
-import {Delete, Edit, ZoomIn} from '@element-plus/icons-vue'
-import { computed, ref,onMounted} from 'vue'
+import {Delete, Edit, Failed, ZoomIn} from '@element-plus/icons-vue'
+import { computed, ref,onMounted, reactive} from 'vue'
 //分页器当前页码
 let pageNo=ref<string>("1");
 //定义每页展示多少条数据
 let pageSize=ref<string>("10")  
-let total=ref<number>(0)
+
 
 
 let QuestionInfoStore=useBackQuestionStore();
 onMounted(async ()=>{
   await QuestionInfoStore.getAllQuestionInfo(pageNo.value,pageSize.value);
+  await QuestionInfoStore.getDepartmentAndDiseaseInfo();
 })
 
 const handlePageChange = async(pager="1")=>{
@@ -168,72 +270,145 @@ const handlePageChange = async(pager="1")=>{
   await QuestionInfoStore.getAllQuestionInfo(pageNo.value,pageSize.value);
 }
 
-
-
-
-
-
 //展示试题详情
 const showDetail=ref(false);
 const QuestionInfo=ref();
 const handleShowDetail=(index:any, row:any)=>{
   showDetail.value= true;
-    QuestionInfo.value=row;
+  QuestionInfo.value=row;
+
+}
+import type { editQuestionData, addQuestionData, diseaseQuestionInfoArr, deleteQuestionData } from "@/api/back/exam/questions/type";
+//添加试题
+const AddDialogVisible = ref(false)
+let addQuestionForm=reactive<addQuestionData>({
+  question_id: '',
+  disease_name: '',
+  type: '',
+  question_body: '',
+  a: '',
+  b: '',
+  c: '',
+  d: '',
+  right_choice: '',
+  department_name: ''
+})
+//科室信息
+
+let diseaseInfo=ref<diseaseQuestionInfoArr>();
+let isDepartmentSelected=ref<boolean>(false);
+const handleChangeDepartment = ()=>{
+  isDepartmentSelected.value=true;
+  const selectedDepartment = QuestionInfoStore.diseaseAndDepartmentInfoArr.find(
+        item => item.department_name === addQuestionForm.department_name
+      );
+      diseaseInfo.value= selectedDepartment ? selectedDepartment.diseases : []
 
 }
 
-
-
-
-//获取仓库对象
-import useUserStore from '@/store/modules/user';
-let userStore=useUserStore();
-//目前首页挂载完毕发请求获取用户信息
-
-</script>
-
-<!--处理函数-->
-<script lang="ts">
-import { ref } from 'vue'
-//控制修改和添加试题的ref
-const AlterorAddDialogVisible = ref(false)
-
-
 //点击“添加试题”
 const handleAddQuestion=()=>{
-  AlterorAddDialogVisible.value=true;
+    // 重置表单数据为初始状态
+  addQuestionForm.question_id = '';
+  addQuestionForm.disease_name = '';
+  addQuestionForm.type = '';
+  addQuestionForm.question_body = '';
+  addQuestionForm.A = '';
+  addQuestionForm.B = '';
+  addQuestionForm.C = '';
+  addQuestionForm.D = '';
+  addQuestionForm.right_choice = '';
+  addQuestionForm.judgement = '';
+  addQuestionForm.department_name = '';
+
+  AddDialogVisible.value=true;
+}
+const cancleAddQuestionForm=()=>{
+  AddDialogVisible.value=false;
+  isJudgement.value=false;
+  isChoice.value=false;
+}
+const submitAddQuestionForm = async ()=>{
+  console.log(addQuestionForm);
+  let result=await QuestionInfoStore.addQuestionInfo(addQuestionForm);
+  if(result==='ok'){
+    await QuestionInfoStore.getAllQuestionInfo(pageNo.value,pageSize.value);
+    AddDialogVisible.value=false;
+  }
 }
 
 
 
 //点击“编辑试题”
-const handleEditQuestion=()=>{
-  AlterorAddDialogVisible.value=true;
+let EditQuestionDialogVisible=ref(false)
+let editQuestionForm=reactive<editQuestionData>({
+  question_id:"",
+  question_body:"",
+  a:"",
+  b:"",
+  c:"",
+  d:"",
+  type:"",
+  disease_name:"",
+  department_name:"",
+  right_choice:""
+})
+const handleEditQuestion=(row:any)=>{
+  EditQuestionDialogVisible.value=true;
+  editQuestionForm.question_id = row.question_id;
+  editQuestionForm.question_body = row.question_body;
+  editQuestionForm.a = row.a;
+  editQuestionForm.b = row.b;
+  editQuestionForm.c = row.c;
+  editQuestionForm.d = row.d;
+  editQuestionForm.type = row.type;
+  editQuestionForm.disease_name = row.disease_name;
+  editQuestionForm.department_name = row.department_name;
+  editQuestionForm.right_choice = row.right_choice;
+
+  console.log(editQuestionForm);
+}
+const cancleEditQuestionForm=()=>{
+  EditQuestionDialogVisible.value=false;
+}
+const submitEditQuestionForm= async ()=>{
+  let result=await QuestionInfoStore.editQuestionInfo(editQuestionForm);
+  if(result==='ok'){
+    QuestionInfoStore.getAllQuestionInfo(pageNo.value,pageSize.value);
+    EditQuestionDialogVisible.value=false;
+  }
 }
 //点击“删除试题”
 import { ElMessage, ElMessageBox } from 'element-plus'
-const handleDeleteQuestion = ()=>{
-  ElMessageBox.confirm(
-    '您确定删除该试题吗？',
-    '提示',
-    {
-      confirmButtonText: '确认',
-      cancelButtonText: '取消',
-      type: 'warning',
-    }
-  )
-    .then(() => {
-      ElMessage({
-        type: 'success',
-        message: '成功删除',
-      })
-    })
-    .catch(() => {
-      ElMessage({
-        type: 'info',
-        message: '删除失败',
-      })
-    })
+import type { responseData } from "@/api/back/role/type";
+
+
+const handleDeleteQuestion = async (index: any, row: any) => {
+  try {
+    await ElMessageBox.confirm(
+      '您确定删除该问题吗？',
+      '提示',
+      {
+        confirmButtonText: '确认',
+        cancelButtonText: '取消',
+        type: 'warning',
+      }
+    );
+    // 用户确认删除后，调用删除用户方法，并传递用户名作为参数
+    let deleteData=ref<deleteQuestionData>({question_id:""});
+    deleteData.value.question_id=row.question_id;
+     let result = await QuestionInfoStore.deleteQuestionInfo(deleteData.value);  
+     if(result==='ok'){
+       QuestionInfoStore.getAllQuestionInfo(pageNo.value,pageSize.value);
+     }
+
+  } catch (error) {
+    // 取消删除时显示提示信息
+    ElMessage({
+      type: 'info',
+      message: '已取消删除',
+    });
+  }
 }
 
 //在编辑/添加试题中选择题目类型为选择
@@ -242,21 +417,15 @@ const isJudgement=ref(false);
 const handleTypeChoice = ()=>{
   isChoice.value=true;
   isJudgement.value=false;
-  choiceCorrectAnswer.value='';
-  judgementCorrectAnswer.value='';
+
 }
 const handleTypeJudgement = ()=>{
   isChoice.value=false;
   isJudgement.value=true;
-  choiceCorrectAnswer.value='';
-  judgementCorrectAnswer.value='';
+
 }
 //为了测试使用的中间状态，后期会整合到object中
-const addQuestionType = ref();
-const question_body = ref<string>('');
-const disease_kind=ref()
-const choiceCorrectAnswer=ref();
-const judgementCorrectAnswer=ref();
+
 </script>
 
 
