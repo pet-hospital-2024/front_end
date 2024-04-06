@@ -4,20 +4,18 @@
             添加试题
         </el-button>
         <!--表格展示信息-->
-        <el-table :data="tableData" style="margin:10px 0" stripe 
+        <el-table :data="QuestionInfoStore.questionInfoArr" style="margin:10px 0" stripe 
         empty-text="无题干!" >
             <el-table-column type="index" label="序号" width="80" align="center"/>
+
             <el-table-column label="题目类型" width="100" align="center">
                 <template v-slot="{ row }">
                     {{ row.type === 'choice' ? '选择题' : '判断题' }}
                 </template>
             </el-table-column>
-            <el-table-column prop="disease_kind" label="疾病类型" width="100" align="center"/>
-            <el-table-column prop="question_body" label="题目描述" align="center" width="300" />
+            <!-- <el-table-column prop="disease_kind" label="疾病类型" width="100" align="center"/> -->
+            <el-table-column prop="question_body" label="题目描述" align="center" width="400" />
             <el-table-column align="center" class="operation">
-            <template #header>
-                <el-input v-model="search" size="small" placeholder="搜索题目" />
-            </template>
             <template v-slot="{ row, index }">
               <el-button @click="handleShowDetail(index, row)" size="small" :icon="ZoomIn">详情</el-button>
               <el-button size="small" @click="handleEditQuestion(index,row)" :icon="Edit" type="info">编辑
@@ -32,8 +30,14 @@
 
         <!--分页器组件-->
         
-        <el-pagination v-model:current-page="pageNo"  v-model:page-size="limit" :small="small" :total="400"  :background="true" layout=" prev, pager, next, jumper,->,total" 
-        @size-change="handleSizeChange" @current-change="handleCurrentChange" />
+        <el-pagination
+      v-model:current-page="pageNo"
+      v-model:page-size="pageSize"
+      :background="true"
+      layout="prev, pager, next, jumper, -> , total"
+      :total="QuestionInfoStore.total"
+      @current-change="handlePageChange"
+/>
     </el-card>
 
     <!--对话框组件-->
@@ -101,33 +105,31 @@
       <el-form-item label="题目类型:">
         <span>{{ QuestionInfo.type==='choice'?'选择题':'判断题' }}</span>
       </el-form-item>
-      <el-form-item label="疾病种类:">
+      <!-- <el-form-item label="疾病种类:">
         <span>{{ QuestionInfo.disease_kind }}</span>
-      </el-form-item>
+      </el-form-item> -->
       <el-form-item label="题目详情:">
         <span>{{ QuestionInfo.question_body }}</span>
       </el-form-item>
       <el-form-item label="题目选项:" v-if="QuestionInfo.type==='choice'">
         <span >
-          <div>A. {{ QuestionInfo.A }}</div>
-          <div>B. {{ QuestionInfo.B }}</div>
-          <div>C. {{ QuestionInfo.C }}</div>
-          <div>D. {{ QuestionInfo.D }}</div>
+          <div>A. {{ QuestionInfo.a }}</div>
+          <div>B. {{ QuestionInfo.b }}</div>
+          <div>C. {{ QuestionInfo.c }}</div>
+          <div>D. {{ QuestionInfo.d }}</div>
         </span>
       </el-form-item>
       <el-form-item label="正确答案:">
         <span v-if="QuestionInfo.type==='choice'">
-          {{ String.fromCharCode('A'.charCodeAt(0) + parseInt(QuestionInfo.right_choice))}}
+          {{ QuestionInfo.right_choice.toUpperCase() }}
+
         </span>
-        <span v-if="QuestionInfo.type==='judgement'&&QuestionInfo.judgement==='0'">
+        <span v-if="QuestionInfo.type==='judge'&&QuestionInfo.right_choice==='a'">
           <el-icon><Check /></el-icon>
         </span>
-        <span v-if="QuestionInfo.type==='judgement'&&QuestionInfo.judgement==='1'">
+        <span v-if="QuestionInfo.type==='judge'&&QuestionInfo.right_choice==='b'">
           <el-icon><Close /></el-icon>
         </span>
-      </el-form-item>
-      <el-form-item label="分值:">
-        <span>{{ QuestionInfo.value }}</span>
       </el-form-item>
     </el-form>
 
@@ -146,164 +148,35 @@
 
 <!--相关配置-->
 <script setup lang="ts">
+import useBackQuestionStore from "@/store/back/question"
 import {Delete, Edit, ZoomIn} from '@element-plus/icons-vue'
-import { computed, ref} from 'vue'
+import { computed, ref,onMounted} from 'vue'
 //分页器当前页码
-
-interface ChoiceQuestion {
-  disease_kind: string
-  type: 'choice'
-  question_body: string
-  A: string
-  B: string
-  C: string
-  D: string
-  right_choice: string
-  value:string
-}
-
-interface JudgementQuestion {
-  disease_kind: string
-  type: 'judgement'
-  question_body: string
-  judgement: string
-  value:string
-}
-
-type User = ChoiceQuestion | JudgementQuestion;
-
-const tableData: User[] = [
-  {
-    disease_kind: "传染病",
-    type: "choice",
-    question_body: "Duis officia pariatur Duis officia pariatur Duis officia pariatur Duis officia pariatur Duis officia pariatur Duis officia pariatur Duis officia pariatur Duis officia pariatur",
-    A: "do fugiat",
-    B: "laboris eiusmod ea dolor",
-    C: "reprehenderit pariatur sed ex",
-    D: "dolor aute Ut",
-    right_choice: "0",
-    value:'5',
-  },
-  {
-    disease_kind: "心脏病",
-    type: "judgement",
-    question_body: "Duis officia pariatur",
-    judgement: "1",
-    value:'2',
-  },
-  {
-    disease_kind: "传染病",
-    type: "choice",
-    question_body: "Duis officia pariatur Duis officia pariatur Duis officia pariatur Duis officia pariatur Duis officia pariatur Duis officia pariatur Duis officia pariatur Duis officia pariatur",
-    A: "do fugiat",
-    B: "laboris eiusmod ea dolor",
-    C: "reprehenderit pariatur sed ex",
-    D: "dolor aute Ut",
-    right_choice: "1",
-    value:'4'
-  },
-  {
-    disease_kind: "心脏病",
-    type: "judgement",
-    question_body: "Duis officia pariatur",
-    judgement: "1",
-    value:'2'
-  },
-  {
-    disease_kind: "传染病",
-    type: "choice",
-    question_body: "Duis officia pariatur Duis officia pariatur Duis officia pariatur Duis officia pariatur Duis officia pariatur Duis officia pariatur Duis officia pariatur Duis officia pariatur",
-    A: "do fugiat",
-    B: "laboris eiusmod ea dolor",
-    C: "reprehenderit pariatur sed ex",
-    D: "dolor aute Ut",
-    right_choice: "2",
-    value:'5'
-  },
-  {
-    disease_kind: "心脏病",
-    type: "judgement",
-    question_body: "Duis officia pariatur",
-    judgement: "0",
-    value:'2'
-  },
-  {
-    disease_kind: "传染病",
-    type: "choice",
-    question_body: "Duis officia pariatur Duis officia pariatur Duis officia pariatur Duis officia pariatur Duis officia pariatur Duis officia pariatur Duis officia pariatur Duis officia pariatur",
-    A: "do fugiat",
-    B: "laboris eiusmod ea dolor",
-    C: "reprehenderit pariatur sed ex",
-    D: "dolor aute Ut",
-    right_choice: "3",
-    value:'4'
-  },
-  {
-    disease_kind: "心脏病",
-    type: "judgement",
-    question_body: "Duis officia pariatur",
-    judgement: "0",
-    value:'1'
-  },
-  {
-    disease_kind: "传染病",
-    type: "choice",
-    question_body: "Duis officia pariatur Duis officia pariatur Duis officia pariatur Duis officia pariatur Duis officia pariatur Duis officia pariatur Duis officia pariatur Duis officia pariatur",
-    A: "do fugiat",
-    B: "laboris eiusmod ea dolor",
-    C: "reprehenderit pariatur sed ex",
-    D: "dolor aute Ut",
-    right_choice: "4",
-    value:'4'
-  },
-  {
-    disease_kind: "心脏病",
-    type: "judgement",
-    question_body: "Duis officia pariatur",
-    judgement: "1",
-    value:'2'
-  },
-  {
-    disease_kind: "传染病",
-    type: "choice",
-    question_body: "Duis officia pariatur Duis officia pariatur Duis officia pariatur Duis officia pariatur Duis officia pariatur Duis officia pariatur Duis officia pariatur Duis officia pariatur",
-    A: "do fugiat",
-    B: "laboris eiusmod ea dolor",
-    C: "reprehenderit pariatur sed ex",
-    D: "dolor aute Ut",
-    right_choice: "0",
-    value:'5'
-  },
-  {
-    disease_kind: "心脏病",
-    type: "judgement",
-    question_body: "Duis officia pariatur",
-    judgement: "0",
-    value:'1'
-  },
-  
-]
-
-
-let pageNo=ref<number>(1);
+let pageNo=ref<string>("1");
 //定义每页展示多少条数据
-let limit=ref<number>(7)  
-let totalNumber=ref<number>(5)
+let pageSize=ref<string>("10")  
+let total=ref<number>(0)
 
-const search = ref('')
-const filterTableData = computed(() =>
-  tableData.filter(
-    (data) =>
-      !search.value ||
-      data.disease_kind.toLowerCase().includes(search.value.toLowerCase())
-  )
-)
+
+let QuestionInfoStore=useBackQuestionStore();
+onMounted(async ()=>{
+  await QuestionInfoStore.getAllQuestionInfo(pageNo.value,pageSize.value);
+})
+
+const handlePageChange = async(pager="1")=>{
+  pageNo.value=pager;
+  await QuestionInfoStore.getAllQuestionInfo(pageNo.value,pageSize.value);
+}
+
+
+
+
 
 
 //展示试题详情
 const showDetail=ref(false);
 const QuestionInfo=ref();
-const handleShowDetail=(index:number, row:User)=>{
+const handleShowDetail=(index:any, row:any)=>{
   showDetail.value= true;
     QuestionInfo.value=row;
 

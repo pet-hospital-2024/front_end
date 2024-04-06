@@ -1,22 +1,25 @@
 export interface responseData{
-  code:string;
+  code:number;
   message:string;
 }
-
-interface questionOptionItem{
-  optCode:string;
-  optContent:string;
-}
-type questionOptionArr=questionOptionItem[];
 interface questionItem{
   question_id:string;
-  order:string;
   question_body:string;
-  type:string;
-  options:questionOptionArr;
-  
+  type:string;//choice or judge
+  disease_id:string;
+  department_id:string;
+  a:string;
+  b:string;
+  c:string|null;
+  d:string|null;
+  right_choice:string;
 
 }
-export interface responseQuestionData{
-
+export type questionArr=questionItem[];
+//返回所有试题数据类型
+export interface responseQuestionData extends responseData{
+  data:{
+    total:number;
+    list:questionArr;
+  }
 }

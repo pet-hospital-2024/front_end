@@ -2,6 +2,7 @@
 <!--未使用element-plus的icon，详情教学见P24,P25,P41-->
 <script setup lang="ts">
 defineProps(['menuList']);
+
 import { useRouter } from 'vue-router';
 const $router=useRouter();
 const goRoute=(vc:any)=>{

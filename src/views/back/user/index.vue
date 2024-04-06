@@ -40,6 +40,7 @@
               </el-button>
               <el-button size="small" type="danger" @click="handleDeleteUser(index,row)" 
                 :icon="Delete">删除</el-button>
+              <el-button size="small" type="warning" @click="handleBanUser(index,row)" :icon="Remove">禁用</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -102,6 +103,9 @@
     
   >
     <el-form style="max-width: 400px" ref="ruleFormRef"  :model="editUserInfoForm">
+      <el-form-item label="用户ID">
+          <el-input v-model="editUserInfoForm.user_id" disabled></el-input>
+        </el-form-item>
         <el-form-item label="用户名">
           <el-input v-model="editUserInfoForm.username"></el-input>
         </el-form-item>
@@ -183,8 +187,8 @@
 
 //获取仓库对象
 
-import { Delete, Edit,Plus,ZoomIn } from '@element-plus/icons-vue';
-import { ref,reactive } from 'vue'
+import { Delete, Edit,Plus,Remove,ZoomIn } from '@element-plus/icons-vue';
+import { ref,reactive,watch } from 'vue'
 //点击addUser之前ref(false)，不展示对话框
 const dialogAddUser=ref(false);
 
@@ -202,16 +206,31 @@ let pageSize = ref<string>('10')
 
 import useBackUserInfoStore from "@/store/back/role"
 import { onMounted } from 'vue';
-import{onUpdated} from 'vue';
+
 let userInfoStore=useBackUserInfoStore();
 //目前首页挂载完毕发请求获取用户信息
 onMounted(async () => {
   await userInfoStore.getAllUserInfo(pageNo.value, pageSize.value);
 });
+//读取搜索框内数据
+interface dataType {
+  username: string;
+}
 
-let searchKeyword=ref<string>("");
-const handleSearchUser = async ()=>{
-  await userInfoStore.searchUserInfo(searchKeyword.value);
+let searchKeyword = ref<string>("");
+let send_data = ref<dataType>({
+  username: ""
+});
+
+// 监听 searchKeyword 的变化，并更新 send_data
+watch(searchKeyword, (newValue) => {
+  send_data.value.username = newValue;
+});
+
+
+
+const handleSearchUser = async () => {
+  await userInfoStore.searchUserInfo(send_data.value);
   
 }
 
@@ -220,32 +239,15 @@ const handlePageChange = async(pager="1")=>{
   await userInfoStore.getAllUserInfo(pageNo.value,pageSize.value);
 }
 
+//重置搜索结果
+const reset= async ()=>{
+await userInfoStore.getAllUserInfo(pageNo.value,pageSize.value);
+}
 
 
 
-
-// const userArr=[
-//     {
-//         id:'1',
-//         username:'syf',
-//         identity:'admin',
-//         phone:'1234567890',
-//         email:'1234567@qq.com',
-//         password:'123456',
-//         timeStap:'2024.03.15',
-//     },
-//     {
-//         id:'2',
-//         username:'wzz',
-//         identity:'expert',
-//         phone:'0987654321',
-//         email:'7654321@qq.com',
-//         password:'123456',
-//         timeStap:'2024.03.15',
-//     },
-// ]
 import type { FormInstance, FormRules ,} from 'element-plus'
-import ElNotification from 'element-plus';
+
 const ruleFormRef = ref<FormInstance>()
 // import {addRoleData} from "@/api/back/role/type"
 interface RuleForm {
@@ -325,7 +327,16 @@ const cancleSubmitForm=()=>{
     dialogAddUser.value=!dialogAddUser.value;
 
 }
-let editUserInfoForm = reactive<RuleForm>({
+interface EditRuleForm{
+  user_id:string;
+  username: string
+  password: string
+  identity: string
+  phone_number: string
+  email: string
+}
+let editUserInfoForm = reactive<EditRuleForm>({
+  user_id:"",
   username: "",
   password:"",
   identity:"",
@@ -339,6 +350,7 @@ const handleEditUser = (index: any, row: any) => {
   dialogEditUser.value = true;
   
   // 创建一个新的对象来代替原来的 userInfo 对象
+  editUserInfoForm.user_id=row.user_id;
   editUserInfoForm.username=row.username;
   editUserInfoForm.password=row.password;
   editUserInfoForm.identity=row.identity;
@@ -356,7 +368,6 @@ const cancleEditUser = () => {
 };
 const submitFormEditUser = async () => {
   // 进行用户添加操作，不进行表单验证直接提交
-  console.log(editUserInfoForm);
   let result = await userInfoStore.alterUserInfo(editUserInfoForm);
   if (result === 'ok') {
     await userInfoStore.getAllUserInfo(pageNo.value, pageSize.value);
@@ -373,7 +384,7 @@ const handleShowUserDetail = (index:any,row:any)=>{
     dialogShowUserDetail.value=true;
     userInfo.value=row;
     
-    //console.log(userInfoStore.userInfoArr[row]);
+    
 }
 //点击“删除”
 import { ElMessage, ElMessageBox } from 'element-plus'
@@ -406,6 +417,37 @@ const handleDeleteUser = async (index: any, row: any) => {
     ElMessage({
       type: 'info',
       message: '已取消删除',
+    });
+  }
+}
+
+interface banUser{
+  username:string;
+}
+const handleBanUser = async (index:any,row:any)=>{
+  try {
+    await ElMessageBox.confirm(
+      '您确定禁用该用户吗？',
+      '提示',
+      {
+        confirmButtonText: '确认',
+        cancelButtonText: '取消',
+        type: 'warning',
+      }
+    );
+    // 用户确认删除后，调用删除用户方法，并传递用户名作为参数
+    let banData=ref<banUser>({username:""});
+    banData.value.username=row.username;
+     let result = await userInfoStore.deleteUserByName(banData.value);  
+     if(result==='ok'){
+       userInfoStore.getAllUserInfo(pageNo.value,pageSize.value);
+     }
+
+  } catch (error) {
+    // 取消删除时显示提示信息
+    ElMessage({
+      type: 'info',
+      message: '已取消禁用',
     });
   }
 }

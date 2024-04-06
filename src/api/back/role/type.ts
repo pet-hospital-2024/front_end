@@ -11,9 +11,6 @@ export interface roleInfoItem{
     email:string;
     timestamp:string;
     token:null;
-    code:null;
-    newPassword: null,
-    oldPassword: null
 }
 export type roleInfoArr=roleInfoItem[];
 export interface responseRoleData extends responseData {
@@ -39,5 +36,8 @@ export interface dataType{
     info:roleInfoItem;
 }
 export interface searchResponseData extends responseData{
-    data:dataType;
+    data:roleInfoItem;
+}
+export interface banRoleData{
+    username:string;
 }
