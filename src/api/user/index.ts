@@ -3,6 +3,7 @@ import type {
   LoginData,
   RegisterData,
   LoginResponseData,
+  RegisterResponseData,
   UserInfoResponseData,
   CheckOldPasswordData,
   UpdateNewPasswordData,
@@ -19,7 +20,7 @@ export const reqLogin = (data: LoginData) =>
   request.post<any, LoginResponseData>(API.LOGIN_URL, data);
 
 export const reqRegister = (data: RegisterData) =>
-  request.post<any, LoginResponseData>(API.REGISTER_URL, data);
+  request.post<any, RegisterResponseData>(API.REGISTER_URL, data);
 //暂时修改请求用户信息方法
 /*export const reqUserInfo=(userid:string)=>
   request.get<any,UserInfoResponseData>(API.USERINFO_URL+userid)*/

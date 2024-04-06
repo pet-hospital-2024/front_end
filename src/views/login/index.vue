@@ -255,11 +255,12 @@ const register = async () => {
   await registerForms.value.validate();
   try {
     await useStore.register(registerForm);
-    $router.push("/");
+    // $router.push("/");
     ElNotification({
       type: "success",
-      message: "注册成功",
+      message: "注册成功！请登录！",
     });
+    window.location.reload();
   } catch (error) {
     ElNotification({
       type: "error",

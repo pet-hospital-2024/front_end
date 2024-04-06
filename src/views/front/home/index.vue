@@ -62,7 +62,7 @@ const goTest = () => {
     // font-weight: 600;
     // color: rgb(255, 255, 255);
     h1 {
-      margin-top: 60px;
+      margin-top: 10vh;
       font-size: 56px;
       font-weight: 600;
       // color: rgb(255, 255, 255);

@@ -1,5 +1,6 @@
 //常量路由：全部用户都可以访问(暂时)
 export const constantRoute = [
+  //前台相关路由
   {
     path: "/front",
     component: () => import("@/layout/front/index.vue"),
@@ -22,15 +23,6 @@ export const constantRoute = [
         path: "/front/study",
         name: "study",
         component: () => import("@/views/front/study/index.vue"),
-        meta: {
-          hidden: true,
-          title: "",
-        },
-      },
-      {
-        path: "/front/role",
-        name: "role",
-        component: () => import("@/views/front/role/index.vue"),
         meta: {
           hidden: true,
           title: "",

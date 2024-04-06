@@ -3,7 +3,6 @@
     <div class="content">
 
       <div class="card">
-          <el-col :span="12" style="padding: 20px">
           <div class="box">
             <el-card class="item1" shadow="hover" @click="goDetail('3')"
               >前台</el-card
@@ -15,15 +14,9 @@
               >兽医</el-card
             >
           </div>
-        </el-col>
         
-
-        <!-- </div> -->
-        <!-- </div> -->
-        <el-col :span="12"
-          ><el-card class="item4" shadow="hover" @click="goCase"
+          <el-card class="item4" shadow="hover" @click="goCase"
             >病例学习</el-card
-          ></el-col
         >
       </div>
     </div>
@@ -33,9 +26,6 @@
 <script setup lang="ts">
 import { useRouter } from "vue-router";
 let $router = useRouter();
-const goRole = () => {
-  $router.push({ path: "/front/role" });
-};
 
 const goCase = () => {
   $router.push({ path: "/front/case" });
@@ -55,15 +45,15 @@ const goDetail = (role_id: string) => {
   // margin-top: 20px;
 }
 
-.title {
-  width: 100%;
-  margin-top: 80px;
-  display: flex;
-  justify-content: center;
-  p {
-    font-size: 48px;
-  }
-}
+// .title {
+//   width: 100%;
+//   margin-top: 80px;
+//   display: flex;
+//   justify-content: center;
+//   p {
+//     font-size: 48px;
+//   }
+// }
 .card {
   // height: 300px;
   width: 100%;
@@ -75,8 +65,8 @@ const goDetail = (role_id: string) => {
 
   .box{
     margin-top: 5vh;
-    margin-left: 52vh;
-    width: 50%;
+    margin-left: 10vw;
+    width: 20vw;
   }
   .item1 {
     display: flex;
@@ -117,9 +107,9 @@ const goDetail = (role_id: string) => {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 60%;
+    width: 30vw;
     height: 70vh;
-    // margin-left: 50px;
+    margin-left: 2vw;
     margin-top: 5vh;
     border-radius: 15px;
     background-color: #dadfc4;

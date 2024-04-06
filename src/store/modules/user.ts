@@ -61,11 +61,11 @@ let useUserStore = defineStore("User", {
       let result: RegisterResponseData = await reqRegister(data);
       console.log(result);
       if (result.code == 1) {
-        this.token = result.data as string;
-        const decoded = jwtDecode(this.token); // 使用jwtDecode解码
-        this.userData = decoded;
-        console.log(this.userData.username);
-        SET_TOKEN(this.token);
+        // this.token = result.data as string;
+        // const decoded = jwtDecode(this.token); // 使用jwtDecode解码
+        // this.userData = decoded;
+        // console.log(this.userData.username);
+        // SET_TOKEN(this.token);
         // //本地持久化存储
         // localStorage.setItem("TOKEN",result.data.token);
         return "ok";
