@@ -138,7 +138,7 @@ const submit = () => {
 const calculateScore = () => {
   score.value = 0;
   useStore.questionListArr.forEach((question) => {
-    if (question.selectedOpt === question.right_choice.toUpperCase()) {
+    if (question.selectedOpt === question.right_choice) {
       score.value += question.value; // 假设每个问题1分
       question.status = "correct"; // 回答正确
     } else {

@@ -4,7 +4,7 @@
       <div class="left" @click="goHome">
         <p>虚拟宠物医院学习系统</p>
       </div>
-      <div class="right">
+      <div class="right" >
         <el-dropdown>
           <span class="el-dropdown-link">
             {{userStore.userData?.username}}
@@ -68,14 +68,15 @@ const userLogout=()=>{
   background-color: rgb(255, 255, 255);
   display: flex;
   justify-content: center;
+  box-shadow: 0px 1px 5px 0px rgba(0, 0, 0, 0.1); 
 
   .content {
-    width: 80vw;
+    width: 100vw;
     height:8vh;
     background-color: rgb(255, 255, 255);
     display: flex;
     justify-content: space-between;
-    margin-left: 50px;
+    margin-left: 30px;
     margin-right: 50px;
 
     .left {
@@ -84,7 +85,7 @@ const userLogout=()=>{
       align-items: center;
       p {
         font-size: 20px;
-        color: #55a8fe;
+        color: rgb(121, 176, 137);
       }
       cursor: pointer;
     }
@@ -94,7 +95,7 @@ const userLogout=()=>{
       justify-content: center;
       align-items: center;
       font-size: 14px;
-      color: rgb(124, 124, 124);
+      color: rgb(255, 255, 255);
 
       ::v-deep(.el-dropdown-link) {
         outline: 0;
@@ -108,4 +109,3 @@ const userLogout=()=>{
   }
 }
 </style>
-@/store/front/modifyPw

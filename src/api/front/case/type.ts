@@ -5,7 +5,9 @@ export interface ResponseData {
 
 export interface Disease {
   disease_id: string;
+  department_id: string;
   disease_name: string;
+  department:string | null;
 }
 
 //科室的数据
@@ -53,4 +55,19 @@ export interface CaseDetailInfo {
 
 export interface CaseDetailInfoResponseData extends ResponseData {
   data: CaseDetailInfo;
+}
+
+// interface MediaItem {
+//   case_id: string;
+//   media_id: string;
+//   media_url: string;
+//   media_name: string;
+//   media_type: 'image' | 'video';
+//   category: string;
+// }
+
+// export type MediaArr=MediaItem[];
+
+export interface MediaResponseData extends ResponseData {
+  data:Array<string>;
 }

@@ -52,7 +52,7 @@ export interface UserInfoResponseData extends ResponseData {
 
 //定义注册接口返回数据类型
 export interface RegisterResponseData extends ResponseData {
-  data: string;
+  data: string|null;
 }
 
 //定义验证旧密码数据

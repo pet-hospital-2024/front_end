@@ -24,7 +24,7 @@ request.interceptors.request.use((config)=>{
 //响应拦截器
 request.interceptors.response.use((response) => {
     //响应拦截器成功的回调,一般会进行简化数据
-    console.log(response);
+//     console.log(response);
     if(response.data.code==-1){
       logout();
       ElMessage({

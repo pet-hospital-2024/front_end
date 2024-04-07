@@ -1,14 +1,23 @@
 <template>
   <div>
     <div class="content">
-      <div class="title">
-        <p>职能学习</p>
-      </div>
+
       <div class="card">
-        <el-card class="item1" shadow="hover" @click="goRole"
-          >角色扮演
-        </el-card>
-        <el-card class="item2" shadow="hover" @click="goCase">病例学习</el-card>
+          <div class="box">
+            <el-card class="item1" shadow="hover" @click="goDetail('3')"
+              >前台</el-card
+            >
+            <el-card class="item2" shadow="hover" @click="goDetail('2')"
+              >医助</el-card
+            >
+            <el-card class="item3" shadow="hover" @click="goDetail('1')"
+              >兽医</el-card
+            >
+          </div>
+        
+          <el-card class="item4" shadow="hover" @click="goCase"
+            >病例学习</el-card
+        >
       </div>
     </div>
   </div>
@@ -17,12 +26,14 @@
 <script setup lang="ts">
 import { useRouter } from "vue-router";
 let $router = useRouter();
-const goRole = () => {
-  $router.push({ path: "/front/role"});
-};
 
 const goCase = () => {
   $router.push({ path: "/front/case" });
+};
+
+const goDetail = (role_id: string) => {
+  // console.log(role_id);
+  $router.push({ path: "/front/roleDetail", query: { role_id: role_id } });
 };
 </script>
 
@@ -31,47 +42,77 @@ const goCase = () => {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  // margin-top: 20px;
 }
 
-.title {
-  width: 100%;
-  margin-top: 80px;
-  display: flex;
-  justify-content: center;
-  p {
-    font-size: 48px;
-  }
-}
+// .title {
+//   width: 100%;
+//   margin-top: 80px;
+//   display: flex;
+//   justify-content: center;
+//   p {
+//     font-size: 48px;
+//   }
+// }
 .card {
-  height: 300px;
+  // height: 300px;
   width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 36px;
-  margin-top: 100px;
+  // margin-top: 100px;
 
+  .box{
+    margin-top: 5vh;
+    margin-left: 10vw;
+    width: 20vw;
+  }
   .item1 {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 35%;
-    height: 300px;
-    margin-right: 50px;
-    border-radius: 15px;
-    // background-color: rgb(167, 197, 167);
+    // width: 80%;
+    height: 20vh;
+    // margin-top: 50px;
+    background-color:#c7d9cb;
     cursor: pointer;
+    border-radius: 15px;
   }
 
   .item2 {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 35%;
-    height: 300px;
-    margin-left: 50px;
+    /* width: 25%; */
+    height: 20vh;
+    margin-top: 5vh;
+    background-color: #c7d9cb;
+    cursor: pointer;
     border-radius: 15px;
-    // background-color: rgb(211, 134, 134);
+  }
+
+  .item3 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* width: 25%; */
+    height: 20vh;
+    margin-top: 5vh;
+    background-color: #c7d9cb;
+    cursor: pointer;
+    border-radius: 15px;
+  }
+  .item4 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 30vw;
+    height: 70vh;
+    margin-left: 2vw;
+    margin-top: 5vh;
+    border-radius: 15px;
+    background-color: #dadfc4;
     cursor: pointer;
   }
 }

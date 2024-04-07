@@ -134,7 +134,7 @@ const goCaseList = (id: string,name:string) => {
 <style scoped lang="scss">
 .tolList {
   width: 80%;
-  height: 70vh;
+  height: 80vh;
   display: flex;
   margin-top: 30px;
 

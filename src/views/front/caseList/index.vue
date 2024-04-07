@@ -1,5 +1,5 @@
 <template>
-  <el-page-header :icon="ArrowLeft" @back="goBack" style="margin:15px 0 0 15px;">
+  <el-page-header :icon="ArrowLeft" @back="goBack" style="margin:15px 0 0 30px;">
       <template #content>
         <span class="title"> {{ $route.query.disease_name }}</span>
       </template>
@@ -15,7 +15,7 @@
     >
       <el-table-column prop="case_id" label="ID" width="150" />
       <el-table-column prop="case_name" label="病例名称" width="200" />
-      <el-table-column prop="case_introduction" label="基本情况" width="620" />
+      <el-table-column prop="case_introduction" label="基本情况" width="700" />
       <el-table-column prop="operation" label="操作">
         <template #default="scope">
           <el-button

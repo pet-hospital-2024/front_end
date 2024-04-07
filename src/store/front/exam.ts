@@ -35,16 +35,18 @@ export const useFrontExamStore = defineStore("FrontExam", {
         //在得到的数据的基础上加上已选择项和状态
         this.testData = res.data;
         this.questionListArr = res.data.questions;
+        console.log(this.questionListArr);
         this.questionListArr = res.data.questions.map((question) => ({
           ...question,
           selectedOpt: null,
           status: "pending",
         }));
+        console.log(this.questionListArr);
       }
       return this.questionListArr;
     },
     submitAnswer() {
-      // 提交答案的逻辑...
+      // 提交答案的逻辑
       this.isSubmitted = true;
     },
     resetExamState() {
