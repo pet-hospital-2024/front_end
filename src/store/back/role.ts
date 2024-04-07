@@ -102,13 +102,13 @@ let useBackUserInfoStore=defineStore(
                 if(result.code==1){
                     ElNotification({
                         type:'success',
-                        message:"删除用户成功!",
+                        message:"禁用用户成功!",
                     })
                     return "ok";
                 }else{
                     ElNotification({
                         type:'error',
-                        message:"删除用户失败！",
+                        message:"禁用用户失败！",
                     })
                     return Promise.reject(new Error(result.message));
                 }

@@ -35,6 +35,7 @@ export interface diseaseInfoBySliceState{
 export interface paperInfoBySliceState{
     total:number;
     paperInfoArr:paperInfoArr;
+    
 }
 //考试保存类型
 export interface testInfoBySliceState{

@@ -11,7 +11,7 @@
 
             <el-table-column align="center" class="operation" label="操作">
             <template v-slot="{ index,row }">
-              <el-button @click="handleShowDetail(index, row)" size="small" :icon="ZoomIn">详情</el-button>
+              <el-button @click="handleShowPaperDetail(index, row)" size="small" :icon="ZoomIn">详情</el-button>
               <el-button size="small" @click="handleEditPaper(index,row)" :icon="Edit" type="info">编辑
               </el-button>
               <el-button size="small" type="danger" @click="handleDeletePaper(index,row)" 
@@ -43,10 +43,10 @@
  <el-dialog v-model="AddPaperDialogVisible" title="创建试卷" width="600" align-center>
     <el-form>
         <el-form-item label="试卷名称" required>
-            <input v-model="addPaperForm.paper_name">
+            <input v-model="addPaperForm.paper_name" placeholder="输入试卷名称">
         </el-form-item>
         <el-form-item label="考试时长" required>
-            <input placeholder="单位分钟" v-model.number="addPaperForm.duration">
+            <input v-model.number="addPaperForm.duration" placeholder="单位分钟">
         </el-form-item>
     </el-form>
 
@@ -85,7 +85,7 @@
         </el-table>
     </el-dialog>
 <!--detail详情对话框-->
-<el-dialog title="试题详情" width="600" align-center v-model="showDetail" :QuestionInfo="QuestionInfo">
+<el-dialog title="试卷详情" width="600" align-center v-model="PaperDetailDialogVisible" :PaperInfo="PaperInfo">
 <el-form>
   <el-form-item label="题目类型:">
     <span>{{ QuestionInfo.type==='choice'?'选择题':'判断题' }}</span>
@@ -203,7 +203,13 @@ const handleDeletePaper = async (index:any,row:any)=>{
     });
   }
 }
-
+//展示试卷详情
+let PaperDetailDialogVisible=ref(false);
+let PaperInfo=ref()
+const handleShowPaperDetail=(index:any,row:any)=>{
+  PaperDetailDialogVisible.value=true;
+}
+//
 const AddQuestion2PaperDialogVisible=ref<boolean>(false);
 const handleAddQuestion2NewPaper=()=>{
   AddQuestion2PaperDialogVisible.value=true;

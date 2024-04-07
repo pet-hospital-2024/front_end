@@ -438,7 +438,7 @@ const handleBanUser = async (index:any,row:any)=>{
     // 用户确认删除后，调用删除用户方法，并传递用户名作为参数
     let banData=ref<banUser>({username:""});
     banData.value.username=row.username;
-     let result = await userInfoStore.deleteUserByName(banData.value);  
+     let result = await userInfoStore.banUser(banData.value);  
      if(result==='ok'){
        userInfoStore.getAllUserInfo(pageNo.value,pageSize.value);
      }
