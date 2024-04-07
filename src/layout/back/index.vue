@@ -7,7 +7,8 @@
             <el-scrollbar class="scrollbar">
                 <!--el-menu：background-color：16进制 -->
                 <!--UI优化详见element-plus Menu组件-->
-                <el-menu :collapse="LayoutSettingStore.fold?true:false" :default-active="$route.path" background-color="#20BBA1" active-text-color="#A0CDCC" text-color="white" :router="true">
+                <el-menu :collapse="LayoutSettingStore.fold?true:false" :default-active="$route.path" background-color="rgb(152, 181, 172)
+" active-text-color="#666666" text-color="white" :router="true">
                     
                     <Menu :menuList="userStore.menuRoutes"></Menu>
                 </el-menu>
@@ -60,7 +61,7 @@ export default{
         //slider-width=260px
         width: 260px;
         height: 100vh;
-        background-color:#20BBA1;
+        background-color:rgb(152, 181, 172);
         //overflow: hidden;//存在问题：折叠时字体展示
         transition:all 0.3s;
         .scrollbar{

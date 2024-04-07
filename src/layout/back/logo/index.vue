@@ -1,6 +1,6 @@
 <template>
     <div class="logo">
-        <img src="../../../../public/layout/logo.png" alt="logo.png">
+        <img src="../../../../public/layout/pet_logo.png" alt="logo.png">
         <span class="title">虚拟宠物医院</span>
     </div>
 </template>
