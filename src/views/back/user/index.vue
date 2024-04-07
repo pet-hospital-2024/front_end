@@ -225,6 +225,7 @@ let send_data = ref<dataType>({
 // 监听 searchKeyword 的变化，并更新 send_data
 watch(searchKeyword, (newValue) => {
   send_data.value.username = newValue;
+  console.log(send_data);
 });
 
 
@@ -367,8 +368,6 @@ const cancleEditUser = () => {
 };
 const submitFormEditUser = async () => {
   // 进行用户添加操作，不进行表单验证直接提交
-  console.log("EditUser")
-  console.log(editUserInfoForm.identity);
   let result = await userInfoStore.alterUserInfo(editUserInfoForm);
   if (result === 'ok') {
     userInfoStore.getAllUserInfo(pageNo.value, pageSize.value);
