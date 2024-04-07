@@ -1,7 +1,8 @@
 import { createApp } from "vue";
 import App from "./App.vue";
 import "@/style/reset.scss";
-
+//英文语言包
+import i18n from '@/language/'
 // import HospitalTop from "@/components/hospital_top/index.vue";
 //@ts-ignore
 import Modify from "@/components/modify/index.vue";
@@ -19,7 +20,7 @@ import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 
 
 const app = createApp(App);
-
+app.use(i18n);
 //加载组件
 // app.component("HospitalTop", HospitalTop);
 app.component("Modify", Modify);

@@ -42,6 +42,7 @@
       layout="prev, pager, next, jumper, -> , total"
       :total="QuestionInfoStore.total"
       @current-change="handlePageChange"
+      style="margin-top:20px"
 />
     </el-card>
 
@@ -387,7 +388,7 @@ const submitEditQuestionForm= async ()=>{
 }
 //点击“删除试题”
 import { ElMessage, ElMessageBox } from 'element-plus'
-import type { responseData } from "@/api/back/role/type";
+
 
 
 const handleDeleteQuestion = async (index: any, row: any) => {

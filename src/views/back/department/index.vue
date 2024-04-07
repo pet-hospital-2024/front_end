@@ -206,6 +206,7 @@ import type { deleteDepartmentData } from '@/api/back/department/type';
      let result = await departmentInfoStore.deleteDepartment(deleteData.value);  
      if(result==='ok'){
        departmentInfoStore.getAllDepartmentInfo(pageNo.value,pageSize.value);
+       
      }
 
   } catch (error) {
@@ -239,7 +240,7 @@ const submitEditDepartmentForm = async ()=>{
   }
 }
 const cancleEditDepartmentForm = ()=>{
-  EnterDialogVisible.value=false;
+  EditDialogVisible.value=false;
 }
 //进入疾病管理
 let EnterDialogVisible=ref<boolean>(false);
