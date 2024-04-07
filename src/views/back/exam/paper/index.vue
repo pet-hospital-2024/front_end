@@ -3,15 +3,15 @@
         <el-button type="primary" size="default" icon="Plus" @click="handleAddPaper">
             创建试卷
         </el-button>
-        <el-table :data="paperArr" style="margin:10px 0" stripe  >
-            <el-table-column type="index" label="序号" width="80" align="center" prop="paperId"/>
-            <el-table-column label="试卷名称" width="180" align="center" prop="paperName"></el-table-column>
-            <el-table-column label="题目数量" width="180" align="center" prop="questionNumber"/>
+        <el-table :data="PaperInfoStore.paperInfoArr" style="margin:10px 0" stripe  >
+            <el-table-column type="index" label="序号" width="80" align="center" />
+            <el-table-column label="试卷名称" width="180" align="center" prop="paper_name"></el-table-column>
+            <el-table-column label="题目数量" width="180" align="center" prop="question_number"/>
             <el-table-column label="试卷总分" align="center" width="180" prop="value"/>
 
             <el-table-column align="center" class="operation" label="操作">
-            <template v-slot="{ row, index }">
-              <el-button @click="handleShowDetail(index, row)" size="small" :icon="ZoomIn">详情</el-button>
+            <template v-slot="{ index,row }">
+              <el-button @click="handleShowPaperDetail(index, row)" size="small" :icon="ZoomIn">详情</el-button>
               <el-button size="small" @click="handleEditPaper(index,row)" :icon="Edit" type="info">编辑
               </el-button>
               <el-button size="small" type="danger" @click="handleDeletePaper(index,row)" 
@@ -24,41 +24,37 @@
     </el-card>
 
 
-    <!--分页器-->
+<!--分页器-->
+<el-pagination
+      v-model:current-page="pageNo"
+      v-model:page-size="pageSize"
+      :background="true"
+      layout="prev, pager, next, jumper, -> , total"
+      :total="PaperInfoStore.total"
+      @current-change="handlePageChange"
+      style="margin-top:20px"
+/>
 
 
     <!--对话框组件-->
 
     <!--title动态，根据点击显示添加or修改-->
-    <!--点击添加或编辑弹出的对话框-->
- <el-dialog v-model="AddDialogVisible" title="创建试卷" width="800" align-center>
+    <!--创建试卷-->
+ <el-dialog v-model="AddPaperDialogVisible" title="创建试卷" width="600" align-center>
     <el-form>
-        <el-form-item label="试卷名称">
-            <input>
+        <el-form-item label="试卷名称" required>
+            <input v-model="addPaperForm.paper_name" placeholder="输入试卷名称">
+        </el-form-item>
+        <el-form-item label="考试时长" required>
+            <input v-model.number="addPaperForm.duration" placeholder="单位分钟">
         </el-form-item>
     </el-form>
-    <el-button type="primary" size="default" icon="Plus" @click="handleAddQuestion2NewPaper"
-     style="margin-bottom: 20px;">添加试题</el-button>
-    <el-table :data="paperDetailArr" height="300" style="width: 100%">
-
-        <el-table-column type="index" label="序号" width="80" align="center"/>
-        <el-table-column prop="type" label="题型" width="80" align="center"/>
-        <el-table-column prop="disease_kind" label="疾病种类" width="80" align="center"/>
-        <el-table-column prop="question_body" label="题干"  align="center"/>
-        <el-table-column label="Operations" width="80">
-        <template #default="scope">
-            <el-button
-            size="small"
-            type="danger"
-            @click="handleDelete(scope.$index, scope.row)">删除</el-button>
-        </template>
-        </el-table-column>
-    </el-table>
 
     <template #footer>
     <div class="dialog-footer">
-        <el-button type="primary">提交</el-button>
-        <el-button>重置</el-button>
+      <el-button @click="AddPaperDialogVisible=false">取消</el-button>
+        <el-button type="primary" @click="submitAddPaperForm">提交</el-button>
+        
     </div>
     </template>
  </el-dialog>
@@ -89,7 +85,7 @@
         </el-table>
     </el-dialog>
 <!--detail详情对话框-->
-<el-dialog title="试题详情" width="600" align-center v-model="showDetail" :QuestionInfo="QuestionInfo">
+<el-dialog title="试卷详情" width="600" align-center v-model="PaperDetailDialogVisible" :PaperInfo="PaperInfo">
 <el-form>
   <el-form-item label="题目类型:">
     <span>{{ QuestionInfo.type==='choice'?'选择题':'判断题' }}</span>
@@ -136,69 +132,84 @@
 <script setup lang="ts">
 
 //获取仓库对象
-import useUserStore from '@/store/modules/user';
-import {ZoomIn,Edit,Delete} from '@element-plus/icons-vue'
-let userStore=useUserStore();
-//目前首页挂载完毕发请求获取用户信息
 
-import { ref } from 'vue';
-const AddDialogVisible=ref<boolean>(false);
+import {ZoomIn,Edit,Delete} from '@element-plus/icons-vue'
+import useBackPaperInfoStore from '@/store/back/paper';
+let PaperInfoStore=useBackPaperInfoStore();
+import { ref,onMounted, reactive } from 'vue';
+//分页器当前页码
+let pageNo=ref<string>("1");
+//定义每页展示多少条数据
+let pageSize=ref<string>("10")  
+
+//目前首页挂载完毕发请求获取用户信息
+onMounted(async()=>{
+  await PaperInfoStore.getAllPaperInfo(pageNo.value,pageSize.value);
+})
+//页面信息变化
+const handlePageChange = async(pager="1")=>{
+  pageNo.value=pager;
+  await PaperInfoStore.getAllPaperInfo(pageNo.value,pageSize.value);
+}
+//新建试卷
+const AddPaperDialogVisible=ref<boolean>(false);
+let addPaperForm=reactive<addPaperData>({
+  paper_name:"",
+  duration:0
+})
 const handleAddPaper=()=>{
-    AddDialogVisible.value=true;
+  addPaperForm.duration=0;
+  addPaperForm.paper_name="";
+    AddPaperDialogVisible.value=true;
 
 }
-//试卷数据
-const paperArr=[
-    {
-        paperId:'1',
-        paperName:'心脏病小测',
-        duration:'2000',
-        questionNumber:'20',
-        value:'100',
 
-    },
-    {
-        paperId:'2',
-        paperName:'脑血管病小测',
-        duration:'1000',
-        questionNumber:'20',
-        value:'100',
-
-    },
-]
-const paperDetailArr=[
-    {
-        type:'',
-        disease_kind:'',
-
-    }
-]
+const submitAddPaperForm=async()=>{
+  let result=await PaperInfoStore.addPaper(addPaperForm);
+  if(result=='ok'){
+    PaperInfoStore.getAllPaperInfo(pageNo.value,pageSize.value);
+    AddPaperDialogVisible.value=false;
+  }
+}
+//删除试卷
 
 import { ElMessage, ElMessageBox } from 'element-plus'
-const handleDeletePaper = ()=>{
-  ElMessageBox.confirm(
-    '您确定删除该试卷吗？',
-    '提示',
-    {
-      confirmButtonText: '确认',
-      cancelButtonText: '取消',
-      type: 'warning',
-    }
-  )
-    .then(() => {
-      ElMessage({
-        type: 'success',
-        message: '成功删除',
-      })
-    })
-    .catch(() => {
-      ElMessage({
-        type: 'info',
-        message: '删除失败',
-      })
-    })
-}
+import type { addPaperData, deletePaperData } from '@/api/back/exam/paper/type';
+const handleDeletePaper = async (index:any,row:any)=>{
+  try {
+    await ElMessageBox.confirm(
+      '您确定删除该试卷吗？',
+      '提示',
+      {
+        confirmButtonText: '确认',
+        cancelButtonText: '取消',
+        type: 'warning',
+      }
+    );
+    // 用户确认删除后，调用删除用户方法，并传递用户名作为参数
+    let deleteData=ref<deletePaperData>({paper_id:""});
+    deleteData.value.paper_id=row.paper_id;
+    
+     let result = await PaperInfoStore.deletePaperInfo(deleteData.value);  
+     if(result==='ok'){
+       PaperInfoStore.getAllPaperInfo(pageNo.value,pageSize.value);
+     }
 
+  } catch (error) {
+    // 取消删除时显示提示信息
+    ElMessage({
+      type: 'info',
+      message: '已取消删除',
+    });
+  }
+}
+//展示试卷详情
+let PaperDetailDialogVisible=ref(false);
+let PaperInfo=ref()
+const handleShowPaperDetail=(index:any,row:any)=>{
+  PaperDetailDialogVisible.value=true;
+}
+//
 const AddQuestion2PaperDialogVisible=ref<boolean>(false);
 const handleAddQuestion2NewPaper=()=>{
   AddQuestion2PaperDialogVisible.value=true;

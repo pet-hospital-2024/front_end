@@ -1,29 +1,68 @@
-export interface ChoiceQuestion {
-    disease_kind: string
-    type: 'choice'
-    question_body: string
-    A: string
-    B: string
-    C: string
-    D: string
-    right_choice: string
-    value:string
-  }
-export  interface JudgementQuestion {
-    disease_kind: string
-    type: 'judgement'
-    question_body: string
-    judgement: string
-    value:string
-  }
-export type Question = ChoiceQuestion | JudgementQuestion;
-export interface QuestionID{
-    question_id:string
+import type { diseaseInfoArr } from "../../deisease/type";
+
+export interface responseData{
+  code:number;
+  message:string;
 }
-export interface AddQuestion{
-    authorization_header:string
+interface questionItem{
+  question_id:string;
+  question_body:string;
+  type:string;//choice or judge
+  disease_name:string;
+  department_name:string;
+  a:string;
+  b:string;
+  c:string|null;
+  d:string|null;
+  right_choice:string;
+
 }
-export interface responseQuestionData{
-    question:Question;
-    
+export type questionArr=questionItem[];
+//返回所有试题数据类型
+export interface responseQuestionData extends responseData{
+  data:{
+    total:number;
+    list:questionArr;
+  }
+}
+export interface addQuestionData{
+  question_id:string;
+  disease_name: string;
+  type: string;
+  question_body: string;
+  a: string;
+  b: string;
+  c: string;
+  d: string;
+  right_choice: string;  
+  department_name:string;
+}
+export interface editQuestionData{
+  question_id:string;
+  disease_name: string;
+  type: string;
+  question_body: string;
+  a: string;
+  b: string;
+  c: string;
+  d: string;
+  right_choice: string; 
+  department_name:string;
+}
+export interface deleteQuestionData{
+  question_id:string;
+}
+export interface diseaseQuestionInfoItem{
+  disease_id:string;
+  disease_name:string;
+}
+export type diseaseQuestionInfoArr=diseaseQuestionInfoItem[]
+export interface departmentQuestionInfoItem{
+  department_id:string;
+  department_name:string;
+  diseases:diseaseQuestionInfoArr;
+}
+export type departmentQuestionInfoArr=departmentQuestionInfoItem[]
+export interface diseaseAnddepartmentResponseData extends responseData{
+  data:departmentQuestionInfoArr;
 }
