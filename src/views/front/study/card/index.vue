@@ -1,23 +1,22 @@
 <template>
   <div>
     <div class="content">
-
       <div class="card">
-          <div class="box">
-            <el-card class="item1" shadow="hover" @click="goDetail('3')"
-              >前台</el-card
-            >
-            <el-card class="item2" shadow="hover" @click="goDetail('2')"
-              >医助</el-card
-            >
-            <el-card class="item3" shadow="hover" @click="goDetail('1')"
-              >兽医</el-card
-            >
-          </div>
-        
-          <el-card class="item4" shadow="hover" @click="goCase"
-            >病例学习</el-card
-        >
+        <div class="box">
+          <el-card class="item1" shadow="hover" @click="goDetail('3')"
+            >前台</el-card
+          >
+          <el-card class="item2" shadow="hover" @click="goDetail('2')"
+            >医助</el-card
+          >
+          <el-card class="item3" shadow="hover" @click="goDetail('1')"
+            >兽医</el-card
+          >
+        </div>
+
+        <el-card class="item4" shadow="hover" @click="goCase">
+          <p>病例学习</p> 
+        </el-card>
       </div>
     </div>
   </div>
@@ -63,7 +62,7 @@ const goDetail = (role_id: string) => {
   font-size: 36px;
   // margin-top: 100px;
 
-  .box{
+  .box {
     margin-top: 5vh;
     margin-left: 10vw;
     width: 20vw;
@@ -75,7 +74,7 @@ const goDetail = (role_id: string) => {
     // width: 80%;
     height: 20vh;
     // margin-top: 50px;
-    background-color:#c7d9cb;
+    background-color: #c7d9cb;
     cursor: pointer;
     border-radius: 15px;
   }
@@ -105,6 +104,7 @@ const goDetail = (role_id: string) => {
   }
   .item4 {
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
     width: 30vw;

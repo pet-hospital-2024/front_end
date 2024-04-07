@@ -4,7 +4,7 @@ export interface ResponseData {
 }
 
 //前台的考试列表
-interface TestItem {
+export interface TestItem {
   exam_id: string;
   paper_id: string;
   exam_start: string | null;
