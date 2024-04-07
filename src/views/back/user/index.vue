@@ -31,8 +31,7 @@
       <el-table-column label="id" align="center" prop="user_id" width="220"></el-table-column>
       <el-table-column label="用户名" align="center" prop="username" width="130"></el-table-column>
       <el-table-column label="身份" align="center" prop="identity" width="130"></el-table-column>
-      <!-- <el-table-column label="电话号码" align="center" prop="phone_number" width="180"></el-table-column>
-      <el-table-column label="邮箱" align="center" prop="email" width="180"></el-table-column> -->
+
       <el-table-column label="操作" align="center">
         <template v-slot="{ row, index }">
               <el-button @click="handleShowUserDetail(index, row)" size="small" :icon="ZoomIn">详情</el-button>

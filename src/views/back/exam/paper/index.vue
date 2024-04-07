@@ -3,10 +3,10 @@
         <el-button type="primary" size="default" icon="Plus" @click="handleAddPaper">
             创建试卷
         </el-button>
-        <el-table :data="paperArr" style="margin:10px 0" stripe  >
-            <el-table-column type="index" label="序号" width="80" align="center" prop="paperId"/>
-            <el-table-column label="试卷名称" width="180" align="center" prop="paperName"></el-table-column>
-            <el-table-column label="题目数量" width="180" align="center" prop="questionNumber"/>
+        <el-table :data="PaperInfoStore.paperInfoArr" style="margin:10px 0" stripe  >
+            <el-table-column type="index" label="序号" width="80" align="center" />
+            <el-table-column label="试卷名称" width="180" align="center" prop="paper_name"></el-table-column>
+            <el-table-column label="题目数量" width="180" align="center" prop="question_number"/>
             <el-table-column label="试卷总分" align="center" width="180" prop="value"/>
 
             <el-table-column align="center" class="operation" label="操作">
@@ -24,7 +24,16 @@
     </el-card>
 
 
-    <!--分页器-->
+<!--分页器-->
+<el-pagination
+      v-model:current-page="pageNo"
+      v-model:page-size="pageSize"
+      :background="true"
+      layout="prev, pager, next, jumper, -> , total"
+      :total="PaperInfoStore.total"
+      @current-change="handlePageChange"
+      style="margin-top:20px"
+/>
 
 
     <!--对话框组件-->
@@ -136,43 +145,57 @@
 <script setup lang="ts">
 
 //获取仓库对象
-import useUserStore from '@/store/modules/user';
-import {ZoomIn,Edit,Delete} from '@element-plus/icons-vue'
-let userStore=useUserStore();
-//目前首页挂载完毕发请求获取用户信息
 
-import { ref } from 'vue';
+import {ZoomIn,Edit,Delete} from '@element-plus/icons-vue'
+import useBackPaperInfoStore from '@/store/back/paper';
+let PaperInfoStore=useBackPaperInfoStore();
+import { ref,onMounted } from 'vue';
+//分页器当前页码
+let pageNo=ref<string>("1");
+//定义每页展示多少条数据
+let pageSize=ref<string>("10")  
+
+//目前首页挂载完毕发请求获取用户信息
+onMounted(async()=>{
+  await PaperInfoStore.getAllPaperInfo(pageNo.value,pageSize.value);
+})
+//页面信息变化
+const handlePageChange = async(pager="1")=>{
+  pageNo.value=pager;
+  await PaperInfoStore.getAllPaperInfo(pageNo.value,pageSize.value);
+}
+
 const AddDialogVisible=ref<boolean>(false);
 const handleAddPaper=()=>{
     AddDialogVisible.value=true;
 
 }
 //试卷数据
-const paperArr=[
-    {
-        paperId:'1',
-        paperName:'心脏病小测',
-        duration:'2000',
-        questionNumber:'20',
-        value:'100',
+// const paperArr=[
+//     {
+//         paperId:'1',
+//         paperName:'心脏病小测',
+//         duration:'2000',
+//         questionNumber:'20',
+//         value:'100',
 
-    },
-    {
-        paperId:'2',
-        paperName:'脑血管病小测',
-        duration:'1000',
-        questionNumber:'20',
-        value:'100',
+//     },
+//     {
+//         paperId:'2',
+//         paperName:'脑血管病小测',
+//         duration:'1000',
+//         questionNumber:'20',
+//         value:'100',
 
-    },
-]
-const paperDetailArr=[
-    {
-        type:'',
-        disease_kind:'',
+//     },
+// ]
+// const paperDetailArr=[
+//     {
+//         type:'',
+//         disease_kind:'',
 
-    }
-]
+//     }
+// ]
 
 import { ElMessage, ElMessageBox } from 'element-plus'
 const handleDeletePaper = ()=>{

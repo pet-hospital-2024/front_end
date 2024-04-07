@@ -1,6 +1,8 @@
 import type { diseaseInfoArr } from "@/api/back/deisease/type";
 import type { departmentInfoArr } from "@/api/back/department/type";
+import type { paperInfoArr } from "@/api/back/exam/paper/type";
 import type {  departmentQuestionInfoArr, questionArr } from "@/api/back/exam/questions/type";
+import type { testInfoArr } from "@/api/back/exam/test/type";
 import type { roleInfoArr, } from "@/api/back/role/type";
 export interface userInfoBySliceState{
     total:number;
@@ -28,4 +30,15 @@ export interface departmentInfoBySliceState{
 export interface diseaseInfoBySliceState{
     total:number;
     diseaseInfoArr:diseaseInfoArr;
+}
+//试卷保存类型
+export interface paperInfoBySliceState{
+    total:number;
+    paperInfoArr:paperInfoArr;
+}
+//考试保存类型
+export interface testInfoBySliceState{
+    total:number;
+    testInfoArr:testInfoArr;
+    paper_name:string;
 }

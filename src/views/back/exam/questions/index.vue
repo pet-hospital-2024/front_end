@@ -313,12 +313,11 @@ const handleAddQuestion=()=>{
   addQuestionForm.disease_name = '';
   addQuestionForm.type = '';
   addQuestionForm.question_body = '';
-  addQuestionForm.A = '';
-  addQuestionForm.B = '';
-  addQuestionForm.C = '';
-  addQuestionForm.D = '';
+  addQuestionForm.a = '';
+  addQuestionForm.b = '';
+  addQuestionForm.c = '';
+  addQuestionForm.d = '';
   addQuestionForm.right_choice = '';
-  addQuestionForm.judgement = '';
   addQuestionForm.department_name = '';
 
   AddDialogVisible.value=true;
@@ -329,7 +328,10 @@ const cancleAddQuestionForm=()=>{
   isChoice.value=false;
 }
 const submitAddQuestionForm = async ()=>{
-  console.log(addQuestionForm);
+  if(addQuestionForm.type==='judge'){
+    addQuestionForm.a="对";
+    addQuestionForm.b="错";
+  }
   let result=await QuestionInfoStore.addQuestionInfo(addQuestionForm);
   if(result==='ok'){
     await QuestionInfoStore.getAllQuestionInfo(pageNo.value,pageSize.value);
@@ -372,6 +374,11 @@ const cancleEditQuestionForm=()=>{
   EditQuestionDialogVisible.value=false;
 }
 const submitEditQuestionForm= async ()=>{
+  if(editQuestionForm.type==='judge'){
+    editQuestionForm.a="对";
+    editQuestionForm.b="错";
+  }
+
   let result=await QuestionInfoStore.editQuestionInfo(editQuestionForm);
   if(result==='ok'){
     QuestionInfoStore.getAllQuestionInfo(pageNo.value,pageSize.value);
