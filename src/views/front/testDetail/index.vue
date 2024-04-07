@@ -72,6 +72,7 @@
                 plain
                 size="large"
                 style="width: 100%"
+                color=" rgb(152, 181, 172)"
                 @click="submitConfirm"
                 >提交</el-button
               >
@@ -93,6 +94,7 @@
                 plain
                 size="large"
                 style="width: 100%"
+                color=" rgb(152, 181, 172)"
                 @click="confirmExit"
                 >退出测试</el-button
               >

@@ -25,7 +25,7 @@
             size="large"
             type="primary"
             plain
-            color=" rgb(100, 220, 255)"
+            color=" rgb(152, 181, 172)"
             style="width: 100%"
             @click="goExam(paper.paper_id,paper.duration)"
             >进入考试</el-button
@@ -48,7 +48,6 @@ let $router = useRouter();
 const goBack = () => {
   $router.go(-1);
 };
-
 
 
 onMounted(async() => {

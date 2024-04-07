@@ -33,7 +33,7 @@
             <el-table-column prop="location_introduction" label="详情" />
             <el-table-column prop="operation" label="操作" width="200">
               <template #default>
-                <el-button plain type="primary" size="default"
+                <el-button plain type="primary" size="default" color=" rgb(152, 181, 172)"
                   >实景操作</el-button
                 >
               </template>

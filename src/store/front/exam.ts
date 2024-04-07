@@ -22,7 +22,11 @@ export const useFrontExamStore = defineStore("FrontExam", {
     async getTestListArr() {
       let res: TestListResponseData = await reqTestList();
       if (res.code == 1) {
-        this.testListArr = res.data;
+        this.testListArr = res.data.filter(paper=>{
+          const now = new Date();
+          const examEnd = new Date(paper.exam_end as string);
+          return now < examEnd;
+        });
         // console.log(this.testListArr);
       }
     },

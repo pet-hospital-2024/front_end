@@ -175,7 +175,7 @@ const login = async () => {
         $router.replace(useStore.userData?.identity === "user" ? "/front" : "/back");
         ElNotification({
           type: "success",
-          message: "登陆成功",
+          message: "登录成功",
         });
     // }
     }
