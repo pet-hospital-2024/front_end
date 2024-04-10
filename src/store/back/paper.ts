@@ -1,16 +1,18 @@
 import { defineStore } from "pinia";
 import { ElNotification } from "element-plus";
 import type { paperInfoBySliceState } from "./types/type";
-import type { addPaperData, addQuestionForPaperData, deletePaperData, deleteQuestionFromPaperData, editPaperBasicData, paperInfoResponseData, responseData } from "@/api/back/exam/paper/type";
-import { getAllPaperInfoBySlice, reqAddPaperInfo, reqAddQuestionForPaper, reqDeletePaperInfo, reqDeleteQuestionFromPaper, reqEditBasicInfo } from "@/api/back/exam/paper";
+import type { addPaperData, addQuestionForPaperData, deletePaperData, deleteQuestionFromPaperData, editPaperBasicData,  getQuestionByIdResponseData, paperInfoResponseData, responseData } from "@/api/back/exam/paper/type";
+import { getAllPaperInfoBySlice, reqAddPaperInfo, reqAddQuestionForPaper, reqDeletePaperInfo, reqDeleteQuestionFromPaper, reqEditBasicInfo, reqQuestionInfoById } from "@/api/back/exam/paper";
 let useBackPaperInfoStore=defineStore("PaperManagement",{
     state:():paperInfoBySliceState=>{
         return{
             total:0,
-            paperInfoArr:[]
+            paperInfoArr:[],
+            questionInfoArr:[]
         }
     },
     actions:{
+        //获取试卷基础信息
         async getAllPaperInfo(page:string,size:string){
             let result:paperInfoResponseData=await getAllPaperInfoBySlice(page,size);
             if(result.code==1){
@@ -104,6 +106,20 @@ let useBackPaperInfoStore=defineStore("PaperManagement",{
                 })
                 return Promise.reject(new Error(result.message));
             }     
+        },
+        //获取试卷包含试题信息
+        async getQuestionsById(data:string){
+            let result:getQuestionByIdResponseData=await reqQuestionInfoById(data);
+            if(result.code==1){
+                this.questionInfoArr=result.data.questions;
+                return 'ok'
+            }else{
+                ElNotification({
+                    type:'error',
+                    message:"获取试卷题目失败！"+result.message,
+                })
+                return Promise.reject(new Error(result.message));
+            }
         }
     }
 })

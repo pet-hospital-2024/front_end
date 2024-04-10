@@ -292,9 +292,9 @@ const SelectPaper=async (row:any,index:any)=>{
 }
 const submitAddTestForm = async ()=>{
 
-  const { exam_start, exam_end } = toRefs(addTestForm);
-  exam_start.value = exam_start.value.replace(/\//g, '.');
-  exam_end.value = exam_end.value.replace(/\//g, '.');
+  // const { exam_start, exam_end } = toRefs(addTestForm);
+  // exam_start.value = exam_start.value.replace(/\//g, '.');
+  // exam_end.value = exam_end.value.replace(/\//g, '.');
   
     let result=await TestInfoStore.addTestInfo(addTestForm);
     if(result==='ok'){
@@ -333,9 +333,9 @@ const cancleEditTestForm = ()=>{
   EditTestDialogVisible.value=false;
 }
 const submitEditTestForm = async (index:any,row:any)=>{
-  const { exam_start, exam_end } = toRefs(editTestForm);
-  exam_start.value = exam_start.value.replace(/\//g, '.');
-  exam_end.value = exam_end.value.replace(/\//g, '.');
+  // const { exam_start, exam_end } = toRefs(editTestForm);
+  // exam_start.value = exam_start.value.replace(/\//g, '.');
+  // exam_end.value = exam_end.value.replace(/\//g, '.');
   
   console.log(editTestForm);
   let result=await TestInfoStore.editTestInfo(editTestForm);

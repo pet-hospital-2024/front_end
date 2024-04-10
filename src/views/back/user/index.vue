@@ -20,7 +20,7 @@
 
 
  <!--下方表单-->
-  <el-card style="margin: 10px 0;">
+ <el-card style="margin: 10px 0;">
       <!--添加用户-->
     <el-button type="primary" size="default" @click="handleAddUser" :icon="Plus">
       添加用户
@@ -457,5 +457,14 @@ const handleBanUser = async (index:any,row:any)=>{
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+.fade-enter-from{
+    opacity: 0;
+}
+.fade-enter-active{
+    transition: all 1s;
+}
+.fade-enter-to{
+    opacity: 1;
 }
 </style>
