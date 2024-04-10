@@ -5,14 +5,22 @@
       <router-view ></router-view>
     <!-- </div> -->
     <Modify v-if="modifyStore.isVisible" />
+    <AIassistant/>
+    <ChatBox v-if="chatStore.isVisible"/>
     
   </div>
 </template>
 
 <script setup lang="ts">
-import Modify from "@/components/modify/index.vue";
 import useModifyStore from "./store/front/modifyPw";
+import useChatStore from "./store/front/chat";
+import Modify from "@/components/modify/index.vue";
+import AIassistant from "@/components/AIassistant/index.vue";
+//@ts-ignore
+import ChatBox from "@/components/chatBox/index.vue";
+
 let modifyStore = useModifyStore();
+let chatStore = useChatStore();
 
 
 </script>

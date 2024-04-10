@@ -57,4 +57,3 @@ const modifyPwd = () => {
   // border: 1px solid #ccc;
 }
 </style>
-@/store/front/modifyPw
