@@ -1,3 +1,4 @@
+
 export interface responseData{
     code:number;
     message:string;
@@ -43,4 +44,33 @@ export interface editPaperBasicData{
     paper_id:string;
     paper_name:string;
     duration:number;
+}
+// export interface getQuestionByIdData{
+//     paper_id:string;
+// }
+//getQuestionById返回数据
+export interface option{
+    optCode:string;
+    optContents:string;
+}
+export type options = option[];
+export interface questionInfoItem{
+    question_id:string;
+    question_body:string;
+    type:string;
+    right_choice:string;
+    value:number;
+    order:number;
+    options:options;
+}
+export type questionInfoArr=questionInfoItem[]|null;
+export interface getQuestionByIdResponseData extends responseData{
+    data:{
+        paper_id:string;
+        paper_name:string;
+        duration:number;
+        question_number:number;
+        value:number;
+        questions:questionInfoArr;
+    }
 }
