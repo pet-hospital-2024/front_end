@@ -82,6 +82,16 @@ export const constantRoute = [
           title: "",
         },
       },
+      //3D界面相关
+      {
+        path: "/front/panorama",
+        name: "panorama",
+        component: () => import("@/views/panorama/index.vue"),
+        meta: {
+          hidden: true,
+          title: "",
+        },
+      }
     ],
   },
 
@@ -98,9 +108,9 @@ export const constantRoute = [
     
   },*/
   {
-    path: '/login',
-    component: () => import('@/views/login/index.vue'),
-    name: 'login',
+    path: "/login",
+    component: () => import("@/views/login/index.vue"),
+    name: "login",
     meta: {
       title: "login",
       hidden: true, //隐藏与后台无关页面
@@ -132,25 +142,25 @@ export const constantRoute = [
   },
   //管理员相关界面路由
   {
-    path: '/back',
-    component: () => import( '@/layout/back/index.vue' ),
-    name:"backAcl",
-    redirect:'/back/user',
+    path: "/back",
+    component: () => import("@/layout/back/index.vue"),
+    name: "backAcl",
+    redirect: "/back/user",
     meta: {
       title: "",
       hidden: false,
-      icon:"Avatar",
+      icon: "Avatar",
     },
     children: [
       {
-        path:"/back/user",
-        component:()=>import('@/views/back/user/index.vue'),
-        name:"backUser",
-        meta:{
-          title:"用户管理",
-          hidden:false, 
-          icon:'Lock',
-        }
+        path: "/back/user",
+        component: () => import("@/views/back/user/index.vue"),
+        name: "backUser",
+        meta: {
+          title: "用户管理",
+          hidden: false,
+          icon: "Lock",
+        },
       },
     ],
   },
@@ -164,35 +174,32 @@ export const constantRoute = [
       hidden:false,
       icon:'OfficeBuilding',
     },
-    redirect:'/back/case',
-    children:[{
-      path:"/back/case",
-      component:()=>import('@/views/back/case/index.vue'),
-      name:"backCase",
-      meta:{
-        title:"病例管理",
-        hidden:false,
-        icon:"Files",
+    redirect: "/back/case",
+    children: [
+      {
+        path: "/back/case",
+        component: () => import("@/views/back/case/index.vue"),
+        name: "backCase",
+        meta: {
+          title: "病例管理",
+          hidden: false,
+          icon: "Files",
+        },
       },
-    },
-    {
-      path:"/back/department",
-      component:()=>import('@/views/back/department/index.vue'),
-      name:"backDepartment",
-      meta:{
-        title:"科室管理",
-        hidden:false,
-        icon:"Files",
+      {
+        path: "/back/department",
+        component: () => import("@/views/back/department/index.vue"),
+        name: "backDepartment",
+        meta: {
+          title: "科室管理",
+          hidden: false,
+          icon: "Files",
+        },
       },
-    }
-  ]
-
+    ],
   },
-  
 
   //科室管理
-
-
 
   //考试管理系统相关界面跳转路由
   {
@@ -241,11 +248,11 @@ export const constantRoute = [
 
   {
     path: "/",
-    name:'',
-    meta:{
-      title:'',
-      hidden:true,
+    name: "",
+    meta: {
+      title: "",
+      hidden: true,
     },
     redirect: "/login",
-  },
+  }
 ];
