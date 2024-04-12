@@ -5,7 +5,7 @@
         </el-button>
         <el-table :data="PaperInfoStore.paperInfoArr" style="margin:10px 0" stripe  >
             <el-table-column type="index" label="序号" width="80" align="center" />
-            <el-table-column label="试卷名称" width="150" align="center" prop="paper_name"></el-table-column>
+            <el-table-column label="试卷名称" width="200" align="center" prop="paper_name"></el-table-column>
             <el-table-column label="题目数量" width="100" align="center" prop="question_number"/>
             <el-table-column label="试卷总分" align="center" width="100" prop="value"/>
             <el-table-column label="试卷时长" align="center" width="100" prop="duration"/>

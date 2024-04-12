@@ -24,10 +24,10 @@
     </div>
     <el-table style="margin:10px 0" stripe :data="caseInfoStore.caseTextInfoArr">
       <!-- <el-table-column type="index" label="序号" width="80" align="center"/> -->
-      <el-table-column  label="病例ID" width="100" align="center" prop="case_id"/>
-      <el-table-column  label="病例名称" width="100" align="center" prop="case_name"/>
-      <el-table-column  label="疾病" width="100" align="center" prop="disease_name"/>
-      <el-table-column  label="科室" width="100" align="center" prop="department_name"/>
+      <el-table-column  label="病例ID" width="200" align="center" prop="case_id"/>
+      <el-table-column  label="病例名称" width="200" align="center" prop="case_name"/>
+      <el-table-column  label="疾病" width="200" align="center" prop="disease_name"/>
+      <el-table-column  label="科室" width="200" align="center" prop="department_name"/>
       <el-table-column align="center" label="操作">
         <template v-slot={row}>
           <el-button size="small" :icon="ZoomIn" @click="handleShowCaseDetail(row)">详情</el-button>

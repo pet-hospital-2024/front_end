@@ -177,8 +177,8 @@ const initScene = () => {
     0.1,
     1000
   );
-  camera.position.y = 20;
-  camera.position.z = -50;
+  camera.position.y = 25;
+  camera.position.z = -30;
   data.camera = camera;
 
   //设置相机视角
