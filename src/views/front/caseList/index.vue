@@ -13,8 +13,8 @@
       style="width: 90%"
       max-height="500"
     >
-      <el-table-column prop="case_id" label="ID" width="150" />
-      <el-table-column prop="case_name" label="病例名称" width="200" />
+      <el-table-column prop="case_id" label="ID" width="200" />
+      <el-table-column prop="case_name" label="病例名称" width="300" />
       <el-table-column prop="case_introduction" label="基本情况" width="700" />
       <el-table-column prop="operation" label="操作">
         <template #default="scope">

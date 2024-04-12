@@ -132,6 +132,16 @@
             <p>
               {{ useStore.caseDetail?.case_treatment }}
             </p>
+            <el-divider />
+            <h2>使用药物</h2>
+            <p>
+              {{ useStore.caseDetail?.case_medicine }}
+            </p>
+            <el-divider />
+            <h2>费用</h2>
+            <p>
+              {{ useStore.caseDetail?.case_cost }}
+            </p>
           </div>
           <el-divider />
           <div class="container">
