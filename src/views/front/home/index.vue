@@ -7,7 +7,7 @@
     </div>
     <!-- <Card/> -->
     <div class="card">
-      <div class="item1">
+      <div class="item1" @click="goPanorama">
         <!-- <div class="picture"></div> -->
         <p class="name">3D导览</p>
         <p class="description">查看医院内部全景</p>
@@ -32,6 +32,9 @@
 <script setup lang="ts">
 import { useRouter } from "vue-router";
 let $router = useRouter();
+const goPanorama =() => {
+  $router.push({path:"/front/panorama"});
+};
 const goStudy = () => {
   $router.push({ path: "/front/study" });
 };

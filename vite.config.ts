@@ -30,7 +30,7 @@ export default ({ command, mode }: ConfigEnv): UserConfigExport => {
           changeOrigin: true,
           rewrite: (path)=> path.replace(/^\/api/, ''),
         },
-      }
+      },
     }
   }
   // //scss 全局变量配置
