@@ -84,6 +84,7 @@ let useBackUserInfoStore=defineStore(
                     this.userInfoArr.splice(0, this.userInfoArr.length);
                     // 将新的用户信息添加到数组中
                     this.userInfoArr.push(result.data);
+                    
                     ElNotification({
                         type:'success',
                         message:"查找用户成功!",

@@ -1,4 +1,4 @@
-import type { diseaseInfoArr } from "../../deisease/type";
+
 
 export interface responseData{
   code:number;

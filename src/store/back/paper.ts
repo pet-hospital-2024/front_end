@@ -86,7 +86,7 @@ let useBackPaperInfoStore=defineStore("PaperManagement",{
             }else{
                 ElNotification({
                     type:'error',
-                    message:"向试卷添加试题失败！",
+                    message:"向试卷添加试题失败！"+result.message,
                 })
                 return Promise.reject(new Error(result.message));
             }
@@ -102,7 +102,7 @@ let useBackPaperInfoStore=defineStore("PaperManagement",{
             }else{
                 ElNotification({
                     type:'error',
-                    message:"修改试卷信息失败!",
+                    message:"修改试卷信息失败!"+result.message,
                 })
                 return Promise.reject(new Error(result.message));
             }     

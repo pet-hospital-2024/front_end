@@ -130,7 +130,7 @@
   </el-form-item>
   
   <el-form-item label="科室名称" required>
-    <el-select v-model="editQuestionForm.department_name" placeholder="选择科室" style="width: 240px" @change="handleChangeDepartment">
+    <el-select v-model="editQuestionForm.department_name" placeholder="选择科室" style="width: 240px" @change="handleEditChangeDepartment">
       <el-option
         v-for="item in QuestionInfoStore.diseaseAndDepartmentInfoArr"
         :key="item.department_id"
@@ -300,13 +300,21 @@ let diseaseInfo=ref<diseaseQuestionInfoArr>();
 let isDepartmentSelected=ref<boolean>(false);
 const handleChangeDepartment = ()=>{
   isDepartmentSelected.value=true;
+  addQuestionForm.disease_name="";
+
   const selectedDepartment = QuestionInfoStore.diseaseAndDepartmentInfoArr.find(
         item => item.department_name === addQuestionForm.department_name
       );
       diseaseInfo.value= selectedDepartment ? selectedDepartment.diseases : []
-
 }
 
+const handleEditChangeDepartment = ()=>{
+  editQuestionForm.disease_name="";
+  const selectedDepartment = QuestionInfoStore.diseaseAndDepartmentInfoArr.find(
+        item => item.department_name === editQuestionForm.department_name
+      );
+      diseaseInfo.value= selectedDepartment ? selectedDepartment.diseases : []
+}
 //点击“添加试题”
 const handleAddQuestion=()=>{
     // 重置表单数据为初始状态
@@ -322,21 +330,25 @@ const handleAddQuestion=()=>{
   addQuestionForm.department_name = '';
 
   AddDialogVisible.value=true;
+  isDepartmentSelected.value=false;
 }
 const cancleAddQuestionForm=()=>{
   AddDialogVisible.value=false;
   isJudgement.value=false;
   isChoice.value=false;
+  isDepartmentSelected.value=false;
 }
 const submitAddQuestionForm = async ()=>{
   if(addQuestionForm.type==='judge'){
     addQuestionForm.a="对";
     addQuestionForm.b="错";
+    
   }
   let result=await QuestionInfoStore.addQuestionInfo(addQuestionForm);
   if(result==='ok'){
     await QuestionInfoStore.getAllQuestionInfo(pageNo.value,pageSize.value);
     AddDialogVisible.value=false;
+    isDepartmentSelected.value=false;
   }
 }
 
@@ -368,7 +380,10 @@ const handleEditQuestion=(row:any)=>{
   editQuestionForm.disease_name = row.disease_name;
   editQuestionForm.department_name = row.department_name;
   editQuestionForm.right_choice = row.right_choice;
-
+  const selectedDepartment = QuestionInfoStore.diseaseAndDepartmentInfoArr.find(
+        item => item.department_name === editQuestionForm.department_name
+      );
+      diseaseInfo.value= selectedDepartment ? selectedDepartment.diseases : []
   console.log(editQuestionForm);
 }
 const cancleEditQuestionForm=()=>{

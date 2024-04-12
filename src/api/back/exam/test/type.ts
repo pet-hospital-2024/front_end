@@ -5,6 +5,7 @@ export interface responseData{
 export interface testInfoItem{
     exam_id:string;
     paer_id:string;
+    paper_name:string;
     exam_name:string;
     exam_start:string;
     exam_end:string;

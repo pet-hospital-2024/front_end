@@ -63,7 +63,7 @@ export interface questionInfoItem{
     order:number;
     options:options;
 }
-export type questionInfoArr=questionInfoItem[]|null;
+export type questionInfoArr=questionInfoItem[];
 export interface getQuestionByIdResponseData extends responseData{
     data:{
         paper_id:string;
@@ -71,6 +71,6 @@ export interface getQuestionByIdResponseData extends responseData{
         duration:number;
         question_number:number;
         value:number;
-        questions:questionInfoArr;
+        questions:questionInfoArr|null;
     }
 }

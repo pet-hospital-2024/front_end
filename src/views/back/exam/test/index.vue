@@ -134,8 +134,8 @@
     
   >
     <el-form style="max-width: 400px" :TestInfo="TestInfo">
-        <el-form-item  label="试卷ID:">
-            <span>{{ TestInfo.paper_id }}</span>
+        <el-form-item  label="试卷:">
+            <span>{{ TestInfo.paper_name }}</span>
         </el-form-item>
         <el-form-item  label="考试名称:">
             <span>{{ TestInfo.exam_name }}</span>

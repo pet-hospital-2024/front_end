@@ -178,35 +178,26 @@
 <!--detail详情对话框-->
 <el-dialog title="试卷详情" width="600" align-center v-model="PaperDetailDialogVisible" :QuestionInfo="PaperInfoStore.questionInfoArr">
   <el-card>
-    
-    <div class="paper">
-      <div v-for="(question,index) in PaperInfoStore.questionInfoArr" :key="question.question_id">
-      <div>
-        <span>题目ID:{{ question.question_id }}</span>
+  <div class="paper">
+    <div v-for="(question, index) in PaperInfoStore.questionInfoArr" :key="question.question_id" class="question-item">
+      <div class="question-header">
+        <span>题目ID: {{ question.question_id }}</span>
+        <span>题目类型: {{ question.type === 'choice' ? '选择题' : '判断题' }}</span>
       </div>
-      <div>
-        <span>题目类型：{{ question.type }}</span>
+      <div class="question-body">
+        <span>{{ question.order }}. {{ question.question_body }} ({{ question.value }}分)</span>
       </div>
-      <div>
-        <span>{{ question.order + "." }}</span>
-                <span>{{
-                  question.question_body + "(" + question.value + "分)"
-                }}</span>
+      <div class="options">
+        <div v-for="opt in question.options" :key="opt.optCode" class="option">
+          <span>{{ opt.optCode.toUpperCase() }}: {{ opt.optContents }}</span>
+        </div>
       </div>
-      <div v-for="opt in question.options">
-        <span>{{ opt.optCode }}:</span><span>{{ opt.optContents }}</span>
+      <div class="correct-answer">
+        <span>正确选项: {{ question.right_choice.toUpperCase() }}</span>
       </div>
-
-      <div>
-        <span>正确选项：{{ question.right_choice }}</span>
-      </div>
-
     </div>
-    </div>
-
-
-
-  </el-card>
+  </div>
+</el-card>
 
 <template #footer>
   <div class="dialog-footer">
@@ -397,7 +388,7 @@ const handleDeleteQuestionFromPaper = async(row:any)=>{
      if(result==='ok'){
         await PaperInfoStore.getQuestionsById(deleteSendData.paper_id);
         await PaperInfoStore.getAllPaperInfo(pageNo.value,pageSize.value);
-       
+
      }
 
   } catch (error) {
@@ -417,4 +408,29 @@ const handleDeleteQuestionFromPaper = async(row:any)=>{
 .suffix {
   margin-left: 5px; /* 调整后缀与输入框之间的间距 */
 }
+.paper {
+    padding: 20px;
+  }
+  .question-item {
+    margin-bottom: 20px;
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 10px;
+  }
+  .question-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+  }
+  .question-body {
+    margin-bottom: 10px;
+  }
+  .options {
+    margin-bottom: 10px;
+  }
+  .option {
+    margin-bottom: 5px;
+  }
+  .correct-answer {
+    font-weight: bold;
+  }
 </style>

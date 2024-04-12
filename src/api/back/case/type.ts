@@ -2,26 +2,28 @@ export interface responseData{
     code:number;
     message:string;
 }
-export interface caseInfoItem {
-    case_id: string;
+export interface caseTextInfoItem {
+    case_id:string;
     case_name: string;
     case_examination: string;
-    case_result: string;
-    case_treatment: string;
-    case_medicine: string;
-    case_cost: string;
-    case_introduction: string;
+    case_result: string|null;
+    case_treatment: string|null;
+    case_medicine: string|null;
+    case_cost: string|null;
+    case_introduction: string|null;
     disease_id: string;
     department_id: string;
+    disease_name:string;
+    department_name:string;
 }
-export type caseInfoArr=caseInfoItem[];
-export interface caseInfoResponseData extends responseData{
+export type caseTextInfoArr=caseTextInfoItem[];
+export interface textCaseInfoResponseData extends responseData{
     data:{
         total:number;
-        list:caseInfoArr;
+        list:caseTextInfoArr;
     }
 }
-export interface addTextCaseData {
+export interface addCaseTextData {
     case_name: string;
     case_examination: string;
     case_result: string;
@@ -31,11 +33,12 @@ export interface addTextCaseData {
     case_introduction: string;
     disease_id: string;
     department_id: string;
+
 }
-export interface deleteTextCaseData{
+export interface deleteCaseTextData{
     case_id:string;
 }
-export interface editTextCaseData{
+export interface editCaseTextData{
     case_id: string;
     case_name: string;
     case_examination: string;
@@ -47,5 +50,23 @@ export interface editTextCaseData{
     disease_id: string;
     department_id: string;
 }
-  
+export interface searchCaseData{
+    case_name:string;
+}
+export interface searchCaseResponseData extends responseData{
+    data:caseTextInfoArr;
+}
+//多媒体传输
+export interface addMediaCaseData{
+    file:File;
+    case_id:string;
+    media_name:string;
+    catagory:string;
+}
+export interface caseMediaResponseData extends responseData {
+    data:Array<string>;
+  }
+  export interface deleteMediaData{
+    media_id:string;
+  }
   

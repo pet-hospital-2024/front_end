@@ -16,6 +16,7 @@ let useBackDiseaseInfoStore=defineStore("DiseaseManagement",{
             if(result.code==1){
                 this.total=result.data.total;
                 this.diseaseInfoArr=result.data.list;
+                return 'ok'
             }else{
                 ElNotification({
                     type:'error',

@@ -162,7 +162,7 @@ export const constantRoute = [
     meta:{
       title:'医院管理',
       hidden:false,
-      icon:'Files',
+      icon:'OfficeBuilding',
     },
     redirect:'/back/case',
     children:[{
@@ -213,7 +213,7 @@ export const constantRoute = [
         meta:{
           title:'考题管理',
           hidden:false,
-          icon:'ToiletPaper'//后期待调整
+          icon:'Document'//后期待调整
         }
       },
       {
