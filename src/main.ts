@@ -1,6 +1,8 @@
 import { createApp } from "vue";
 import App from "./App.vue";
 import "@/style/reset.scss";
+
+import '@/style/element/index.scss'
 //英文语言包
 import i18n from '@/language/'
 // import HospitalTop from "@/components/hospital_top/index.vue";
@@ -12,7 +14,7 @@ import ChatBox from "@/components/chatBox/index.vue";
 import router from "@/router";
 
 import ElementPlus from "element-plus";
-import "element-plus/dist/index.css";
+// import "element-plus/dist/index.css";
 //@ts-ignore
 import zhCn from "element-plus/dist/locale/zh-cn.mjs";
 import pinia from "@/store";

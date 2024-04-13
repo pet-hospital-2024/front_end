@@ -9,10 +9,16 @@
     </template>
   </el-page-header>
   <div class="content">
-    <p>{{ useStore.caseDetail?.case_name }}</p>
+    <h1 style="color: rgb(143, 162, 143);">{{ useStore.caseDetail?.case_name }}</h1>
     <div class="caseCard">
       <el-tabs type="border-card" @tab-change="getList">
-        <el-tab-pane label="接诊" >
+        <el-tab-pane style="color: rgb(114, 114, 114)">
+          <template #label>
+            <span class="custom-tabs-label">
+              <!-- <el-icon><calendar /></el-icon> -->
+              <span style="color: rgb(121, 176, 137);;">接诊</span>
+            </span>
+          </template>
           <div class="container">
             <h2 style="margin-top: 10px">基本情况</h2>
             <p>
@@ -23,7 +29,11 @@
           <div class="container">
             <h2>照片</h2>
             <div class="imgContainer">
-              <div v-for="(url, index) in useStore.pictureList" :key="url" class="block">
+              <div
+                v-for="(url, index) in useStore.pictureList"
+                :key="url"
+                class="block"
+              >
                 <el-image
                   style="width: 100%; height: 100%"
                   :src="url"
@@ -42,15 +52,24 @@
           <div class="container">
             <h2>视频</h2>
             <div class="videoContainer">
-              <div v-for="(url, index) in useStore.videoList" :key="url" class="videoBlock">
+              <div
+                v-for="(url, index) in useStore.videoList"
+                :key="url"
+                class="videoBlock"
+              >
                 <video width="100%" controls>
-                  <source :src="url" type="video/mp4">
+                  <source :src="url" type="video/mp4" />
                 </video>
               </div>
             </div>
           </div>
         </el-tab-pane>
-        <el-tab-pane label="病例检查" @click="getList('Examination')">
+        <el-tab-pane style="color: rgb(114,114,114);">
+          <template #label>
+            <span class="custom-tabs-label">
+              <span style="color: rgb(121, 176, 137);">病例检查</span>
+            </span>
+          </template>
           <div class="container">
             <h2 style="margin-top: 10px">检查情况</h2>
             <p>
@@ -61,7 +80,11 @@
           <div class="container">
             <h2>照片</h2>
             <div class="imgContainer">
-              <div v-for="(url, index) in useStore.pictureList" :key="url" class="block">
+              <div
+                v-for="(url, index) in useStore.pictureList"
+                :key="url"
+                class="block"
+              >
                 <el-image
                   style="width: 100%; height: 100%"
                   :src="url"
@@ -80,15 +103,24 @@
           <div class="container">
             <h2>视频</h2>
             <div class="videoContainer">
-              <div v-for="(url, index) in useStore.videoList" :key="url" class="videoBlock">
+              <div
+                v-for="(url, index) in useStore.videoList"
+                :key="url"
+                class="videoBlock"
+              >
                 <video width="100%" controls>
-                  <source :src="url" type="video/mp4">
+                  <source :src="url" type="video/mp4" />
                 </video>
               </div>
             </div>
           </div>
         </el-tab-pane>
-        <el-tab-pane label="诊断结果">
+        <el-tab-pane style="color: rgb(114,114,114);">
+          <template #label>
+            <span class="custom-tabs-label">
+              <span style="color: rgb(121, 176, 137);">诊断结果</span>
+            </span>
+          </template>
           <div class="container">
             <h2 style="margin-top: 10px">诊断结果</h2>
             <p>
@@ -99,7 +131,11 @@
           <div class="container">
             <h2>照片</h2>
             <div class="imgContainer">
-              <div v-for="(url, index) in useStore.pictureList" :key="url" class="block">
+              <div
+                v-for="(url, index) in useStore.pictureList"
+                :key="url"
+                class="block"
+              >
                 <el-image
                   style="width: 100%; height: 100%"
                   :src="url"
@@ -118,15 +154,24 @@
           <div class="container">
             <h2>视频</h2>
             <div class="videoContainer">
-              <div v-for="(url, index) in useStore.videoList" :key="url" class="videoBlock">
+              <div
+                v-for="(url, index) in useStore.videoList"
+                :key="url"
+                class="videoBlock"
+              >
                 <video width="100%" controls>
-                  <source :src="url" type="video/mp4">
+                  <source :src="url" type="video/mp4" />
                 </video>
               </div>
             </div>
           </div>
         </el-tab-pane>
-        <el-tab-pane label="治疗方案">
+        <el-tab-pane label="治疗方案" style="color: rgb(114,114,114);">
+          <template #label>
+            <span class="custom-tabs-label">
+              <span style="color: rgb(121, 176, 137);">治疗方案</span>
+            </span>
+          </template>
           <div class="container">
             <h2 style="margin-top: 10px">治疗方案</h2>
             <p>
@@ -147,7 +192,11 @@
           <div class="container">
             <h2>照片</h2>
             <div class="imgContainer">
-              <div v-for="(url, index) in useStore.pictureList" :key="url" class="block">
+              <div
+                v-for="(url, index) in useStore.pictureList"
+                :key="url"
+                class="block"
+              >
                 <el-image
                   style="width: 100%; height: 100%"
                   :src="url"
@@ -166,9 +215,13 @@
           <div class="container">
             <h2>视频</h2>
             <div class="videoContainer">
-              <div v-for="(url, index) in useStore.videoList" :key="url" class="videoBlock">
+              <div
+                v-for="(url, index) in useStore.videoList"
+                :key="url"
+                class="videoBlock"
+              >
                 <video width="100%" controls>
-                  <source :src="url" type="video/mp4">
+                  <source :src="url" type="video/mp4" />
                 </video>
               </div>
             </div>
@@ -184,34 +237,34 @@ import useFrontCaseStore from "@/store/front/case";
 import { ArrowLeft } from "@element-plus/icons-vue";
 import Tabs from "element-plus/es/components/tabs/src/tabs";
 import { onMounted } from "vue";
-import {useRoute,useRouter} from "vue-router";
-let useStore=useFrontCaseStore();
+import { useRoute, useRouter } from "vue-router";
+let useStore = useFrontCaseStore();
 let $router = useRouter();
 let $route = useRoute();
-onMounted(()=>{
+onMounted(() => {
   useStore.getCaseText($route.query.case_id as string);
-  useStore.getMediaList($route.query.case_id as string,"Consultation");
-})
+  useStore.getMediaList($route.query.case_id as string, "Consultation");
+});
 const goBack = () => {
   // $router.replace({ path: "/front/study" });
   $router.go(-1);
 };
 
-const getList=(tab:any)=>{
+const getList = (tab: any) => {
   console.log(tab);
-  if (tab==0){
-    useStore.getMediaList($route.query.case_id as string,"Consultation");
+  if (tab == 0) {
+    useStore.getMediaList($route.query.case_id as string, "Consultation");
   }
-  if (tab==1){
-    useStore.getMediaList($route.query.case_id as string,"Examination");
+  if (tab == 1) {
+    useStore.getMediaList($route.query.case_id as string, "Examination");
   }
-  if (tab==2){
-    useStore.getMediaList($route.query.case_id as string,"Result");
+  if (tab == 2) {
+    useStore.getMediaList($route.query.case_id as string, "Result");
   }
-  if (tab==3){
-    useStore.getMediaList($route.query.case_id as string,"Treatment");
+  if (tab == 3) {
+    useStore.getMediaList($route.query.case_id as string, "Treatment");
   }
-}
+};
 
 const imgUrls = [
   "https://fuss10.elemecdn.com/a/3f/3302e58f9a181d2509f3dc0fa68b0jpeg.jpeg",
@@ -222,10 +275,7 @@ const imgUrls = [
   "https://fuss10.elemecdn.com/3/28/bbf893f792f03a54408b3b7a7ebf0jpeg.jpeg",
   "https://fuss10.elemecdn.com/2/11/6535bcfb26e4c79b48ddde44f4b6fjpeg.jpeg",
 ];
-const videoUrls = [
-  '/xueya.mp4',
-  '/xueya.mp4',
-];
+const videoUrls = ["/xueya.mp4", "/xueya.mp4"];
 </script>
 
 <style scoped lang="scss">
@@ -234,9 +284,11 @@ const videoUrls = [
   flex-direction: column;
   align-items: center;
 
-  p{
-    font-size: 32px;
-    margin-bottom: 10px;
+  h1 {
+    font-size: 40px;
+    margin-top: 10px;
+    margin-bottom: 20px;
+    font-weight: 500;
   }
   .caseCard {
     width: 90%;
@@ -272,7 +324,7 @@ const videoUrls = [
     margin-bottom: 20px;
   }
 
-  .videoBlock{
+  .videoBlock {
     padding: 20px 0 0 0;
     display: inline-block;
     width: 49%;
