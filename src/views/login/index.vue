@@ -297,7 +297,7 @@ const register = async () => {
     padding: 30px 30px 30px 10px;
     border-radius: 20px;
     h1 {
-      font-size: 40px;
+      font-size: 36px;
       margin-left: 18px;
       margin-bottom: 20px;
       color: rgb(116, 116, 116);
@@ -326,10 +326,10 @@ const register = async () => {
     // background-color: rgba(255, 255, 255,0.3);
     position: relative;
     margin-left: 200px;
-    top: 35vh;
+    top: 25vh;
     max-width: 100%;
     h1 {
-      font-size: 48px;
+      font-size: 56px;
       color: rgb(139, 139, 139);
       font-weight: bold;
     }

@@ -6,8 +6,8 @@ export interface ResponseData {
 
 //用户登录接口
 export interface LoginData {
-  username: String;
-  password: String;
+  username: string;
+  password: string;
 }
 
 //用户注册接口
