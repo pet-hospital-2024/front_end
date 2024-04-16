@@ -23,7 +23,7 @@
         :rows="4"
         resize="none"
         type="textarea"
-        placeholder="Please input"
+        placeholder="请输入您的问题"
       />
       <!-- <el-button
         type="primary"
@@ -32,7 +32,8 @@
         :disabled="useStore.isSending"
         >发送</el-button
       > -->
-      <div class="send"
+      <div
+        class="send"
         @click="sendMessage(textarea)"
         v-if="!useStore.isSending"
       >
@@ -85,15 +86,17 @@
 
 <script setup lang="ts">
 import { ref, nextTick, onMounted } from "vue";
-//@ts-ignore
 import useFrontAIStore from "@/store/front/ai";
 import useUserStore from "@/store/modules/user";
+import { fetchEventSource } from "@microsoft/fetch-event-source";
 
 const useStore = useFrontAIStore();
 const userStore = useUserStore();
 
-const textarea = ref("");
+const textarea = ref("");//输入文本
+
 onMounted(() => {
+  //加载历史消息
   useStore.loadMessages();
   nextTick(() => {
     if (endOfMessages.value) {
@@ -102,6 +105,7 @@ onMounted(() => {
   });
 });
 
+//控制消息显示位置
 const endOfMessages = ref<HTMLDivElement | null>(null);
 
 const sendMessage = async (text: string) => {
@@ -119,14 +123,90 @@ const sendMessage = async (text: string) => {
 
   textarea.value = ""; // 清空输入框
 
-  await useStore.sendMessage(text, userStore.token as string);
+  await getAIResponse(text);
+  // await useStore.sendMessage(text, userStore.token as string);
   // console.log(await nextTick());
   nextTick(() => scrollToBottom());
 };
 
+
+let currentController:any = null;
+
+const getAIResponse = async (text: string) => {
+  try {
+    const query = {
+      query: text,
+    };
+    
+    let index = 0;
+
+    // 每次调用前先检查并中止之前的流
+    if (currentController) {
+      currentController.abort();
+    }
+
+    // 创建新的控制中断
+    currentController = new AbortController();
+    await fetchEventSource("/api/ai", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: userStore.token as string,
+      },
+      body: JSON.stringify(query),
+      openWhenHidden: true,
+      signal: currentController.signal, 
+      onmessage: (event) => {
+        console.log("返回数据", event);
+        if (event.data) {
+          const data = event.data;
+          console.log(data);
+          // concatContent += data;
+          if (index == 0) {
+            useStore.messageArr.push({
+              id: useStore.nextMessageId++,
+              text: data,
+              isMe: false,
+            });
+          } else {
+            useStore.messageArr[useStore.messageArr.length - 1].text +=
+              data;
+          }
+          index++;
+          nextTick(() => scrollToBottom());
+        }
+      },
+      onclose() {
+        // 数据返回结束时触发
+        console.log("关闭连接成功");
+      },
+      onerror(err) {
+        console.log("eventSource error");
+        throw err;
+      },
+    });
+  } catch (error) {
+    console.error("Failed to get AI response:", error);
+    useStore.messageArr.push({
+      id: useStore.nextMessageId++,
+      text: "Error: Failed to get response from AI.",
+      isMe: false,
+    });
+  } finally {
+    useStore.isSending = false;
+    useStore.saveMessages();
+    await nextTick();
+  }
+};
+
 const cancelSend = () => {
-  // textarea.value = "";
   useStore.isSending = false;
+  // textarea.value = "";
+  if (currentController) {
+    currentController.abort();
+    console.log("Event stream aborted");
+    currentController = null; // 清除控制器实例
+  }
 };
 
 function scrollToBottom() {
@@ -161,13 +241,6 @@ function scrollToBottom() {
     // font-weight: 600;
   }
 
-  // .chatRoom {
-  //   height: 280px;
-  //   overflow: auto;
-  //   &::-webkit-scrollbar {
-  //     display: none;
-  //   }
-  // }
   .chatRoom {
     flex: 1;
     width: 100%;
@@ -215,7 +288,7 @@ function scrollToBottom() {
     // border-bottom-left-radius: 2px;
   }
 
-  .send{
+  .send {
     width: 40px;
     height: 40px;
     border-radius: 10px;
@@ -224,13 +297,13 @@ function scrollToBottom() {
     justify-content: center;
     align-items: center;
     cursor: pointer;
-    transition: ease-in-out 1s;
+    transition: ease-in-out 0.5s;
     margin-top: 10px;
     // &:hover {
     //   background-color: rgb(118, 128, 118);
     // }
   }
-  .cancel{
+  .cancel {
     width: 40px;
     height: 40px;
     border-radius: 20px;
@@ -239,7 +312,7 @@ function scrollToBottom() {
     justify-content: center;
     align-items: center;
     cursor: pointer;
-    transition: ease-in-out 1s;
+    transition: ease-in-out 0.5s;
     margin-top: 10px;
   }
 }
