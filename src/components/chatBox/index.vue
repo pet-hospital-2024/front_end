@@ -19,7 +19,7 @@
     <div class="inputArea">
       <el-input
         v-model="textarea"
-        style="width: 290px; overflow: auto; margin: 10px"
+        style="width: 300px; overflow: auto; margin: 10px"
         :rows="4"
         resize="none"
         type="textarea"
@@ -85,7 +85,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, nextTick, onMounted } from "vue";
+import { ref, nextTick, onMounted,onUnmounted } from "vue";
 import useFrontAIStore from "@/store/front/ai";
 import useUserStore from "@/store/modules/user";
 import { fetchEventSource } from "@microsoft/fetch-event-source";
@@ -215,6 +215,11 @@ function scrollToBottom() {
     endOfMessages.value.scrollIntoView({ behavior: "smooth" });
   }
 }
+
+onUnmounted(() => {
+  useStore.saveMessages();
+});
+
 </script>
 
 <style scoped lang="scss">

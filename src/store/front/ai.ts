@@ -1,14 +1,17 @@
 import { defineStore } from "pinia";
-import { reqGetAIResponse } from "@/api/front/ai";
-import { nextTick } from "vue";
-import { fetchEventSource } from "@microsoft/fetch-event-source";
 
 import type { FrontAIState } from "./types/type";
 
 const useFrontAIStore = defineStore("FrontAI", {
   state: (): FrontAIState => {
     return {
-      messageArr: [],
+      messageArr: [
+        {
+          id:0,
+          text:'你好！我是虚拟宠物医院学习系统的智能助教！请问有什么可以帮您？',
+          isMe:false,
+        }
+      ],
       nextMessageId: 1,
       isSending: false,
       eventSource: null,
