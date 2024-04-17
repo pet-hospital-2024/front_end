@@ -22,12 +22,14 @@ const useFrontRoleStore = defineStore("FrontRole", {
         let res:ProcessResponseData=await reqGetProcess(role_id);
         if(res.code==1){
             this.processListArr=res.data;
+            console.log(this.processListArr)
         }
     },
-    async getLocationList(){
-        let res:LocationResponseData=await reqGetLocation();
+    async getLocationList(role_id: string){
+        let res:DutyResponseData=await reqGetDuty(role_id);
         if(res.code==1){
             this.locationListArr=res.data;
+            console.log(this.locationListArr)
         }
     },
   }

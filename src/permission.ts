@@ -4,12 +4,16 @@
   import "nprogress/nprogress.css";
   import pinia from "./store";
   import useUserStore from "./store/modules/user";
+  import useFrontChatStore from "./store/front/chat";
   import { ElMessage } from "element-plus";
   nprogress.configure({ showSpinner: false });
   let userStore = useUserStore(pinia);
+  let chatStore=useFrontChatStore(pinia);
+
   // 全局前置守卫
   router.beforeEach(async (to, from, next) => {
     //document.title = to.meta.title + ` | ${setting.title}`
+    
     nprogress.start();
     let token = userStore.token;
     if (token) {
@@ -25,6 +29,13 @@
       } else {
         if (identity === "user" && to.path.startsWith("/front")) {
           // 允许用户身份为"user"访问"/front"及其子路由
+          if(to.path!="/front/testDetail"){
+            chatStore.isAIVisible=true;
+            // next();
+          }else{
+            chatStore.hide();
+            // next();
+          }
           next();
           return;
         } else if (identity !== "user" && to.path.startsWith("/back")) {

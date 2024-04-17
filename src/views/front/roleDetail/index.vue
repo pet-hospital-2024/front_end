@@ -30,7 +30,7 @@
         <el-tab-pane label="模拟操作" name="third">
           <el-table :data="useStore.locationListArr" style="width: 100%">
             <el-table-column prop="location_name" label="科室" width="300" />
-            <el-table-column prop="location_introduction" label="详情" />
+            <el-table-column prop="learn_text" label="详情" />
             <el-table-column prop="operation" label="操作" width="200">
               <template #default>
                 <el-button plain type="primary" size="default" color=" rgb(152, 181, 172)"
@@ -78,7 +78,7 @@ onMounted(async() => {
   console.log(role);
   await useStore.getDutyList(role);
   await useStore.getProcessList(role);
-  await useStore.getLocationList();
+  await useStore.getLocationList(role);
 });
 
 const goBack = () => {

@@ -2,6 +2,7 @@
   <div class="panorama">
     <canvas class="webgl"> </canvas>
     <!-- <p style="float:right">hello</p> -->
+    <pullUpMenu/>
   </div>
 </template>
 
@@ -22,6 +23,8 @@ import { RGBELoader } from "three/examples/jsm/loaders/RGBELoader.js";
 import { Tween } from "three/examples/jsm/libs/tween.module.js";
 import { DRACOLoader } from "three/addons/loaders/DRACOLoader.js";
 import Animations from "@/utils/animations.js";
+
+import pullUpMenu from "@/components/pullUpMenu/index.vue"; 
 
 const data = reactive({
   renderer: null,

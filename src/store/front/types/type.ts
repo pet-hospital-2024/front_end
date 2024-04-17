@@ -20,7 +20,7 @@ export interface FrontExamState{
 
 export interface FrontRoleState{
     dutyListArr:DutyArr;
-    locationListArr:LocationArr;
+    locationListArr:DutyArr;
     processListArr:ProcessArr;
 }
 

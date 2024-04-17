@@ -23,42 +23,40 @@
 </template>
 
 <script setup lang="ts">
-import useChatStore from '@/store/front/chat'
+import useChatStore from "@/store/front/chat";
 let chatStore = useChatStore();
-const showChatBox=()=>{
-    chatStore.change();
-}
-
+const showChatBox = () => {
+  chatStore.change();
+};
 </script>
 
 <style scoped lang="scss">
+.assistantButton {
+  position: fixed;
+  right: 30px;
+  bottom: 30px;
+  z-index: 999;
+  width: 88px;
+  height: 88px;
+  border-radius: 50%;
+  background-color: rgb(161, 174, 159);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+  transition: all 0.3s;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  // justify-content: center;
+  cursor: pointer;
 
-.assistantButton{
-    position: fixed;
-    right: 30px;
-    bottom: 30px;
-    z-index: 999;
-    width: 88px;
-    height: 88px;
-    border-radius: 50%;
-    background-color: rgb(161, 174, 159);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
-    transition: all 0.3s;
-    display: flex;
-    flex-direction:column;
-    align-items:center;
-    // justify-content: center;
-    cursor: pointer;
+  .AIicon {
+    margin-top: 10px;
+  }
 
-    .AIicon{
-        margin-top:10px;
-    }
-
-    p{
-        margin-top: 5px;
-        font-size: 12px;
-        color: #fff;
-    }
+  p {
+    margin-top: 5px;
+    font-size: 12px;
+    color: #fff;
+  }
 }
 </style>
