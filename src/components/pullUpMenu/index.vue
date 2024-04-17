@@ -1,8 +1,8 @@
 <template>
-  <div class="menu-container" :class="{ open: isOpen }">
-    <button class="toggleDropdown" @click="toggleMenu">{{ menuItems[selectedItem] }}</button>
+  <div class="menu-container">
+    <button @click="toggleMenu">{{ menuItems[selectedItem] }}</button>
     <ui class="menu" v-show="isOpen">
-        <li
+      <li
         v-for="(item, index) in menuItems"
         :key="index"
         :class="{ selected: selectedItem === index }"
@@ -10,17 +10,19 @@
       >
         {{ item }}
       </li>
-      
     </ui>
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref } from "vue";
+import usePanoramaStore from "@/store/front/panorama";
+let useStore=usePanoramaStore();
 
 const isOpen = ref(false);
 const selectedItem = ref(0); // 默认选择第一个菜单项
-const menuItems = ref(["前台", "兽医", "医助"]); // 菜单项
+const menuItems = ref(["兽医", "医助", "前台"]); // 菜单项
+const selectedRole = ref(1);
 
 function toggleMenu() {
   isOpen.value = !isOpen.value;
@@ -28,6 +30,7 @@ function toggleMenu() {
 
 function selectItem(index: number) {
   selectedItem.value = index;
+  useStore.role_id=index+1;
   isOpen.value = false;
 }
 </script>
@@ -47,7 +50,7 @@ export default {
   // border-top: 1px solid #ccc;
   // transition: transform 0.3s ease-in-out;
   position: fixed;
-  margin-right: 20px;
+  margin-right: 40px;
   margin-top: 20px;
   // display: inline-block;
 }
@@ -63,7 +66,6 @@ export default {
   height: 30px;
 }
 
-
 // .menu-container.open .menu {
 //   transform: translateY(0%);
 // }
@@ -72,7 +74,7 @@ export default {
   position: absolute;
   left: 50%;
   transform: translate(-50%, 30px);
-  background-color: #f9f9f9;
+  background-color: rgba($color: #f9f9f9, $alpha: 0.6);;
   min-width: 100px;
   // max-height: 300px;
   box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
@@ -95,7 +97,7 @@ export default {
 }
 
 .menu li:hover {
-  background-color: #f1f1f1;
+  background-color: #bcbcbc;
 }
 
 // .selected {

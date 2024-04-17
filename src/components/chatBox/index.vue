@@ -1,22 +1,22 @@
 <template>
-  <div class="contianer">
-    <h1>智能助教</h1>
+  <div class="chatBox_contianer">
+      <h1 class="unique_h1">智能助教</h1>
     <el-divider />
     <div class="chatRoom">
       <div
         v-for="message in useStore.messageArr"
         :key="message.id"
-        class="message"
+        class="chat_message"
       >
-        <div :class="['message-text', message.isMe ? 'mine' : 'not-mine']">
-          {{ message.text }}
+        <div :class="['chat_message-text', message.isMe ? 'mine' : 'not-mine']">
+          <div v-html="parsedMarkdown(message.text)"></div>
         </div>
       </div>
       <div ref="endOfMessages"></div>
       <!-- 用于滚动到最新消息 -->
     </div>
     <el-divider />
-    <div class="inputArea">
+    <div class="chat_inputArea">
       <el-input
         v-model="textarea"
         style="width: 300px; overflow: auto; margin: 10px"
@@ -33,7 +33,7 @@
         >发送</el-button
       > -->
       <div
-        class="send"
+        class="chat_send"
         @click="sendMessage(textarea)"
         v-if="!useStore.isSending"
       >
@@ -62,7 +62,7 @@
           ></path>
         </svg>
       </div>
-      <div class="cancel" @click="cancelSend" v-if="useStore.isSending">
+      <div class="chat_cancel" @click="cancelSend" v-if="useStore.isSending">
         <svg
           t="1713187619202"
           class="icon"
@@ -85,16 +85,22 @@
 </template>
 
 <script setup lang="ts">
-import { ref, nextTick, onMounted,onUnmounted } from "vue";
+import { ref, nextTick, onMounted, onUnmounted } from "vue";
 import useFrontAIStore from "@/store/front/ai";
 import useUserStore from "@/store/modules/user";
 import { fetchEventSource } from "@microsoft/fetch-event-source";
+import MarkdownIt from "markdown-it";
 
 const useStore = useFrontAIStore();
 const userStore = useUserStore();
 
-const textarea = ref("");//输入文本
+const textarea = ref(""); //输入文本
 
+const parsedMarkdown = (text:string) => {
+  const md = new MarkdownIt();
+  console.log(md.render(text));
+  return md.render(text);
+};
 onMounted(() => {
   //加载历史消息
   useStore.loadMessages();
@@ -129,15 +135,14 @@ const sendMessage = async (text: string) => {
   nextTick(() => scrollToBottom());
 };
 
-
-let currentController:any = null;
+let currentController: any = null;
 
 const getAIResponse = async (text: string) => {
   try {
     const query = {
       query: text,
     };
-    
+
     let index = 0;
 
     // 每次调用前先检查并中止之前的流
@@ -155,7 +160,7 @@ const getAIResponse = async (text: string) => {
       },
       body: JSON.stringify(query),
       openWhenHidden: true,
-      signal: currentController.signal, 
+      signal: currentController.signal,
       onmessage: (event) => {
         console.log("返回数据", event);
         if (event.data) {
@@ -169,8 +174,7 @@ const getAIResponse = async (text: string) => {
               isMe: false,
             });
           } else {
-            useStore.messageArr[useStore.messageArr.length - 1].text +=
-              data;
+            useStore.messageArr[useStore.messageArr.length - 1].text += data;
           }
           index++;
           nextTick(() => scrollToBottom());
@@ -219,11 +223,10 @@ function scrollToBottom() {
 onUnmounted(() => {
   useStore.saveMessages();
 });
-
 </script>
 
-<style scoped lang="scss">
-.contianer {
+<style lang="scss">
+.chatBox_contianer {
   width: 400px;
   height: 550px;
   z-index: 990;
@@ -239,7 +242,7 @@ onUnmounted(() => {
   flex-direction: column;
   align-items: center;
 
-  h1 {
+  .unique_h1 {
     font-size: 18px;
     margin-top: 10px;
     margin-bottom: -10px;
@@ -257,13 +260,13 @@ onUnmounted(() => {
       display: none;
     }
   }
-  .inputArea {
+  .chat_inputArea {
     margin-top: -20px;
     display: flex;
     justify-content: space-between;
   }
 
-  .message {
+  .chat_message {
     margin: 10px 0px;
     // padding: 5px;
     line-height: 1.5;
@@ -271,9 +274,9 @@ onUnmounted(() => {
     justify-content: flex-start;
   }
 
-  .message-text {
+  .chat_message-text {
     max-width: 90%;
-    padding: 8px 10px;
+    padding: 10px 15px;
     border-radius: 18px;
     display: inline-block;
     word-wrap: break-word;
@@ -293,7 +296,7 @@ onUnmounted(() => {
     // border-bottom-left-radius: 2px;
   }
 
-  .send {
+  .chat_send {
     width: 40px;
     height: 40px;
     border-radius: 10px;
@@ -308,7 +311,7 @@ onUnmounted(() => {
     //   background-color: rgb(118, 128, 118);
     // }
   }
-  .cancel {
+  .chat_cancel {
     width: 40px;
     height: 40px;
     border-radius: 20px;
@@ -319,6 +322,10 @@ onUnmounted(() => {
     cursor: pointer;
     transition: ease-in-out 0.5s;
     margin-top: 10px;
+  }
+
+  strong{
+    font-weight: bold;
   }
 }
 </style>
