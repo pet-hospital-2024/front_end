@@ -4,8 +4,8 @@
               添加科室
           </el-button>
       <el-table :data="departmentInfoStore.departmentInfoArr" style="margin:10px 0" stripe>
-        <el-table-column type="index" label="序号" width="200" align="center"></el-table-column>
-        <el-table-column prop="department_name" label="科室" width="400" align="center"/>
+        <el-table-column type="index" label="序号" width="150" align="center"></el-table-column>
+        <el-table-column prop="department_name" label="科室" width="200" align="center"/>
         <el-table-column align="center" label="操作" width="300">
           <template v-slot="{ row, index}">
             <el-button size="small" @click="handleEditDepartment(index,row)" :icon="Edit" type="info">编辑

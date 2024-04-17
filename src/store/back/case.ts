@@ -1,8 +1,8 @@
 import { defineStore } from "pinia";
 import { ElNotification } from "element-plus";
-import type { addCaseTextData, addMediaCaseData, caseMediaResponseData, caseTextInfoArr, deleteCaseTextData, deleteMediaData, editCaseTextData, responseData, searchCaseData, searchCaseResponseData, textCaseInfoResponseData } from "@/api/back/case/type";
+import type { addCaseTextData, addMediaCaseData, caseMediaResponseData, caseTextInfoArr, deleteCaseTextData, deleteMediaData, editCaseTextData, mediaUrlResponseData, responseData, searchCaseData, searchCaseResponseData, textCaseInfoResponseData } from "@/api/back/case/type";
 import type { caseInfoBySliceState } from "./types/type";
-import { addCaseByMedia, addCaseByText, deleteCaseById, deleteCaseMediaById, editCaseByText, getCaseInfoBySlice, getCaseMediabyId, searchCaseById } from "@/api/back/case";
+import { addCaseByMedia, addCaseByText, deleteCaseById, deleteCaseMediaById, editCaseByText, getCaseInfoBySlice, getCaseMediabyId, getMediaURL, searchCaseById } from "@/api/back/case";
 import request from "@/utils/request";
 let useBackCaseInfoStore=defineStore("caseManagement",{
     state:():caseInfoBySliceState=>({
@@ -10,6 +10,7 @@ let useBackCaseInfoStore=defineStore("caseManagement",{
             caseTextInfoArr:[],
             caseVideoInfoArr:[],
             casePictureInfoArr:[],
+            mediaUrlArr:[]
     }),
     actions:{
         async getAllTextCaseInfo(page:string,pageSize:string){
@@ -80,13 +81,12 @@ let useBackCaseInfoStore=defineStore("caseManagement",{
                 return Promise.reject(new Error(result.message));
             }
         },
-        async searchCaseInfo(data:searchCaseData){
+        async searchCaseInfo(data:string){
             let result:searchCaseResponseData=await searchCaseById(data);
             if(result.code==1){
                 console.log(Object.prototype.toString.call(result.data));
-                this.caseTextInfoArr = result.data;
-
-                console.log(result)
+                this.caseTextInfoArr = result.data.list;
+                this.total = result.data.total;
                 console.log(this.caseTextInfoArr);
                 ElNotification({
                     type:'success',
@@ -150,6 +150,14 @@ let useBackCaseInfoStore=defineStore("caseManagement",{
                 })
                 return Promise.reject(new Error(result.message));
             }
+        },
+        async getMediaUrlInfo(case_id:string,media_type:string,category:string){
+            let res:mediaUrlResponseData=await getMediaURL(case_id,media_type,category)
+            if(res.code==1){
+                this.mediaUrlArr=res.data;
+                return 'ok';
+            }
+            
         }
     }
 })

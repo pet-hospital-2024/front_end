@@ -2,7 +2,12 @@
     <div class="heading">虚拟宠物医院后台管理系统</div>
     <p class="container">欢迎回来,亲爱的{{ userStore.userData?.identity=='administrator'?'管理员':'教师' }} </p>
     
-    
+    <!-- <el-tabs @tab-click="handleChange">
+        <el-tab-pane label="1111" name="1">haha</el-tab-pane>
+        <el-tab-pane label="2222" name="2">haha</el-tab-pane>
+        <el-tab-pane label="3333" name="3">haha</el-tab-pane>
+        <el-tab-pane label="4444" name="4">haha</el-tab-pane>
+    </el-tabs> -->
 </template>
 <script setup lang="ts">
 
@@ -12,7 +17,12 @@ import useUserStore from '@/store/modules/user';
 
 let userStore=useUserStore();
 //目前首页挂载完毕发请求获取用户信息
-console.log(userStore.userData);
+
+
+// const handleChange = (tab:any,event:any)=>{
+//     console.log(tab.paneName)
+// }
+
 </script>
 <style scoped>
 .container{

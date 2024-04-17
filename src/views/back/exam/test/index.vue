@@ -10,7 +10,7 @@
             <el-table-column  label="考试起始时间" prop="exam_start" width="150" align="center"/>
             <el-table-column  label="考试截至时间" prop="exam_end" width="150" align="center"/>
             <el-table-column  label="考试时长" width="80" prop="duration" align="center"/>
-            <el-table-column label="操作" align="center">
+            <el-table-column label="操作" align="center" width="240">
               <template v-slot="{ index, row }">
                     <el-button @click="handleShowTestDetail(index, row)" size="small" :icon="ZoomIn">详情</el-button>
                     <el-button size="small" @click="handleEditTest(index,row)" :icon="Edit" type="info">编辑

@@ -54,7 +54,10 @@ export interface searchCaseData{
     case_name:string;
 }
 export interface searchCaseResponseData extends responseData{
-    data:caseTextInfoArr;
+    data:{
+        total:number;
+        list:caseTextInfoArr;
+    };
 }
 //多媒体传输
 export interface addMediaCaseData{
@@ -66,6 +69,9 @@ export interface caseMediaResponseData extends responseData {
     data:Array<string>;
   }
   export interface deleteMediaData{
-    media_id:string;
+    media_url:string;
   }
+export interface mediaUrlResponseData extends responseData{
+    data:Array<string>;
+}
   

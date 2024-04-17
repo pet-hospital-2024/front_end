@@ -28,11 +28,11 @@
     <el-table style="margin: 10px 0" :data="userInfoStore.userInfoArr" >
     <!--表格信息-->
 
-      <el-table-column label="id" align="center" prop="user_id" width="220"></el-table-column>
+      <el-table-column label="用户ID" align="center" prop="user_id" width="220"></el-table-column>
       <el-table-column label="用户名" align="center" prop="username" width="200"></el-table-column>
       <el-table-column label="身份" align="center" prop="identity" width="200"></el-table-column>
 
-      <el-table-column label="操作" align="center">
+      <el-table-column label="操作" align="center" width="320">
         <template v-slot="{ row, index }">
               <el-button @click="handleShowUserDetail(index, row)" size="small" :icon="ZoomIn">详情</el-button>
               <el-button size="small" @click="handleEditUser(index,row)" :icon="Edit" type="info">编辑

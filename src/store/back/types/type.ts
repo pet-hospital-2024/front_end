@@ -50,5 +50,5 @@ export interface caseInfoBySliceState{
     //多媒体
     caseVideoInfoArr:Array<string>;
     casePictureInfoArr:Array<string>
-    
+    mediaUrlArr:Array<string>;
 }
