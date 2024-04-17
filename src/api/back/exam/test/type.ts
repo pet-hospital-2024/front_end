@@ -32,6 +32,7 @@ export interface editTestData{
     exam_id:string;
     exam_start:string;
     exam_end:string;
+    exam_name:string;
 }
 export interface getPaperNameData{
     paper_id:string;

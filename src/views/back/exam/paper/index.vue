@@ -10,14 +10,14 @@
             <el-table-column label="试卷总分" align="center" width="100" prop="value"/>
             <el-table-column label="试卷时长" align="center" width="100" prop="duration"/>
 
-            <el-table-column align="center" class="operation" label="操作">
+            <el-table-column align="center" class="operation" label="操作" width="350">
             <template v-slot="{ index,row }">
               <el-button @click="handleShowPaperDetail(index, row)" size="small" :icon="ZoomIn">详情</el-button>
               <el-button size="small" @click="handleEditPaper(index,row)" :icon="Edit" type="info">编辑
               </el-button>
               <el-button size="small" type="danger" @click="handleDeletePaper(index,row)" 
                 :icon="Delete">删除</el-button>
-              <el-button size="small" icon="Plus" type="primary" @click="handleEditPaperInfo(index,row)">查看</el-button>
+              <el-button size="small" icon="Plus" type="primary" @click="handleEditPaperInfo(index,row)">添加试题</el-button>
             </template>
 
 

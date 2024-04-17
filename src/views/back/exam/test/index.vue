@@ -10,7 +10,7 @@
             <el-table-column  label="考试起始时间" prop="exam_start" width="150" align="center"/>
             <el-table-column  label="考试截至时间" prop="exam_end" width="150" align="center"/>
             <el-table-column  label="考试时长" width="80" prop="duration" align="center"/>
-            <el-table-column label="操作" align="center">
+            <el-table-column label="操作" align="center" width="240">
               <template v-slot="{ index, row }">
                     <el-button @click="handleShowTestDetail(index, row)" size="small" :icon="ZoomIn">详情</el-button>
                     <el-button size="small" @click="handleEditTest(index,row)" :icon="Edit" type="info">编辑
@@ -167,7 +167,7 @@
 <el-dialog v-model="EditTestDialogVisible" title="编辑考试" width="600" style="margin-top: 100px;">
     <el-form :model="editTestForm">
         <el-form-item label="考试名称" required>
-            <input v-model="examName" disabled>
+            <input v-model="editTestForm.exam_name" >
         </el-form-item>
         <el-form-item label="考试开始日期">
           <el-date-picker
@@ -316,7 +316,8 @@ let editTestForm=reactive<editTestData>({
   paper_id:"",
   exam_end:"",
   exam_id:"",
-  exam_start:""
+  exam_start:"",
+  exam_name:''
 })
 let EditTestDialogVisible=ref(false);
 let examName=ref();
@@ -326,6 +327,7 @@ const handleEditTest = async(index:any,row:any)=>{
   editTestForm.exam_end = row.exam_end;
   editTestForm.exam_id = row.exam_id;
   editTestForm.exam_start = row.exam_start;
+  editTestForm.exam_name=row.exam_name;
   sendData.paper_id=editTestForm.paper_id;
   await TestInfoStore.getPaperNameById(sendData);
   EditTestDialogVisible.value=true;
@@ -340,8 +342,8 @@ const submitEditTestForm = async (index:any,row:any)=>{
   
   console.log(editTestForm);
   let result=await TestInfoStore.editTestInfo(editTestForm);
-  if(result==='ok'){
-    TestInfoStore.getAllTestInfo(pageNo.value,pageSize.value);
+  if(result=='ok'){
+    await TestInfoStore.getAllTestInfo(pageNo.value,pageSize.value);
     EditTestDialogVisible.value=false;
   }
 }

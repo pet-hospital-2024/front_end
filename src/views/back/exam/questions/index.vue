@@ -20,7 +20,7 @@
             </el-table-column>
 
             <el-table-column prop="question_body" label="题目描述" align="center" width="500" />
-            <el-table-column align="center" class="operation">
+            <el-table-column align="center" class="operation" width="240">
             <template v-slot="{ row, index }">
               <el-button @click="handleShowDetail(index, row)" size="small" :icon="ZoomIn">详情</el-button>
               <el-button size="small" @click="handleEditQuestion(row)" :icon="Edit" type="info">编辑
