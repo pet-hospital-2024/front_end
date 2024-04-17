@@ -324,12 +324,13 @@
         </el-form-item>
         <el-form-item label="附加图片">
           <el-upload
-            
+          :limit="1"
+          :on-success="handleUploadSuccess"
             action="#"
             with-credentials
             list-type="picture-card"
             :on-preview="handleEditPictureCardPreview"
-            :on-remove="handleEditRemove"
+            :on-remove="handleDeleteImage"
             :on-change="uploadImage"
             :auto-upload="false"
             show-file-list="false"
@@ -353,12 +354,13 @@
         </el-form-item>
         <el-form-item label="附加图片">
           <el-upload
-            
+          :limit="1"
+            :on-success="handleUploadSuccess"
             action="#"
             with-credentials
             list-type="picture-card"
             :on-preview="handleEditPictureCardPreview"
-            :on-remove="handleEditRemove"
+            :on-remove="handleDeleteImage"
             :on-change="uploadImage"
             :auto-upload="false"
             show-file-list="true"
@@ -385,12 +387,13 @@
         </el-form-item>
         <el-form-item label="附加图片">
           <el-upload
-            
+          :limit="1"
+          :on-success="handleUploadSuccess"
             action="#"
             with-credentials
             list-type="picture-card"
             :on-preview="handleEditPictureCardPreview"
-            :on-remove="handleEditRemove"
+            :on-remove="handleDeleteImage"
             :on-change="uploadImage"
             :auto-upload="false"
             show-file-list="true"
@@ -417,12 +420,13 @@
         </el-form-item>
         <el-form-item label="附加图片">
           <el-upload
-            
+          :limit="1"
+          :on-success="handleUploadSuccess(editTextCaseForm.case_id)"
             action="#"
             with-credentials
             list-type="picture-card"
             :on-preview="handleEditPictureCardPreview"
-            :on-remove="handleEditRemove"
+            :on-remove="handleDeleteImage"
             :on-change="uploadImage"
             :auto-upload="false"
             show-file-list="true"
@@ -456,7 +460,7 @@ import { ElMessage, ElMessageBox, ElNotification, type UploadProps, type UploadU
 import {Delete, Edit, ZoomIn} from '@element-plus/icons-vue'
 import useBackCaseInfoStore from '@/store/back/case';
 import { onMounted, reactive, ref, watch } from 'vue';
-import type { addCaseTextData, caseTextInfoArr, caseTextInfoItem, deleteCaseTextData, editCaseTextData, searchCaseData } from '@/api/back/case/type';
+import type { addCaseTextData, caseTextInfoArr, caseTextInfoItem, deleteCaseTextData, deleteMediaData, editCaseTextData, searchCaseData } from '@/api/back/case/type';
 import type { diseaseQuestionInfoArr } from '@/api/back/exam/questions/type';
 import useBackQuestionStore from "@/store/back/question"
 
@@ -723,10 +727,19 @@ const submitEditTextCaseForm = async ()=>{
 
 
 let imageFormData=new FormData();
-const uploadImage = async (file:any)=>{
+const uploadImage = async (file:any,list:any)=>{
+  if (list.length > 1 && file.status !== "fail") {
+      list.splice(0, 1);
+  }
+    // } else if (file.status === "fail") {
+    //   ElNotification({
+    //                 type:'error',
+    //                 message:"每次仅允许上传一张图片！"
+    //             })
+    //   list.splice(0, 1);
+    // }
   console.log("uploading")
   console.log(file);
-  imageFormData.append('media_name', 'image');
   imageFormData.append('file', file.raw);
   imageFormData.append('case_id', mediaSendData.case_id);
   imageFormData.append('category',mediaSendData.category);
@@ -737,6 +750,18 @@ const uploadImage = async (file:any)=>{
   // console.log(imageFormData.get('category'))
   // console.log(Object.prototype.toString.call(imageFormData))
   await caseInfoStore.addMediaInfo(imageFormData);
+}
+const handleUploadSuccess = async (data:string)=>{
+  // await caseInfoStore.getMediaInfo(data);
+  console.log(data);
+}
+//删除多媒体
+let deleteMediaSendData=reactive<deleteMediaData>({
+  media_id:"",
+})
+const handleDeleteImage = async()=>{
+  console.log("delete image")
+  await caseInfoStore.deleteMediaInfo(deleteMediaSendData)
 }
 
 </script>

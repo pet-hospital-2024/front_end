@@ -47,4 +47,8 @@ export interface testInfoBySliceState{
 export interface caseInfoBySliceState{
     total:number;
     caseTextInfoArr:caseTextInfoArr;
+    //多媒体
+    caseVideoInfoArr:Array<string>;
+    casePictureInfoArr:Array<string>
+    
 }

@@ -21,7 +21,7 @@ export const editCaseByText=(data:editCaseTextData)=>request.post<any,responseDa
 //搜索病例信息
 export const searchCaseById=(data:searchCaseData)=>request.post<any,searchCaseResponseData>(API.SEARCHCASE_URL,data);
 //增加病例多媒体信息
-export const addCaseByMedia=(data:FormData)=>request.post<any,responseData>(API.ADDMEDIACASE_URL,data,{  headers: {
+export const addCaseByMedia=(data:FormData)=>request.post<any,responseData>(API.ADDMEDIACASE_URL,data,{ headers: {
     'Content-Type': 'multipart/form-data'
   }});
 //获取多媒体信息

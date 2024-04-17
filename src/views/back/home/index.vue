@@ -1,5 +1,6 @@
 <template>
-    <p class="container">欢迎回来,亲爱的{{ userStore.userData?.identity }} {{ userStore.userData?.username }}</p>
+    <div class="heading">虚拟宠物医院后台管理系统</div>
+    <p class="container">欢迎回来,亲爱的{{ userStore.userData?.identity=='administrator'?'管理员':'教师' }} </p>
     
     
 </template>
@@ -15,10 +16,19 @@ console.log(userStore.userData);
 </script>
 <style scoped>
 .container{
+
     display: flex;
     justify-content: center;
     align-items: center;
     margin-top:100px;
     font-size: 30px;
 }
-</style>@/store/back/role
+.heading{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 50px;
+    font-weight: bold;
+    margin-top:100px
+}
+</style>

@@ -60,7 +60,6 @@ export interface searchCaseResponseData extends responseData{
 export interface addMediaCaseData{
     file:File;
     case_id:string;
-    media_name:string;
     catagory:string;
 }
 export interface caseMediaResponseData extends responseData {
