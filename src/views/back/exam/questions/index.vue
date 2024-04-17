@@ -13,13 +13,13 @@
         empty-text="无题干!" >
             <el-table-column type="index" label="序号" width="80" align="center"/>
 
-            <el-table-column label="题目类型" width="100" align="center">
+            <el-table-column label="题目类型" width="150" align="center">
                 <template v-slot="{ row }">
                     {{ row.type === 'choice' ? '选择题' : '判断题' }}
                 </template>
             </el-table-column>
 
-            <el-table-column prop="question_body" label="题目描述" align="center" width="400" />
+            <el-table-column prop="question_body" label="题目描述" align="center" width="500" />
             <el-table-column align="center" class="operation">
             <template v-slot="{ row, index }">
               <el-button @click="handleShowDetail(index, row)" size="small" :icon="ZoomIn">详情</el-button>

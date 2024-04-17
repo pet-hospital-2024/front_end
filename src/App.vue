@@ -1,12 +1,13 @@
 <template>
   <div>
+    <AIassistant/>
+    <ChatBox v-if="chatStore.isVisible"/>
     <!-- <HospitalTop/> -->
     <!-- <div class="content"> -->
       <router-view ></router-view>
     <!-- </div> -->
     <Modify v-if="modifyStore.isVisible" />
-    <AIassistant/>
-    <ChatBox v-if="chatStore.isVisible"/>
+    
     
   </div>
 </template>

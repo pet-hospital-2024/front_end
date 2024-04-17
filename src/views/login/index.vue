@@ -3,29 +3,34 @@
     <el-row>
       <el-col :span="14" :xs="0">
         <div class="title">
-          <h1>Welcome!</h1>
-          <h2>Virtual Pet Hospital Learning System.</h2>
+          <h1>欢迎来到</h1>
+          <h2>虚拟宠物医院学习系统</h2>
         </div>
       </el-col>
       <el-col :span="10" :xs="24">
         <div class="form_box">
-          <h1>Hello :）</h1>
+          <h1>你好 :）</h1>
           <!-- <h2>欢迎使用虚拟宠物医院学习系统</h2> -->
           <el-tabs :tab-position="tabPosition" class="demo-tabs">
-            <el-tab-pane label="Sign in">
+            <el-tab-pane>
+              <template #label>
+                <span class="custom-tabs-label">
+                  <span>登录</span>
+                </span>
+              </template>
               <el-form
                 label-width="auto"
                 class="login_form"
                 :model="loginForm"
                 :rules="loginRules"
                 ref="loginForms"
-                @keyup.enter="login" 
+                @keyup.enter="login"
               >
                 <el-form-item prop="username">
                   <el-input
                     :prefix-icon="User"
                     v-model="loginForm.username"
-                    placeholder="User"
+                    placeholder="用户名"
                     size="large"
                   ></el-input>
                 </el-form-item>
@@ -35,7 +40,7 @@
                     :prefix-icon="Lock"
                     v-model="loginForm.password"
                     show-password
-                    placeholder="Password"
+                    placeholder="密码"
                     size="large"
                   ></el-input>
                 </el-form-item>
@@ -46,12 +51,17 @@
                     size="large"
                     color="rgb(152, 181, 172)"
                     @click="login"
-                    >Sign in</el-button
+                    >登录</el-button
                   >
                 </el-form-item>
               </el-form>
             </el-tab-pane>
-            <el-tab-pane label="Sign up">
+            <el-tab-pane>
+              <template #label>
+                <span class="custom-tabs-label">
+                  <span>注册</span>
+                </span>
+              </template>
               <el-form
                 label-width="auto"
                 class="login_form"
@@ -63,7 +73,7 @@
                   <el-input
                     :prefix-icon="User"
                     v-model="registerForm.username"
-                    placeholder="User"
+                    placeholder="用户名"
                     size="large"
                   ></el-input>
                 </el-form-item>
@@ -73,7 +83,7 @@
                     :prefix-icon="Lock"
                     v-model="registerForm.password"
                     show-password
-                    placeholder="Password"
+                    placeholder="密码"
                     size="large"
                   ></el-input>
                 </el-form-item>
@@ -81,7 +91,7 @@
                   <el-input
                     :prefix-icon="Cellphone"
                     v-model="registerForm.phone_number"
-                    placeholder="Number"
+                    placeholder="电话"
                     size="large"
                   ></el-input>
                 </el-form-item>
@@ -89,7 +99,7 @@
                   <el-input
                     :prefix-icon="Message"
                     v-model="registerForm.email"
-                    placeholder="Email"
+                    placeholder="邮箱"
                     size="large"
                   ></el-input>
                 </el-form-item>
@@ -100,7 +110,7 @@
                     size="large"
                     color=" rgb(152, 181, 172)"
                     @click="register"
-                    >Sign up</el-button
+                    >注册</el-button
                   >
                 </el-form-item>
               </el-form>
@@ -119,7 +129,6 @@ import { reactive, ref } from "vue";
 import { useRouter } from "vue-router";
 //@ts-ignore
 import useUserStore from "@/store/modules/user";
-
 
 const tabPosition = ref("top");
 
@@ -171,13 +180,15 @@ const login = async () => {
       // 登录成功，调用获取用户信息
       // const userInfoResult = await useStore.userInfo();
       // if (userInfoResult === "ok") {
-        // 根据身份重定向
-        $router.replace(useStore.userData?.identity === "user" ? "/front" : "/back");
-        ElNotification({
-          type: "success",
-          message: "登录成功",
-        });
-    // }
+      // 根据身份重定向
+      $router.replace(
+        useStore.userData?.identity === "user" ? "/front" : "/back"
+      );
+      ElNotification({
+        type: "success",
+        message: "登录成功",
+      });
+      // }
     }
     // $router.push("/back");
     //$router.push("/front");
@@ -193,7 +204,7 @@ const login = async () => {
 let registerForm = reactive({
   username: "",
   password: "",
-  identity:"user",
+  identity: "user",
   phone_number: "",
   email: "",
 });
@@ -286,7 +297,7 @@ const register = async () => {
     padding: 30px 30px 30px 10px;
     border-radius: 20px;
     h1 {
-      font-size: 40px;
+      font-size: 36px;
       margin-left: 18px;
       margin-bottom: 20px;
       color: rgb(116, 116, 116);
@@ -302,6 +313,7 @@ const register = async () => {
     .login_btn {
       width: 100%;
       margin-top: 20px;
+      color: rgb(78, 78, 78);
     }
 
     .demo-tabs {
@@ -311,19 +323,21 @@ const register = async () => {
   }
 
   .title {
+    // background-color: rgba(255, 255, 255,0.3);
     position: relative;
     margin-left: 200px;
     top: 25vh;
     max-width: 100%;
     h1 {
-      font-size: 96px;
-      color: rgb(87, 87, 87);
+      font-size: 56px;
+      color: rgb(139, 139, 139);
       font-weight: bold;
     }
     h2 {
       margin-top: 10px;
-      font-size: 36px;
-      color: rgb(139, 139, 139);
+      font-size: 64px;
+      font-weight: bold;
+      color: rgb(87, 87, 87);
     }
   }
 }

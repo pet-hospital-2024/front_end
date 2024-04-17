@@ -60,7 +60,7 @@ const activeName = ref("first");
 
 let role=$route.query.role_id as string;
 
-const roleName = ((role:String) => {
+const roleName = ((role:string) => {
   switch (role) {
     case "1":
       return "兽医";

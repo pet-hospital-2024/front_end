@@ -9,7 +9,7 @@ const request=axios.create({
       //本地 url: localhost:8081,
       //baseURL:'http://localhost:8081',
     baseURL:'/api',
-    timeout:5000   //超时限制
+    timeout:100000   //超时限制
 });
 //请求拦截器携带token头
 request.interceptors.request.use((config)=>{
@@ -36,7 +36,7 @@ request.interceptors.response.use((response) => {
 }, (error) => {
     //处理http网络错误
     let status = error.response.status;
-//     console.log(status);
+    console.log(status);
     switch (status) {
           case 404:
                 //错误提示信息

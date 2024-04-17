@@ -66,7 +66,10 @@
           </div>
 
           <div class="optBtn">
-            <div style="width: 80%; margin-top: 50px" v-show="!useStore.isSubmitted">
+            <div
+              style="width: 80%; margin-top: 50px"
+              v-show="!useStore.isSubmitted"
+            >
               <el-button
                 type="primary"
                 plain
@@ -244,9 +247,10 @@ const handleBeforeUnload = (event: BeforeUnloadEvent) => {
   event.preventDefault();
 };
 //返回上一页提醒
-const handlePopState = () => {
+const handlePopState = (event: BeforeUnloadEvent) => {
   // 用户点击浏览器后退按钮时的处理逻辑
   // exit();
+  event.preventDefault();
 };
 
 const exit = () => {
@@ -269,17 +273,30 @@ const setCurrentQuestion = (index: number) => {
   });
 };
 
+//检查所有题目是否已回答
+const allQuestionsAnswered = () => {
+  return useStore.questionListArr.every(
+    (question) => question.status !== "pending"
+  );
+};
+
 //提交确认
 const submitConfirm = () => {
-  ElMessageBox.confirm(
-    "提交前请确保所有题目已经完成，一旦提交将无法更改。您确定要提交试卷吗？",
-    "提醒",
-    {
-      confirmButtonText: "提交",
-      cancelButtonText: "取消",
-      type: "warning",
-    }
-  )
+  const allAnswered = allQuestionsAnswered();
+  let message =
+    "提交前请仔细检查，一旦提交将无法更改。您确定要提交试卷吗？";
+  let confirmButtonText = "提交";
+  console.log(allAnswered);
+  if (!allAnswered) {
+    message =
+      "还有题目未完成，确定要提交吗？您还可以返回检查和完成剩余的题目。";
+    confirmButtonText = "继续提交";
+  }
+  ElMessageBox.confirm(message, "提醒", {
+    confirmButtonText: confirmButtonText,
+    cancelButtonText: "取消",
+    type: "warning",
+  })
     .then(() => {
       submit();
     })
@@ -306,118 +323,118 @@ const confirmExit = () => {
   }
 };
 
-const questionList = reactive([
-  {
-    question_id: "1",
-    order: "1",
-    question_body:
-      "题目二的题干内容题目二的题干内容题目二的题干内容题目二的题干内容题目二的题干内容题目二的题干内容题目二的题干内容",
-    type: "choice",
-    options: [
-      {
-        optCode: "A",
-        optContent:
-          "选项A题目二的题干内容题目二的题干内容题目二的题干内容题目二的题干内容题目二的题干内容题目二的题干内容题目二的题干内容",
-      },
-      { optCode: "B", optContent: "选项B" },
-      { optCode: "C", optContent: "选项C" },
-      { optCode: "D", optContent: "选项D" },
-    ],
-    right_choice: "B",
-    judgement: "1",
-    value: 10,
-    selectedOpt: null,
-    status: "pending",
-  },
-  {
-    question_id: "2",
-    order: "2",
-    question_body:
-      "题目二的题干内容题目二的题干内容题目二的题干内容题目二的题干内容题目二的题干内容题目二的题干内容题目二的题干内容",
-    type: "choice",
-    options: [
-      { optCode: "A", optContent: "选项A" },
-      { optCode: "B", optContent: "选项B" },
-      { optCode: "C", optContent: "选项C" },
-      { optCode: "D", optContent: "选项D" },
-    ],
-    right_choice: "2",
-    judgement: "1",
-    value: 10,
-    selectedOpt: "1",
-    status: "pending",
-  },
-  {
-    question_id: "3",
-    order: "3",
-    question_body:
-      "题目二的题干内容题目二的题干内容题目二的题干内容题目二的题干内容题目二的题干内容题目二的题干内容题目二的题干内容",
-    type: "choice",
-    options: [
-      { optCode: "A", optContent: "对" },
-      { optCode: "B", optContent: "错" },
-    ],
-    right_choice: "B",
-    judgement: "1",
-    value: 10,
-    selectedOpt: null,
-    status: "pending",
-  },
-  {
-    question_id: "4",
-    order: "4",
-    question_body:
-      "题目二的题干内容题目二的题干内容题目二的题干内容题目二的题干内容题目二的题干内容题目二的题干内容题目二的题干内容",
-    type: "choice",
-    options: [
-      { optCode: "A", optContent: "选项A" },
-      { optCode: "B", optContent: "选项B" },
-      { optCode: "C", optContent: "选项C" },
-      { optCode: "D", optContent: "选项D" },
-    ],
-    right_choice: "D",
-    judgement: "1",
-    value: 10,
-    selectedOpt: null,
-    status: "pending",
-  },
-  {
-    question_id: "5",
-    order: "5",
-    question_body:
-      "题目二的题干内容题目二的题干内容题目二的题干内容题目二的题干内容题目二的题干内容题目二的题干内容题目二的题干内容",
-    type: "choice",
-    options: [
-      { optCode: "A", optContent: "选项A" },
-      { optCode: "B", optContent: "选项B" },
-      { optCode: "C", optContent: "选项C" },
-      { optCode: "D", optContent: "选项D" },
-    ],
-    right_choice: "A",
-    judgement: "1",
-    value: 10,
-    selectedOpt: null,
-    status: "pending",
-  },
-  {
-    question_id: "6",
-    order: "6",
-    question_body:
-      "题目二的题干内容题目二的题干内容题目二的题干内容题目二的题干内容题目二的题干内容题目二的题干内容题目二的题干内容",
-    type: "choice",
-    options: [
-      { optCode: "A", optContent: "选项A" },
-      { optCode: "B", optContent: "选项B" },
-      { optCode: "C", optContent: "选项C" },
-      { optCode: "D", optContent: "选项D" },
-    ],
-    right_choice: "D",
-    judgement: "1",
-    value: 10,
-    selectedOpt: null,
-    status: "pending",
-  },
-]);
+// const questionList = reactive([
+//   {
+//     question_id: "1",
+//     order: "1",
+//     question_body:
+//       "题目二的题干内容题目二的题干内容题目二的题干内容题目二的题干内容题目二的题干内容题目二的题干内容题目二的题干内容",
+//     type: "choice",
+//     options: [
+//       {
+//         optCode: "A",
+//         optContent:
+//           "选项A题目二的题干内容题目二的题干内容题目二的题干内容题目二的题干内容题目二的题干内容题目二的题干内容题目二的题干内容",
+//       },
+//       { optCode: "B", optContent: "选项B" },
+//       { optCode: "C", optContent: "选项C" },
+//       { optCode: "D", optContent: "选项D" },
+//     ],
+//     right_choice: "B",
+//     judgement: "1",
+//     value: 10,
+//     selectedOpt: null,
+//     status: "pending",
+//   },
+//   {
+//     question_id: "2",
+//     order: "2",
+//     question_body:
+//       "题目二的题干内容题目二的题干内容题目二的题干内容题目二的题干内容题目二的题干内容题目二的题干内容题目二的题干内容",
+//     type: "choice",
+//     options: [
+//       { optCode: "A", optContent: "选项A" },
+//       { optCode: "B", optContent: "选项B" },
+//       { optCode: "C", optContent: "选项C" },
+//       { optCode: "D", optContent: "选项D" },
+//     ],
+//     right_choice: "2",
+//     judgement: "1",
+//     value: 10,
+//     selectedOpt: "1",
+//     status: "pending",
+//   },
+//   {
+//     question_id: "3",
+//     order: "3",
+//     question_body:
+//       "题目二的题干内容题目二的题干内容题目二的题干内容题目二的题干内容题目二的题干内容题目二的题干内容题目二的题干内容",
+//     type: "choice",
+//     options: [
+//       { optCode: "A", optContent: "对" },
+//       { optCode: "B", optContent: "错" },
+//     ],
+//     right_choice: "B",
+//     judgement: "1",
+//     value: 10,
+//     selectedOpt: null,
+//     status: "pending",
+//   },
+//   {
+//     question_id: "4",
+//     order: "4",
+//     question_body:
+//       "题目二的题干内容题目二的题干内容题目二的题干内容题目二的题干内容题目二的题干内容题目二的题干内容题目二的题干内容",
+//     type: "choice",
+//     options: [
+//       { optCode: "A", optContent: "选项A" },
+//       { optCode: "B", optContent: "选项B" },
+//       { optCode: "C", optContent: "选项C" },
+//       { optCode: "D", optContent: "选项D" },
+//     ],
+//     right_choice: "D",
+//     judgement: "1",
+//     value: 10,
+//     selectedOpt: null,
+//     status: "pending",
+//   },
+//   {
+//     question_id: "5",
+//     order: "5",
+//     question_body:
+//       "题目二的题干内容题目二的题干内容题目二的题干内容题目二的题干内容题目二的题干内容题目二的题干内容题目二的题干内容",
+//     type: "choice",
+//     options: [
+//       { optCode: "A", optContent: "选项A" },
+//       { optCode: "B", optContent: "选项B" },
+//       { optCode: "C", optContent: "选项C" },
+//       { optCode: "D", optContent: "选项D" },
+//     ],
+//     right_choice: "A",
+//     judgement: "1",
+//     value: 10,
+//     selectedOpt: null,
+//     status: "pending",
+//   },
+//   {
+//     question_id: "6",
+//     order: "6",
+//     question_body:
+//       "题目二的题干内容题目二的题干内容题目二的题干内容题目二的题干内容题目二的题干内容题目二的题干内容题目二的题干内容",
+//     type: "choice",
+//     options: [
+//       { optCode: "A", optContent: "选项A" },
+//       { optCode: "B", optContent: "选项B" },
+//       { optCode: "C", optContent: "选项C" },
+//       { optCode: "D", optContent: "选项D" },
+//     ],
+//     right_choice: "D",
+//     judgement: "1",
+//     value: 10,
+//     selectedOpt: null,
+//     status: "pending",
+//   },
+// ]);
 </script>
 
 <style scoped lang="scss">
@@ -512,17 +529,17 @@ const questionList = reactive([
       }
       .done {
         border: 2px solid;
-        border-color: rgb(119, 214, 251);
-        background-color: #c3e1f8;
+        border-color: rgb(205, 241, 255);
+        background-color: #dcf0fa;
       } /* 蓝色 */
       .correct {
         border: 2px solid;
-        border-color: rgb(126, 216, 126);
+        border-color: rgb(186, 236, 186);
         background-color: #defcdf;
       } /* 绿色 */
       .wrong {
         border: 2px solid;
-        border-color: rgb(246, 103, 103);
+        border-color: rgb(241, 154, 154);
         background-color: #ffd7d3;
       } /* 红色 */
     }

@@ -6,7 +6,7 @@
         </el-button>
         <el-table style="margin:10px 0" stripe :data="TestInfoStore.testInfoArr">
             <el-table-column type="index" label="序号" width="80" align="center"/>
-            <el-table-column label="考试名称" width="150" align="center" prop="exam_name"></el-table-column>
+            <el-table-column label="考试名称" width="200" align="center" prop="exam_name"></el-table-column>
             <el-table-column  label="考试起始时间" prop="exam_start" width="150" align="center"/>
             <el-table-column  label="考试截至时间" prop="exam_end" width="150" align="center"/>
             <el-table-column  label="考试时长" width="80" prop="duration" align="center"/>
@@ -44,7 +44,7 @@
             v-model="addTestForm.exam_start"
             type="date"
             placeholder="选择考试开始日期"
-            value-format="YYYY/MM/DD"
+            value-format="YYYY-MM-DD"
             :popper-options="{
               modifiers: [
                     {
@@ -64,7 +64,7 @@
             v-model="addTestForm.exam_end"
             type="date"
             placeholder="选择考试结束日期"
-            value-format="YYYY/MM/DD"
+            value-format="YYYY-MM-DD"
             :popper-options="{
               modifiers: [
                     {
@@ -174,7 +174,7 @@
             v-model="editTestForm.exam_start"
             type="date"
             placeholder="选择考试开始日期"
-            value-format="YYYY/MM/DD"
+            value-format="YYYY-MM-DD"
             :popper-options="{
               modifiers: [
                     {
@@ -194,7 +194,7 @@
             v-model="editTestForm.exam_end"
             type="date"
             placeholder="选择考试结束日期"
-            value-format="YYYY/MM/DD"
+            value-format="YYYY-MM-DD"
             :popper-options="{
               modifiers: [
                     {
@@ -312,6 +312,7 @@ const handleShowTestDetail = (index:any,row:any)=>{
 }
 //修改考试
 let editTestForm=reactive<editTestData>({
+
   paper_id:"",
   exam_end:"",
   exam_id:"",
