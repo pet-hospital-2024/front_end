@@ -156,6 +156,8 @@ let useBackCaseInfoStore=defineStore("caseManagement",{
             if(res.code==1){
                 this.mediaUrlArr=res.data;
                 return 'ok';
+            }else{
+                return Promise.reject(new Error(res.message));
             }
             
         }

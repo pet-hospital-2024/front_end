@@ -8,6 +8,7 @@
         <el-tab-pane label="3333" name="3">haha</el-tab-pane>
         <el-tab-pane label="4444" name="4">haha</el-tab-pane>
     </el-tabs> -->
+    <Upload ></Upload>
 </template>
 <script setup lang="ts">
 
@@ -17,7 +18,7 @@ import useUserStore from '@/store/modules/user';
 
 let userStore=useUserStore();
 //目前首页挂载完毕发请求获取用户信息
-
+import Upload from "@/components/upload/index.vue"
 
 // const handleChange = (tab:any,event:any)=>{
 //     console.log(tab.paneName)

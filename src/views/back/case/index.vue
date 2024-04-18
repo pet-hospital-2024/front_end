@@ -126,11 +126,8 @@
   <!-- 病例详情页面 -->
   <el-dialog v-model="ShowCaseDetailDialogVisible" title="病例详情" width="700px" center>
     <el-card :model="caseTextDetailData" class="case-detail">
-      <el-tabs @tab-click="handleTabClick" v-model="FirstTabPane">
+      <el-tabs @tab-click="handleTabClickDetail" v-model="FirstTabPane">
         <el-tab-pane label="基本信息" name="Consultation">
-          <!-- <template #label >
-            <span @click="gotoConsulationDetail">基本信息</span>
-          </template> -->
           <div class="detail-section" >
             <el-text class="case-title">{{ caseTextDetailData.case_name }}</el-text>
             <div class="section-content">
@@ -146,21 +143,18 @@
                 <p><strong>所属疾病</strong></p>
                 <p style="line-height: 1.5;">{{ caseTextDetailData.disease_name }}</p>
               </div>
-              <div>
-                <div>图片:</div>
+              <div v-if="ImageInfoArr.length" class="detail-item">
+                <p><strong>图片</strong></p>
                 <span v-for="imgUrl in ImageInfoArr" class="imgItem">
                   <img :src="imgUrl" alt="img" style="width:200px;height:200px">
-                  <div class="overlay">
-                    <el-icon class="deleteIcon" @click="handleDeleteImage(imgUrl)"><Delete/></el-icon>
-                  </div>
                 </span>
               </div>
 
-              <div >
-                <div>视频：</div>
-                <div v-for="item in caseInfoStore.caseVideoInfoArr" :key="url">
-                  <video width="100%" controls v-if="item.category=='Consultation'">
-                    <source :src="item.media_url" type="video/mp4">
+              <div v-if="VideoInfoArr.length">
+                <p><strong>视频</strong></p>
+                <div v-for="item in VideoInfoArr" :key="url">
+                  <video width="100%" controls >
+                    <source :src="item" type="video/mp4">
                   </video>
                 </div>
                 
@@ -176,21 +170,18 @@
             <p><strong>病例检查结果</strong></p>
             <p style="line-height: 1.5;">{{ caseTextDetailData.case_examination }}</p>
           </div>
-          <div>
-                <div>图片:</div>
+          <div v-if="ImageInfoArr.length" class="detail-item">
+                <p><strong>图片</strong></p>
                 <span v-for="imgUrl in ImageInfoArr" class="imgItem">
                   <img :src="imgUrl" alt="img" style="width:200px;height:200px">
-                  <div class="overlay">
-                    <el-icon class="deleteIcon" @click="handleDeleteImage(imgUrl)"><Delete/></el-icon>
-                  </div>
                 </span>
               </div>
 
-              <div>
+              <div v-if="VideoInfoArr.length">
                 <div>视频：</div>
-                <div v-for="item in caseInfoStore.caseVideoInfoArr" :key="url">
-                  <video width="100%" controls v-if="item.category=='Examination'">
-                    <source :src="item.media_url" type="video/mp4">
+                <div v-for="item in VideoInfoArr" :key="url">
+                  <video width="100%" controls >
+                    <source :src="item" type="video/mp4">
                   </video>
                 </div>
                 
@@ -205,19 +196,18 @@
             <p style="line-height: 1.5;">{{ caseTextDetailData.case_treatment }}</p>
             <p><strong>使用药物</strong></p><p style="line-height: 1.5;">{{ caseTextDetailData.case_medicine }}</p>
           </div>
-          <div>
+          <div v-if="ImageInfoArr.length">
                 <div>图片:</div>
                 <span v-for="imgUrl in ImageInfoArr" class="imgItem">
                   <img :src="imgUrl" alt="img" style="width:200px;height:200px">
                 </span>
               </div>
 
-              <div>
+              <div v-if="VideoInfoArr.length">
                 <div>视频：</div>
-                <div v-for="item in caseInfoStore.caseVideoInfoArr" :key="url">
-                  <video width="100%" controls v-if="item.category=='Treatment'">
-                    
-                    <source :src="item.media_url" type="video/mp4">
+                <div v-for="item in VideoInfoArr" :key="url">
+                  <video width="100%" controls >
+                    <source :src="item" type="video/mp4">
                   </video>
                 </div>
                 
@@ -233,21 +223,18 @@
             <p style="line-height: 1.5;"><strong>费用</strong></p>
             <p style="line-height: 1.5;">{{ caseTextDetailData.case_cost }}</p>
           </div>
-          <div>
+          <div v-if="ImageInfoArr.length">
                 <div>图片:</div>
                 <span v-for="imgUrl in ImageInfoArr" class="imgItem">
                   <img :src="imgUrl" alt="img" style="width:200px;height:200px">
-                  <div class="overlay">
-                    <el-icon class="deleteIcon" @click="handleDeleteImage(imgUrl)"><Delete/></el-icon>
-                  </div>
                 </span>
               </div>
 
-              <div>
+              <div v-if="VideoInfoArr.length">
                 <div>视频：</div>
-                <div v-for="item in caseInfoStore.caseVideoInfoArr" :key="url">
-                  <video width="100%" controls v-if="item.category=='Result'">
-                    <source :src="item.media_url" type="video/mp4">
+                <div v-for="item in VideoInfoArr" :key="item">
+                  <video width="100%" controls >
+                    <source :src="item" type="video/mp4">
                   </video>
                 </div>
                 
@@ -259,11 +246,9 @@
 
 <!-- 修改病例页面 -->
 <el-dialog v-model="editCaseDialogVisible" title="编辑病例" width="700" center>
-  <el-tabs  v-model="FirstTabPane" @tab-click="handleTabClick">
+  <el-tabs  v-model="FirstTabPane" @tab-click="handleTabClickEdit">
     <el-tab-pane label="基本信息" name="Consultation" >
-      <!-- <template #label >
-        <span @click="gotoConsulationDetail" style="">基本信息</span>
-      </template> -->
+
       <el-form label-width="100px" class="add-case-form">
         <el-form-item label="病例名称">
           <el-input v-model="editTextCaseForm.case_name" class="inputBox" placeholder="请输入病例名称"/>
@@ -291,87 +276,80 @@
         <el-form-item label="病例介绍">
           <el-input v-model="editTextCaseForm.case_introduction" class="inputBox" type="textarea" :rows="2" placeholder="请输入病例介绍"/>
         </el-form-item>
-        <el-form-item label="图片">
+        <el-form-item label="图片" v-if="ImageInfoArr.length">
           <span v-for="imgUrl in ImageInfoArr" class="imgItem">
             <img :src="imgUrl" alt="img" style="width:200px;height:200px">
             <div class="overlay">
-              <el-icon class="deleteIcon" @click="handleDeleteImage(imgUrl)"><Delete/></el-icon>
+              <el-icon class="deleteIcon" @click="handleDeleteImage(imgUrl,'Consultation')"><Delete/></el-icon>
             </div>
           </span>
         </el-form-item>
-        <el-form-item label="视频">
+        <el-form-item label="视频" v-if="VideoInfoArr.length">
           <span v-for="videoUrl in VideoInfoArr" :key="videoUrl" class="videoItem">
             <video :src="videoUrl" controls style="width: 200px; height: 200px;" @mouseover="handleVideoMouseOver(videoUrl)" @mouseleave="handleVideoMouseLeave">
               <!-- 添加删除图标 -->
-              <el-icon class="deleteIcon" v-if="showDeleteIcon && currentVideo === videoUrl" @click="handleDeleteVideo(videoUrl)" name="el-icon-delete" style="position: absolute; top: 10px; right: 10px;"></el-icon>
+              <el-icon class="deleteIcon" v-if="showDeleteIcon && currentVideo === videoUrl" @click="handleDeleteVideo(videoUrl)" name="el-icon-delete" style="position: absolute; top: 10px; right: 10px;"><Delete/></el-icon>
             </video>
           </span>
         </el-form-item>
-        <el-form-item label="附加图片">
+        <el-form-item>
           <el-upload
-          v-model:file-list="fileList"
-          :on-success="handleUploadSuccess"
-            action="#"
-            
-            with-credentials
-            list-type="picture-card"
-            :on-remove="handleDeleteImage"
-            :on-change="uploadImage"
-            :auto-upload="false"
-            
-          >
-            <el-icon><Plus /></el-icon>
-          </el-upload>
-
-          <el-dialog v-model="editDialogVisible">
-            <img w-full :src="editDialogImageUrl" alt="Preview Image" />
-          </el-dialog>
+          ref="upload"
+              
+              with-credentials
+              action=""
+              :multiple="false"
+              :on-change="uploadImage"
+              :auto-upload="false"
+              :show-file-list="false"
+              :limit="1"
+              :on-exceed="handleExceed"
+              
+              
+            >
+              <el-button type="primary">上传图片</el-button>
+            </el-upload>
         </el-form-item>
       </el-form>
     </el-tab-pane>
     <el-tab-pane label="病例检查" name="Examination" >
-      <!-- <template #label>
-        <span @click="gotoExaminationDetail">病例检查</span>
-      </template> -->
       <el-form label-width="100px" class="add-case-form">
         <el-form-item label="病例检查结果">
           <el-input v-model="editTextCaseForm.case_examination" class="inputBox" type="textarea" :rows="2" placeholder="请输入病例检查结果"/>
         </el-form-item>
-        <el-form-item label="图片">
+        <el-form-item label="图片" v-if="ImageInfoArr.length">
           <span v-for="imgUrl in ImageInfoArr" class="imgItem">
           <img :src="imgUrl" alt="img" style="width:200px;height:200px">
           <div class="overlay">
-            <el-icon class="deleteIcon" @click="handleDeleteImage(imgUrl)"><Delete/></el-icon>
+            <el-icon class="deleteIcon" @click="handleDeleteImage(imgUrl,'Examination')"><Delete/></el-icon>
           </div>
         </span>
         </el-form-item>
-        <el-form-item label="视频">
+        <el-form-item label="视频" v-if="VideoInfoArr.length">
           <span v-for="videoUrl in VideoInfoArr" :key="videoUrl" class="videoItem">
             <video :src="videoUrl" controls style="width: 200px; height: 200px;" @mouseover="handleVideoMouseOver(videoUrl)" @mouseleave="handleVideoMouseLeave">
               <!-- 添加删除图标 -->
-              <el-icon class="deleteIcon" v-if="showDeleteIcon && currentVideo === videoUrl" @click="handleDeleteVideo(videoUrl)" name="el-icon-delete" style="position: absolute; top: 10px; right: 10px;"></el-icon>
+              <el-icon class="deleteIcon" v-if="showDeleteIcon && currentVideo === videoUrl" @click="handleDeleteVideo(videoUrl)" name="el-icon-delete" style="position: absolute; top: 10px; right: 10px;"><Delete/></el-icon>
             </video>
           </span>
         </el-form-item>
-        <el-form-item label="附加图片">
+        <el-form-item>
           <el-upload
-          :limit="1"
-            :on-success="handleUploadSuccess"
-            action="#"
-            with-credentials
-            list-type="picture-card"
-            :on-preview="handleEditPictureCardPreview"
-            :on-remove="handleDeleteImage"
-            :on-change="uploadImage"
-            :auto-upload="false"
-            show-file-list="true"
-          >
-            <el-icon><Plus /></el-icon>
-          </el-upload>
-
-          <el-dialog v-model="editDialogVisible">
-            <img w-full :src="editDialogImageUrl" alt="Preview Image" />
-          </el-dialog>
+          ref="upload"
+              
+              with-credentials
+              action=""
+              :multiple="false"
+              :on-change="uploadImage"
+              :auto-upload="false"
+              :show-file-list="false"
+              :limit="1"
+              :on-exceed="handleExceed"
+              
+              
+            >
+              <el-button type="primary">上传图片</el-button>
+            </el-upload>
         </el-form-item>
       </el-form>
     </el-tab-pane>
@@ -386,41 +364,40 @@
         <el-form-item label="使用药物">
           <el-input v-model="editTextCaseForm.case_medicine" class="inputBox" type="textarea" :rows="2" placeholder="请输入使用药物"/>
         </el-form-item>
-        <el-form-item label="图片">
+        <el-form-item label="图片" v-if="ImageInfoArr.length">
           <span v-for="imgUrl in ImageInfoArr" class="imgItem">
           <img :src="imgUrl" alt="img" style="width:200px;height:200px">
           <div class="overlay">
-            <el-icon class="deleteIcon" @click="handleDeleteImage(imgUrl)"><Delete/></el-icon>
+            <el-icon class="deleteIcon" @click="handleDeleteImage(imgUrl,'Treatment')"><Delete/></el-icon>
           </div>
         </span>
         </el-form-item>
-        <el-form-item label="视频">
+        <el-form-item label="视频" v-if="VideoInfoArr.length">
           <span v-for="videoUrl in VideoInfoArr" :key="videoUrl" class="videoItem">
             <video :src="videoUrl" controls style="width: 200px; height: 200px;" @mouseover="handleVideoMouseOver(videoUrl)" @mouseleave="handleVideoMouseLeave">
               <!-- 添加删除图标 -->
-              <el-icon class="deleteIcon" v-if="showDeleteIcon && currentVideo === videoUrl" @click="handleDeleteVideo(videoUrl)" name="el-icon-delete" style="position: absolute; top: 10px; right: 10px;"></el-icon>
+              <el-icon class="deleteIcon" v-if="showDeleteIcon && currentVideo === videoUrl" @click="handleDeleteVideo(videoUrl)" name="el-icon-delete" style="position: absolute; top: 10px; right: 10px;"><Delete/></el-icon>
             </video>
           </span>
         </el-form-item>
         <el-form-item label="附加图片">
           <el-upload
-          :limit="1"
-          :on-success="handleUploadSuccess"
-            action="#"
-            with-credentials
-            list-type="picture-card"
-            :on-preview="handleEditPictureCardPreview"
-            :on-remove="handleDeleteImage"
-            :on-change="uploadImage"
-            :auto-upload="false"
-            show-file-list="true"
-          >
-            <el-icon><Plus /></el-icon>
-          </el-upload>
+          ref="upload"
+              
+              with-credentials
+              action=""
+              :multiple="false"
+              :on-change="uploadImage"
+              :auto-upload="false"
+              :show-file-list="false"
+              :limit="1"
+              :on-exceed="handleExceed"
+              
+              
+            >
+              <el-button type="primary">上传图片</el-button>
+            </el-upload>
 
-          <el-dialog v-model="editDialogVisible">
-            <img w-full :src="editDialogImageUrl" alt="Preview Image" />
-          </el-dialog>
         </el-form-item>
       </el-form>
     </el-tab-pane>
@@ -435,7 +412,7 @@
         <el-form-item label="费用">
           <el-input v-model.number="editTextCaseForm.case_cost" class="inputBox" placeholder="请输入费用"/>
         </el-form-item>
-        <el-form-item label="图片">
+        <el-form-item label="图片" v-if="ImageInfoArr.length">
           <span v-for="imgUrl in ImageInfoArr" class="imgItem">
           <img :src="imgUrl" alt="img" style="width:200px;height:200px">
           <div class="overlay">
@@ -443,7 +420,7 @@
           </div>
         </span>
         </el-form-item>
-        <el-form-item label="视频">
+        <el-form-item label="视频" v-if="VideoInfoArr.length">
           <span v-for="videoUrl in VideoInfoArr" :key="videoUrl" class="videoItem">
             <video :src="videoUrl" controls style="width: 200px; height: 200px;" @mouseover="handleVideoMouseOver(videoUrl)" @mouseleave="handleVideoMouseLeave">
               <!-- 添加删除图标 -->
@@ -453,9 +430,10 @@
         </el-form-item>
         <el-form-item label="附加图片">
           <el-upload
-              v-model:file-list="fileList"
+          ref="upload"
+              
               with-credentials
-              action="#"
+              action=""
               :multiple="false"
               :on-change="uploadImage"
               :auto-upload="false"
@@ -463,35 +441,14 @@
               :limit="1"
               :on-exceed="handleExceed"
               
+              
             >
-              <el-button type="primary">Click to upload</el-button>
-              <template #tip>
-                <div class="el-upload__tip">
-                  jpg/png files with a size less than 500KB.
-                </div>
-              </template>
+              <el-button type="primary">上传图片</el-button>
             </el-upload>
-
-          <!-- <el-upload
-          :file-list="fileList"
-          :limit="1"
-          :on-success="handleUploadSuccess(editTextCaseForm.case_id)"
-            action="#"
-            with-credentials
-            list-type="picture-card"
-            :on-preview="handleEditPictureCardPreview"
-            :on-remove="handleDeleteImage"
-            :on-change="uploadImage"
-            :auto-upload="false"
-            show-file-list="false"
-            :on-exceed="handleExceed"
-          >
-            <el-icon><Plus /></el-icon>
-          </el-upload> -->
-
-          <el-dialog v-model="editDialogVisible">
-            <img w-full :src="editDialogImageUrl" alt="Preview Image" />
-          </el-dialog>
+            
+        </el-form-item>
+        <el-form-item label="附加视频">
+          <Upload :category="mediaSendData.category" :case_id="editTextCaseForm.case_id" ></Upload>
         </el-form-item>
       </el-form>
     </el-tab-pane>
@@ -508,7 +465,7 @@
 
 
 
-import { ElMessage, ElMessageBox, ElNotification, type UploadProps, type UploadUserFile } from 'element-plus'
+import { ElMessage, ElMessageBox, ElNotification, genFileId, type UploadFile, type UploadInstance, type UploadProps, type UploadRawFile, type UploadUserFile } from 'element-plus'
 
 //获取仓库对象
 
@@ -524,7 +481,8 @@ let caseInfoStore=useBackCaseInfoStore();
 let pageNo=ref('1')
 let pageSize=ref('10')
 //目前首页挂载完毕发请求获取用户信息
-
+//upload大文件组件
+import Upload from '@/components/upload/index.vue'
 onMounted(async()=>{
   await caseInfoStore.getAllTextCaseInfo(pageNo.value,pageSize.value);
   await QuestionInfoStore.getDepartmentAndDiseaseInfo();
@@ -536,7 +494,7 @@ const handlePageChange = async(pager="1")=>{
 }
 //搜索病例
 let searchKeyword = ref<string>("");
-let send_data = ref<string>();
+
 
 
 
@@ -580,8 +538,10 @@ let caseTextDetailData=reactive<caseTextInfoItem>({
   disease_name:'',
   department_name:''
 })
-let temp=reactive({});
+
 const handleShowCaseDetail=async (row:any)=>{
+  ImageInfoArr.value=[];
+  VideoInfoArr.value=[];
   caseTextDetailData.case_id=row.case_id;
   caseTextDetailData.case_name=row.case_name;
   caseTextDetailData.case_cost=row.case_cost;
@@ -604,14 +564,27 @@ const handleShowCaseDetail=async (row:any)=>{
 //点击tab事件
 let ImageInfoArr=ref<string[]>([]);
 let VideoInfoArr=ref<string[]>([]);
-const handleTabClick = async (tab:any)=>{
+const handleTabClickEdit = async (tab:any)=>{
   console.log(tab.paneName);
+  ImageInfoArr.value=[];
+  VideoInfoArr.value=[];
   await caseInfoStore.getMediaUrlInfo(editTextCaseForm.case_id,"image",tab.paneName)
   ImageInfoArr.value=caseInfoStore.mediaUrlArr
   await caseInfoStore.getMediaUrlInfo(editTextCaseForm.case_id,"video",tab.paneName)
   VideoInfoArr.value=caseInfoStore.mediaUrlArr
+  
   mediaSendData.category=tab.paneName;
-  fileList.value=[];
+  
+}
+const handleTabClickDetail = async (tab:any)=>{
+  console.log(tab.paneName);
+  ImageInfoArr.value=[];
+  VideoInfoArr.value=[];
+  await caseInfoStore.getMediaUrlInfo(caseTextDetailData.case_id,"image",tab.paneName)
+  ImageInfoArr.value=caseInfoStore.mediaUrlArr;
+  await caseInfoStore.getMediaUrlInfo(caseTextDetailData.case_id,"video",tab.paneName)
+  VideoInfoArr.value=caseInfoStore.mediaUrlArr;
+  
 }
 //添加病例 文本信息
 let isDepartmentSelected=ref<boolean>(false);
@@ -716,7 +689,9 @@ const handleEditChangeDepartment = ()=>{
       );
       diseaseInfo.value= selectedDepartment ? selectedDepartment.diseases : []
 }
-const handleEditCase = async (row: any) => {
+const handleEditCase =  async (row: any) => {
+  ImageInfoArr.value=[];
+  VideoInfoArr.value=[];
   editTextCaseForm.case_id = row.case_id;
   editTextCaseForm.case_name = row.case_name;
   editTextCaseForm.case_cost = row.case_cost;
@@ -733,16 +708,18 @@ const handleEditCase = async (row: any) => {
         item => item.department_id === editTextCaseForm.department_id
       );
       diseaseInfo.value= selectedDepartment ? selectedDepartment.diseases : []
-    FirstTabPane.value='Consultation';
+   
   mediaSendData.case_id=editTextCaseForm.case_id;
+  FirstTabPane.value="Consultation"
   await caseInfoStore.getMediaUrlInfo(editTextCaseForm.case_id,"image","Consultation")
   ImageInfoArr.value=caseInfoStore.mediaUrlArr;
   await caseInfoStore.getMediaUrlInfo(editTextCaseForm.case_id,"video","Consultation")
   VideoInfoArr.value=caseInfoStore.mediaUrlArr;
+  
+  
 };
 //提交编辑表单
 const submitEditTextCaseForm = async ()=>{
-  console.log(editTextCaseForm);
   let result=await caseInfoStore.editTextCaseInfo(editTextCaseForm);
   if(result=='ok'){
     caseInfoStore.getAllTextCaseInfo(pageNo.value,pageSize.value);
@@ -752,28 +729,41 @@ const submitEditTextCaseForm = async ()=>{
 //添加病例多媒体信息
 //记录是哪个分区的ref
 
-const fileList=ref([]);
 
-let imageFormData=new FormData();
-const uploadImage = async (file:any)=>{
 
+
+const uploadImage = async (file:UploadFile)=>{
+  let imageFormData=new FormData();
   imageFormData.append('file', file.raw);
+  console.log(file.raw);
   imageFormData.append('case_id', mediaSendData.case_id);
   imageFormData.append('category',mediaSendData.category);
   let res=await caseInfoStore.addMediaInfo(imageFormData);
-}
-const handleOnSuccess = async (category:string)=>{
-
-    await caseInfoStore.getMediaUrlInfo(editTextCaseForm.case_id,"image",category)
+  if(res=='ok'){
+    await caseInfoStore.getMediaUrlInfo(editTextCaseForm.case_id,"image",mediaSendData.category)
     ImageInfoArr.value=caseInfoStore.mediaUrlArr
-    await caseInfoStore.getMediaUrlInfo(editTextCaseForm.case_id,"video",category)
+    await caseInfoStore.getMediaUrlInfo(editTextCaseForm.case_id,"video",mediaSendData.category)
     VideoInfoArr.value=caseInfoStore.mediaUrlArr
-    fileList.value=[];
-  
+  }
+
 }
-const handleExceed = (file:File)=>{
-  fileList.value.splice(0, 1, file);
-  console.log(fileList);
+// const handleOnSuccess = async (category:string)=>{
+
+//     console.log("upload success!")
+//     await caseInfoStore.getMediaUrlInfo(editTextCaseForm.case_id,"image",category)
+//     ImageInfoArr.value=caseInfoStore.mediaUrlArr
+//     await caseInfoStore.getMediaUrlInfo(editTextCaseForm.case_id,"video",category)
+//     VideoInfoArr.value=caseInfoStore.mediaUrlArr
+//     console.log(category);
+  
+// }
+const upload = ref<UploadInstance>()
+const handleExceed: UploadProps['onExceed'] = (files) => {
+  upload.value!.clearFiles()
+  const file = files[0] as UploadRawFile
+  file.uid = genFileId();
+  upload.value!.handleStart(file)
+  console.log(file);
 }
 //删除多媒体--byUrl
 
@@ -788,7 +778,7 @@ const handleVideoMouseLeave=()=>{
   currentVideo.value = "";
   showDeleteIcon.value=false;
 }
-//TAG-?????????????????????
+//删除
 let deleteMediaSendData=reactive<deleteMediaData>({
   media_url:"",
 })
@@ -809,6 +799,11 @@ const handleDeleteImage = async(imgUrl:string,category:string)=>{
 
 
 <style scoped>
+.form {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
 .inputBox{
 
   width:240px;

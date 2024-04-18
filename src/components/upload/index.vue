@@ -24,14 +24,33 @@
   </div>
 </template>
 
-<script setup>
+<script lang="ts">
+export default{
+  name:'Upload'
+}
+</script>
+
+<script setup lang="ts">
 import { reactive, ref } from "vue";
 import axios from "axios";
 import SparkMD5 from "spark-md5";
 import { ElMessage, ElDialog, ElProgress } from "element-plus";
 import useUserStore from "@/store/modules/user";
-let userStore = useUserStore();
+const props=defineProps({
+  category:{
+    type:String,
+    default:''
+  },
+  case_id:{
+    type:String,
+    default:''
+  }
+})
+console.log(props)
 
+let userStore = useUserStore();
+//属性传值
+// defineProps(["file"])
 const state = reactive({
   maxSize: 5 * 1024 * 1024 * 1024, // 上传最大文件限制
   multiUploadSize: 100 * 1024 * 1024, // 大于这个大小的文件使用分块上传
@@ -96,6 +115,7 @@ const checkedFile = async (options) => {
     });
   }
   state.fileKeep = file;
+  console.log(state.fileKeep);
   const uploadFunc =
     //分块上传还是单个上传
     file.size > state.multiUploadSize ? splitUpload : singleUpload;
@@ -124,7 +144,7 @@ const singleUpload = async (file, onProgress) => {
     },
     onProgress
   );
-
+  
   const reader = new FileReader();
   reader.readAsArrayBuffer(file);
   reader.onload = () => {
@@ -132,11 +152,17 @@ const singleUpload = async (file, onProgress) => {
     state.fileMd5Keep = hash;
     console.log("Hash for single file:", hash);
     validateFile({
-      name: file.name,
-      uid: file.uid,
-      md5: hash,
+      case_id: props.case_id,
+      file_name: file.name,
+      file_md5: hash,
       chunks: 1,
-      filter_type: "user_data_file",
+      category: props.category,
+
+      // name: file.name,
+      // uid: file.uid,
+      // md5: hash,
+      // chunks: 1,
+      // filter_type: "user_data_file",
     });
   };
   reader.onerror = (e) => {
@@ -201,11 +227,11 @@ const splitUpload = async (file, onProgress) => {
   console.log("Final MD5 for chunked file:", finalMD5);
 
   await validateFile({
-    case_id: "1",
+    case_id: props.case_id,
     file_name: file.name,
     file_md5: finalMD5,
     chunks: chunks,
-    category: "Consultation",
+    category: props.category,
   });
 
   state.showProgress = false;
@@ -213,15 +239,18 @@ const splitUpload = async (file, onProgress) => {
 };
 
 const postFile = async (params, onProgress) => {
+
   const formData = new FormData();
   formData.append("file", params.file);
   // formData.append("uid", params.uid);
   formData.append("chunk", params.chunk);
   formData.append("chunks", params.chunks);
-  formData.append("file_name", params.file_name);
+  formData.append("file_name", params.file.name);
+  console.log(params.file.name);  
+  console.log(formData.get('file_name'))
   // formData.append("fullSize", params.fullSize);
   // formData.append("chunked", params.chunked ? "true" : "false");
-  formData.append("case_id", 1);
+  formData.append("case_id", '1');
   formData.append("category", "Consultation");
 
   const config = {
@@ -250,13 +279,13 @@ const postFile = async (params, onProgress) => {
   }
 };
 
-const validateFile = async (file) => {
+const validateFile = async (params) => {
   const formData = new FormData();
-  formData.append("file_md5", file.file_md5);
-  formData.append("chunks", file.chunks);
-  formData.append("file_name", file.file_name);
-  formData.append("case_id", file.case_id);
-  formData.append("category", file.category);
+  formData.append("file_md5",params.file_md5);
+  formData.append("chunks", params.chunks);
+  formData.append("file_name", params.file_name);
+  formData.append("case_id", params.case_id);
+  formData.append("category", params.category);
   const config = {
       headers: {
         "Content-Type": "multipart/form-data",
@@ -324,5 +353,17 @@ const againSplitUpload = async (file, errorChunks) => {
 .el-dialog {
   position: relative;
   height: 500px;
+}
+.el-upload_text{
+  width:30%;
+  display: flex;
+  justify-content: center;
+  align-items:center
+}
+
+/deep/ .el-upload .el-upload-dragger {
+    width: 70%;
+    display:flex;
+    justify-content: center;
 }
 </style>
