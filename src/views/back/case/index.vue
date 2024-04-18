@@ -399,6 +399,9 @@
             </el-upload>
 
         </el-form-item>
+        <el-form-item label="附加视频">
+          <Upload :category="mediaSendData.category" :case_id="editTextCaseForm.case_id" ></Upload>
+        </el-form-item>
       </el-form>
     </el-tab-pane>
     <el-tab-pane label="诊断结果" name="Result">

@@ -141,6 +141,7 @@ const singleUpload = async (file, onProgress) => {
     {
       file,
       chunk: 0,
+      chunks:1,
     },
     onProgress
   );
@@ -156,6 +157,7 @@ const singleUpload = async (file, onProgress) => {
       file_name: file.name,
       file_md5: hash,
       chunks: 1,
+      chunk:0,
       category: props.category,
 
       // name: file.name,
@@ -250,8 +252,8 @@ const postFile = async (params, onProgress) => {
   console.log(formData.get('file_name'))
   // formData.append("fullSize", params.fullSize);
   // formData.append("chunked", params.chunked ? "true" : "false");
-  formData.append("case_id", '1');
-  formData.append("category", "Consultation");
+  formData.append("case_id", props.case_id);
+  formData.append("category", props.category);
 
   const config = {
     onUploadProgress: (progressEvent) => {
@@ -296,12 +298,14 @@ const validateFile = async (params) => {
     // console.log(111);
     const response = await axios.post("/api/disease/checkChunk", formData, config);
     console.log("Upload response:", response.data);
-    if (response.data.status === 1) {
+    console.log(response.data.code);
+    console.log(response.status);
+    if (response.data.code === -2) {
       console.log("Resuming upload for failed chunks");
       againSplitUpload(state.fileKeep, response.data.error_file);
-    } else if (response.data.status === 0) {
+    } else if (response.data.code === 1) {
       ElMessage({
-        message: "Upload successful",
+        message: "上传成功",
         type: "success",
       });
       state.showProgress = false;
@@ -321,19 +325,19 @@ const againSplitUpload = async (file, errorChunks) => {
     await postFile(
       {
         file: chunk,
-        uid: file.uid,
+        // uid: file.uid,
         chunk: chunkIndex,
         chunks: state.chunksKeep,
-        eachSize: state.eachSize,
-        fileName: file.name,
-        fullSize: file.size,
-        chunked: true,
+        // eachSize: state.eachSize,
+        // fileName: file.name,
+        // fullSize: file.size,
+        // chunked: true,
       },
       (e) => console.log("Retry progress:", e.percent)
     );
   }
   ElMessage({
-    message: "Retry completed successfully",
+    message: "重传完成！",
     type: "info",
   });
 };
