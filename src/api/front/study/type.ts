@@ -8,6 +8,7 @@ interface DutyData {
   location_id: string;
   location_name: string;
   learn_duty: string;
+  learn_text: string;
 }
 
 export type DutyArr = DutyData[];

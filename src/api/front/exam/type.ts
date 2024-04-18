@@ -25,6 +25,7 @@ interface optItem {
   optContents: string;
 }
 
+//问题
 export interface questionItem {
   question_id: string;
   question_body: string;
@@ -43,8 +44,10 @@ export interface questionItem {
   d: string;
 }
 
+//问题列表
 export type QuestionListArr = questionItem[];
 
+//试卷详情
 export interface TestDetail {
   paper_id: string;
   paper_name: string;

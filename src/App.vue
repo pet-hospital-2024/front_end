@@ -1,7 +1,7 @@
 <template>
   <div>
-    <AIassistant/>
-    <ChatBox v-if="chatStore.isVisible"/>
+    <AIassistant v-if="chatStore.isAIVisible"/>
+    <ChatBox v-if="chatStore.isChatVisible"/>
     <!-- <HospitalTop/> -->
     <!-- <div class="content"> -->
       <router-view ></router-view>
