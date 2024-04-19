@@ -80,6 +80,7 @@ onMounted(() => {
 
 const goDetailedCase = (case_id: string) => {
   $router.push({ path: "/front/caseDetail", query: { case_id: case_id } });
+  console.log($router);
 };
 </script>
 
