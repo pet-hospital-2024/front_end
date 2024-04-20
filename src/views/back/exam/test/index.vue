@@ -35,7 +35,7 @@
 
       <!-- 创建考试对话框 -->
      <el-dialog v-model="AddTestDialogVisible" title="创建考试" width="600" style="margin-top: 100px;">
-    <el-form :model="addTestForm">
+    <el-form :model="addTestForm" label-width="auto">
         <el-form-item label="考试名称" required>
             <input v-model="addTestForm.exam_name">
         </el-form-item>
@@ -133,7 +133,7 @@
     center
     
   >
-    <el-form style="max-width: 400px" :TestInfo="TestInfo">
+    <el-form style="max-width: 400px" :TestInfo="TestInfo" label-width="auto">
         <el-form-item  label="试卷:">
             <span>{{ TestInfo.paper_name }}</span>
         </el-form-item>
@@ -165,7 +165,7 @@
 
 <!-- 编辑考试页面 -->
 <el-dialog v-model="EditTestDialogVisible" title="编辑考试" width="600" style="margin-top: 100px;">
-    <el-form :model="editTestForm">
+    <el-form :model="editTestForm" label-width="auto">
         <el-form-item label="考试名称" required>
             <input v-model="editTestForm.exam_name" >
         </el-form-item>

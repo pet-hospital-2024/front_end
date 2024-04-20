@@ -1,17 +1,18 @@
 <template>
-  <div :class="state.showProgress ? 'loading' : ''">
+  <div :class="state.showProgress ? 'loading' : ''" >
     <el-upload
-      drag
+      
       multiple
-      v-model:file-list="fileList"
+      
       :auto-upload="true"
       :http-request="checkedFile"
       :on-remove="removeFile"
       :limit="10"
       :disabled="false"
+      
     >
-      <i class="el-icon-upload"></i>
-      <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+      <!-- <i class="el-icon-upload"></i> -->
+      <el-button type="primary">上传视频</el-button>
     </el-upload>
     <el-dialog title="正在上传" v-model="state.showProgress" width="30%">
       <el-progress
@@ -36,6 +37,7 @@ import axios from "axios";
 import SparkMD5 from "spark-md5";
 import { ElMessage, ElDialog, ElProgress } from "element-plus";
 import useUserStore from "@/store/modules/user";
+//父组件值
 const props=defineProps({
   category:{
     type:String,
@@ -47,6 +49,9 @@ const props=defineProps({
   }
 })
 console.log(props)
+//子组件向父组件传值
+import { defineEmits } from "vue";
+const emit = defineEmits(['upload_state'])
 
 let userStore = useUserStore();
 //属性传值
@@ -65,16 +70,7 @@ const state = reactive({
   fileMd5Keep: "",
 });
 
-const fileList = ref([
-  {
-    name: "food.jpeg",
-    url: "https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100",
-  },
-  {
-    name: "food2.jpeg",
-    url: "https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100",
-  },
-]);
+
 
 //移除文件
 const removeFile = (file) => {
@@ -142,6 +138,7 @@ const singleUpload = async (file, onProgress) => {
       file,
       chunk: 0,
       chunks:1,
+      file_name:file.name,
     },
     onProgress
   );
@@ -199,7 +196,7 @@ const splitUpload = async (file, onProgress) => {
         chunk: currentChunk,
         // chunks: chunks,
         //   eachSize: state.eachSize,
-        file_name: file.name,
+        file_name:file.name,
         //   fullSize: file.size,
         //   chunked: true,
       },
@@ -246,9 +243,9 @@ const postFile = async (params, onProgress) => {
   formData.append("file", params.file);
   // formData.append("uid", params.uid);
   formData.append("chunk", params.chunk);
-  formData.append("chunks", params.chunks);
-  formData.append("file_name", params.file.name);
-  console.log(params.file.name);  
+  // formData.append("chunks", params.chunks);
+  formData.append("file_name", params.file_name);
+  console.log(params.file_name);  
   console.log(formData.get('file_name'))
   // formData.append("fullSize", params.fullSize);
   // formData.append("chunked", params.chunked ? "true" : "false");
@@ -304,6 +301,8 @@ const validateFile = async (params) => {
       console.log("Resuming upload for failed chunks");
       againSplitUpload(state.fileKeep, response.data.error_file);
     } else if (response.data.code === 1) {
+      emit("upload_state","ok")
+      console.log(emit);
       ElMessage({
         message: "上传成功",
         type: "success",

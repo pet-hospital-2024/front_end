@@ -54,7 +54,7 @@
   </el-dialog>
 <!-- 编辑科室对话 -->
   <el-dialog v-model="EditDialogVisible" title="编辑科室" width="600" align-center>
-    <el-form style="max-width: 400px" :model="editDepartmentForm" ref="formRef" >
+    <el-form style="max-width: 400px" :model="editDepartmentForm" ref="formRef" label-width="auto" >
       <el-form-item label="科室ID" >
         <el-input v-model="editDepartmentForm.department_id" disabled/>
       </el-form-item>
@@ -102,7 +102,7 @@
   </el-card>
   <!-- 添加疾病对话框 -->
   <el-dialog v-model="AddDiseaseDialogVisible" title="添加疾病" width="600" align-center>
-    <el-form style="max-width: 400px" :model="addDiseaseForm" ref="formRef" >
+    <el-form style="max-width: 400px" :model="addDiseaseForm" ref="formRef" label-width="auto">
       <el-form-item label="科室ID">
         <el-input v-model="addDiseaseForm.department_id" disabled/>
       </el-form-item>
@@ -121,7 +121,7 @@
 
   <!-- 编辑疾病对话框 -->
   <el-dialog v-model="EditDiseaseDialogVisible" title="编辑疾病" width="600" align-center>
-    <el-form style="max-width: 400px" :model="editDiseaseForm" ref="formRef" >
+    <el-form style="max-width: 400px" :model="editDiseaseForm" ref="formRef" label-width="auto">
       <el-form-item label="科室ID">
         <el-input v-model="editDiseaseForm.disease_id" disabled/>
       </el-form-item>

@@ -66,3 +66,9 @@ export type departmentQuestionInfoArr=departmentQuestionInfoItem[]
 export interface diseaseAnddepartmentResponseData extends responseData{
   data:departmentQuestionInfoArr;
 }
+export interface searchQuestionResponseData extends responseData{
+  data:{
+    total:number;
+    list:questionArr;
+  }
+}

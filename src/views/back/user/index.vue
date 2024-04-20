@@ -1,8 +1,8 @@
 <template>
     <!--顶部搜索-->
   <el-card style="height: 80px" shadow="hover">
-    <el-form :inline="true" class="form">
-      <el-form-item label="用户名:">
+    <el-form :inline="true" class="form" label-width="auto">
+      <el-form-item label="用户名:" >
         <el-input placeholder="请你输入搜索用户名" v-model="searchKeyword"></el-input>
       </el-form-item>
       <el-form-item>
@@ -25,12 +25,20 @@
     <el-button type="primary" size="default" @click="handleAddUser" :icon="Plus">
       添加用户
     </el-button>
-    <el-table style="margin: 10px 0" :data="userInfoStore.userInfoArr" >
+    <el-table style="margin: 10px 0" :data="userInfoStore.userInfoArr" :row-class-name="tableRowClassName">
     <!--表格信息-->
 
       <el-table-column label="用户ID" align="center" prop="user_id" width="220"></el-table-column>
       <el-table-column label="用户名" align="center" prop="username" width="200"></el-table-column>
-      <el-table-column label="身份" align="center" prop="identity" width="200"></el-table-column>
+      <el-table-column label="身份" align="center" width="200">
+        <template v-slot="{ row }">
+          <span v-if="row.identity === 'administrator'">管理员</span>
+          <span v-else-if="row.identity === 'teacher'">教师</span>
+          <span v-else-if="row.identity === 'user'">学生</span>
+          <span v-else-if="row.identity=== 'banned'">禁用</span>
+        </template>
+      </el-table-column>
+
 
       <el-table-column label="操作" align="center" width="320">
         <template v-slot="{ row, index }">
@@ -63,7 +71,7 @@
     width="500"
     center
   >
-    <el-form style="max-width: 400px" ref="ruleFormRef" :rules="rules" :model="userInfoForm">
+    <el-form style="max-width: 400px" ref="ruleFormRef" :rules="rules" :model="userInfoForm" label-width="auto">
         <el-form-item  label="用户名" prop="username">
             <el-input v-model="userInfoForm.username"></el-input>
         </el-form-item>
@@ -102,7 +110,7 @@
     center
     
   >
-    <el-form style="max-width: 400px" ref="ruleFormRef"  :model="editUserInfoForm">
+    <el-form style="max-width: 400px" ref="ruleFormRef"  :model="editUserInfoForm" label-width="auto">
       <el-form-item label="用户ID">
           <el-input v-model="editUserInfoForm.user_id" disabled></el-input>
         </el-form-item>
@@ -111,7 +119,7 @@
         </el-form-item>
 
         <el-form-item label="身份">
-            <el-radio-group v-model="editUserInfoForm.identity">
+            <el-radio-group v-model="editUserInfoForm.identity" disabled>
                 <el-radio value="administrator" size="large">管理员</el-radio>
                 <el-radio value="teacher" size="large">专家</el-radio>
                 <el-radio value="user" size="large">学生</el-radio>
@@ -154,9 +162,10 @@
             <span>{{ userInfo.username }}</span>
         </el-form-item>
         <el-form-item label="身份:">
-            <span>
-                {{ userInfo.identity }}
-            </span>
+          <span v-if="userInfo.identity === 'administrator'">管理员</span>
+          <span v-else-if="userInfo.identity === 'teacher'">教师</span>
+          <span v-else-if="userInfo.identity === 'user'">学生</span>
+          <span v-else-if="userInfo.identity=== 'banned'">禁用</span>
         </el-form-item>
         <el-form-item  label="密码:">
             <span>
@@ -212,6 +221,20 @@ let userInfoStore=useBackUserInfoStore();
 onMounted(async () => {
   await userInfoStore.getAllUserInfo(pageNo.value, pageSize.value);
 });
+
+const tableRowClassName = ({
+  row,
+}: {
+  row: roleInfoItem
+
+}) => {
+  if ( row.identity == 'teacher') {
+    return 'warning-row'
+  } 
+  return ''
+}
+
+
 //读取搜索框内数据
 interface dataType {
   username: string;
@@ -453,6 +476,9 @@ const handleBanUser = async (index:any,row:any)=>{
 </script>
 
 <style scoped>
+.el-table >>> .warning-row {
+  --el-table-tr-bg-color: var(--el-color-warning-light-9);
+}
 .form {
   display: flex;
   justify-content: space-between;

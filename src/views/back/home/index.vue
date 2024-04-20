@@ -8,7 +8,7 @@
         <el-tab-pane label="3333" name="3">haha</el-tab-pane>
         <el-tab-pane label="4444" name="4">haha</el-tab-pane>
     </el-tabs> -->
-    <Upload ></Upload>
+
 </template>
 <script setup lang="ts">
 

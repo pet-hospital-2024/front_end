@@ -43,8 +43,8 @@
     <!--title动态，根据点击显示添加or修改-->
     <!--创建试卷-->
  <el-dialog v-model="AddPaperDialogVisible" title="创建试卷" width="600" align-center>
-    <el-form>
-        <el-form-item label="试卷名称" required>
+    <el-form label-width="auto">
+        <el-form-item label="试卷名称" required >
             <input v-model="addPaperForm.paper_name" placeholder="输入试卷名称">
         </el-form-item>
         <el-form-item label="考试时长" required>
@@ -66,7 +66,7 @@
 
 <!-- 编辑试卷基本信息对话 -->
 <el-dialog title="编辑试卷信息试卷" width="600" align-center v-model="EditPaperDialogVisible">
-  <el-form v-model="editPaperForm">
+  <el-form v-model="editPaperForm" label-width="auto">
     <el-form-item label="试卷ID" required>
             <input v-model="editPaperForm.paper_id" disabled>
         </el-form-item>
@@ -157,7 +157,7 @@
 />
 </el-dialog>
 <el-dialog title="选择试题信息" v-model="QuestionFormDialogVisible">
-  <el-form :model="sendData">
+  <el-form :model="sendData" label-width="auto">
     <el-form-item label="分值">
       <el-input v-model="sendData.question_value" required></el-input>
     </el-form-item>
