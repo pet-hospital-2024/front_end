@@ -3,14 +3,18 @@
         <el-button type="primary" size="default" icon="Plus" @click="handleAddPaper">
             创建试卷
         </el-button>
-        <el-table :data="PaperInfoStore.paperInfoArr" style="margin:10px 0" stripe  >
-            <el-table-column type="index" label="序号" width="80" align="center" />
-            <el-table-column label="试卷名称" width="200" align="center" prop="paper_name"></el-table-column>
-            <el-table-column label="题目数量" width="100" align="center" prop="question_number"/>
-            <el-table-column label="试卷总分" align="center" width="100" prop="value"/>
-            <el-table-column label="试卷时长" align="center" width="100" prop="duration"/>
+        <el-table :data="PaperInfoStore.paperInfoArr" style="margin:10px 0" stripe >
+            <el-table-column type="index" label="序号" min-width="10%" align="center" />
+            <el-table-column label="试卷名称" min-width="15%" align="center" prop="paper_name"></el-table-column>
+            <el-table-column label="题目数量" min-width="10%" align="center" prop="question_number"/>
+            <el-table-column label="试卷总分" align="center" min-width="10%" prop="value"/>
+            <el-table-column label="试卷时长" align="center" min-width="15%">
+              <template v-slot="{row}">
+                <span>{{ row.duration }}分钟</span>
+              </template>
+            </el-table-column>
 
-            <el-table-column align="center" class="operation" label="操作" width="350">
+            <el-table-column align="center" class="operation" label="操作" min-width="40%">
             <template v-slot="{ index,row }">
               <el-button @click="handleShowPaperDetail(index, row)" size="small" :icon="ZoomIn">详情</el-button>
               <el-button size="small" @click="handleEditPaper(index,row)" :icon="Edit" type="info">编辑
@@ -124,7 +128,7 @@
 </el-dialog>
   <!--添加试卷详细信息-->
 <el-dialog  title="试题库" width="800" height="400" align-center v-model="AddQuestionToPaperDialogVisible">
-      <el-table :data="questionInfoStore.questionInfoArr" style="margin:10px 0" stripe 
+      <el-table :data="questionInfoStore.questionInfoArr" style="margin:10px 0;min-height: 500px;" stripe 
         empty-text="无题干!" >
             <el-table-column type="index" label="序号" width="80" align="center"/>
 
@@ -138,7 +142,7 @@
             <el-table-column align="center" class="operation" label="操作">
             <template v-slot="{ row }">
               <!-- <el-button @click="handleShowDetail(index, row)" size="small" :icon="ZoomIn">详情</el-button> -->
-              <el-button @click="handleSelectQuestion(row)" link type="primary">选择</el-button>
+              <el-button @click="handleSelectQuestion(row)" link type="primary" style="color:#409EFF">选择</el-button>
             </template>
 
 
@@ -158,12 +162,13 @@
 </el-dialog>
 <el-dialog title="选择试题信息" v-model="QuestionFormDialogVisible">
   <el-form :model="sendData" label-width="auto">
-    <el-form-item label="分值">
-      <el-input v-model="sendData.question_value" required></el-input>
-    </el-form-item>
     <el-form-item label="题目序号">
       <el-input v-model="sendData.question_order" required></el-input>
     </el-form-item>
+    <el-form-item label="分值">
+      <el-input v-model="sendData.question_value" required></el-input>
+    </el-form-item>
+
     
   </el-form>
   <template #footer>
@@ -401,6 +406,9 @@ const handleDeleteQuestionFromPaper = async(row:any)=>{
 }
 </script>
 <style scoped>
+.showTable{
+  width:100vw;
+}
 .input-with-suffix {
   display: flex;
   align-items: center;

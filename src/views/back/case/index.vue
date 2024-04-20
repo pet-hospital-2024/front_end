@@ -2,7 +2,7 @@
     <el-card style="height: 80px;margin-bottom: 10px;" shadow="hover">
     <el-form :inline="true" class="form">
       <el-form-item label="病例:">
-        <el-input placeholder="请你输入搜索病例" v-model="searchKeyword"></el-input>
+        <el-input placeholder="请输入搜索病例" v-model="searchKeyword"></el-input>
       </el-form-item>
       <el-form-item>
         <el-button
@@ -24,11 +24,11 @@
     </div>
     <el-table style="margin:10px 0" stripe :data="caseInfoStore.caseTextInfoArr">
       <!-- <el-table-column type="index" label="序号" width="80" align="center"/> -->
-      <el-table-column  label="病例ID" width="200" align="center" prop="case_id"/>
-      <el-table-column  label="病例名称" width="200" align="center" prop="case_name"/>
-      <el-table-column  label="疾病" width="200" align="center" prop="disease_name"/>
-      <el-table-column  label="科室" width="200" align="center" prop="department_name"/>
-      <el-table-column align="center" label="操作" width="240">
+      <el-table-column  label="病例ID" min-width="20%" align="center" prop="case_id"/>
+      <el-table-column  label="病例名称" min-width="20%" align="center" prop="case_name"/>
+      <el-table-column  label="疾病" min-width="15%" align="center" prop="disease_name"/>
+      <el-table-column  label="科室" min-width="15%" align="center" prop="department_name"/>
+      <el-table-column align="center" label="操作" min-width="30%">
         <template v-slot={row}>
           <el-button size="small" :icon="ZoomIn" @click="handleShowCaseDetail(row)">详情</el-button>
           <el-button size="small" @click="handleEditCase(row)" :icon="Edit" type="info">编辑
@@ -51,7 +51,7 @@
 />
 <!-- 新增病例 -->
 <el-dialog v-model="addCaseDialogVisible" title="新建病例" width="700" center>
-  <el-tabs>
+  <el-tabs style="min-height: 400px;">
     <el-tab-pane label="基本信息">
       <el-form label-width="100px" class="add-case-form">
         <el-form-item label="病例名称">
@@ -262,7 +262,7 @@
 
 <!-- 修改病例页面 -->
 <el-dialog v-model="editCaseDialogVisible" title="编辑病例" width="700" center>
-  <el-tabs  v-model="FirstTabPane" @tab-click="handleTabClickEdit">
+  <el-tabs  v-model="FirstTabPane" @tab-click="handleTabClickEdit" style="min-height:400px" >
     <el-tab-pane label="基本信息" name="Consultation" >
 
       <el-form label-width="auto" class="add-case-form" size="700">

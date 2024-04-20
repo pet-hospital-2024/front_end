@@ -1,12 +1,6 @@
 <template>
   <div class="panorama">
     <canvas class="webgl"> </canvas>
-<<<<<<< Updated upstream
-    <!-- <p style="float:right">hello</p> -->
-    <pullUpMenu/>
-    <learnItem/>
-=======
->>>>>>> Stashed changes
   </div>
 </template>
 
@@ -208,17 +202,10 @@ const initScene = () => {
     0.1,
     1000
   );
-<<<<<<< Updated upstream
-  camera.position.y = 25;
-  camera.position.z = -30;
-  data.camera = camera;
-
-=======
   // camera.position.x = -5;
   camera.position.y = 25;
   camera.position.z = -30;
   // data.scene.add(camera);
->>>>>>> Stashed changes
   //设置相机视角
   camera.lookAt(0, 0, 0);
   data.camera = camera;

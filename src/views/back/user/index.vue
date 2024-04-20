@@ -3,7 +3,7 @@
   <el-card style="height: 80px" shadow="hover">
     <el-form :inline="true" class="form" label-width="auto">
       <el-form-item label="用户名:" >
-        <el-input placeholder="请你输入搜索用户名" v-model="searchKeyword"></el-input>
+        <el-input placeholder="请输入搜索用户名" v-model="searchKeyword"></el-input>
       </el-form-item>
       <el-form-item>
         <el-button
@@ -28,9 +28,9 @@
     <el-table style="margin: 10px 0" :data="userInfoStore.userInfoArr" :row-class-name="tableRowClassName">
     <!--表格信息-->
 
-      <el-table-column label="用户ID" align="center" prop="user_id" width="220"></el-table-column>
-      <el-table-column label="用户名" align="center" prop="username" width="200"></el-table-column>
-      <el-table-column label="身份" align="center" width="200">
+      <el-table-column label="用户ID" align="center" prop="user_id" min-width="20%"></el-table-column>
+      <el-table-column label="用户名" align="center" prop="username" min-width="20%"></el-table-column>
+      <el-table-column label="身份" align="center" min-width="15%">
         <template v-slot="{ row }">
           <span v-if="row.identity === 'administrator'">管理员</span>
           <span v-else-if="row.identity === 'teacher'">教师</span>
@@ -40,14 +40,17 @@
       </el-table-column>
 
 
-      <el-table-column label="操作" align="center" width="320">
+      <el-table-column label="操作" align="center" min-width="45%">
         <template v-slot="{ row, index }">
               <el-button @click="handleShowUserDetail(index, row)" size="small" :icon="ZoomIn">详情</el-button>
               <el-button size="small" @click="handleEditUser(index,row)" :icon="Edit" type="info">编辑
               </el-button>
               <el-button size="small" type="danger" @click="handleDeleteUser(index,row)" 
                 :icon="Delete">删除</el-button>
-              <el-button size="small" type="warning" @click="handleBanUser(index,row)" :icon="Remove">禁用</el-button>
+              <!-- <el-button size="small" type="success" v-if="row.identity==='banned'" :icon="Unlock" 
+              @click="handleRecoverUser(index,row)"
+              >恢复</el-button > -->
+              <el-button size="small" type="warning" @click="handleBanUser(index,row)" :icon="Lock">禁用</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -73,7 +76,7 @@
   >
     <el-form style="max-width: 400px" ref="ruleFormRef" :rules="rules" :model="userInfoForm" label-width="auto">
         <el-form-item  label="用户名" prop="username">
-            <el-input v-model="userInfoForm.username"></el-input>
+            <el-input v-model="userInfoForm.username" placeholder="请输入用户名"></el-input>
         </el-form-item>
         <el-form-item label="身份" prop="identity" >
             <el-radio-group v-model="userInfoForm.identity">
@@ -82,14 +85,14 @@
                 <el-radio value="user" name="identity" size="large">学生</el-radio>
             </el-radio-group>
         </el-form-item>
-        <el-form-item  label="密码" prop="password">
-            <el-input v-model="userInfoForm.password"/>
+        <el-form-item  label="密码" prop="password" >
+            <el-input v-model="userInfoForm.password" placeholder="请输入密码"/>
         </el-form-item>
-        <el-form-item  label="电话" prop="phone_number">
-            <el-input v-model="userInfoForm.phone_number"/>
+        <el-form-item  label="电话" prop="phone_number" >
+            <el-input v-model="userInfoForm.phone_number" placeholder="请输入手机号"/>
         </el-form-item>
-        <el-form-item  label="邮箱" prop="email">
-            <el-input v-model="userInfoForm.email" />
+        <el-form-item  label="邮箱" prop="email" >
+            <el-input v-model="userInfoForm.email" placeholder="请输入邮箱"/>
         </el-form-item>
 
     </el-form>
@@ -196,7 +199,7 @@
 
 //获取仓库对象
 
-import { Delete, Edit,Plus,Remove,ZoomIn } from '@element-plus/icons-vue';
+import { Delete, Edit,Plus,Lock,ZoomIn,Unlock } from '@element-plus/icons-vue';
 import { ref,reactive,watch } from 'vue'
 //点击addUser之前ref(false)，不展示对话框
 const dialogAddUser=ref(false);
