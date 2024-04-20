@@ -32,11 +32,11 @@
 <script setup lang="ts">
 import { useRouter } from "vue-router";
 let $router = useRouter();
-const goPanorama =() => {
-  $router.push({path:"/front/panorama"});
+const goPanorama = () => {
+  $router.push({ path: "/front/panorama" });
 };
 const goStudy = () => {
-  $router.push({ path: "/front/study" });
+  $router.push({ path: "/front/case"});
 };
 const goTest = () => {
   $router.push({ path: "/front/testList" });
@@ -153,7 +153,7 @@ const goTest = () => {
       margin-bottom: 5vh;
     }
 
-    .description{
+    .description {
       text-align: center;
       width: 60%;
       margin-top: 1vh;

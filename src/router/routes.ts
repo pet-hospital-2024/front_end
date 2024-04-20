@@ -91,6 +91,16 @@ export const constantRoute = [
           hidden: true,
           title: "",
         },
+      },
+      {
+        path: "/front/vr",
+        name: "vr",
+        //@ts-ignore
+        component: () => import("@/views/front/vr/index.vue"),
+        meta: {
+          hidden: true,
+          title: "",
+        },
       }
     ],
   },

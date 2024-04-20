@@ -3,6 +3,10 @@ import * as TWEEN from '@tweenjs/tween.js'
 const Animations = {
   // 相机移动实现漫游等动画
   animateCamera: (camera, controls, newP, newT, time = 2000, callBack) => {
+    // console.log(camera);
+    // console.log(controls);
+    // console.log(newP);
+    // console.log(newT);
     const tween = new TWEEN.Tween({
       x1: camera.position.x, // 相机x
       y1: camera.position.y, // 相机y
@@ -30,10 +34,12 @@ const Animations = {
       controls.target.y = object.y2;
       controls.target.z = object.z2;
       controls.update();
+      // console.log(controls);
     });
     tween.onComplete(function () {
       controls.enabled = true;
       controls.update();
+      // console.log(controls);
       callBack();
     });
     tween.easing(TWEEN.Easing.Cubic.InOut);
