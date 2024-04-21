@@ -1,12 +1,9 @@
 <template>
   <div class="panorama">
     <canvas class="webgl"> </canvas>
-<<<<<<< Updated upstream
     <!-- <p style="float:right">hello</p> -->
-    <pullUpMenu/>
-    <learnItem/>
-=======
->>>>>>> Stashed changes
+    <!-- <pullUpMenu/>
+    <learnItem/> -->
   </div>
 </template>
 
@@ -29,8 +26,7 @@ import * as TWEEN from "@tweenjs/tween.js";
 import { DRACOLoader } from "three/addons/loaders/DRACOLoader.js";
 import Animations from "@/utils/animations.js";
 
-import pullUpMenu from "@/components/pullUpMenu/index.vue"; 
-import learnItem  from "@/components/learnItem/index.vue";
+
 
 const data = reactive({
   renderer: null,
@@ -73,77 +69,6 @@ function switchKey(room_key){
       return room_key;
 }
 
-const initCamera = () => {
-  //创建相机
-  const camera = new THREE.PerspectiveCamera(
-    75,
-    window.innerWidth / window.innerHeight,
-    0.1,
-    1000
-  );
-  camera.position.y = 25;
-  camera.position.z = -30;
-  // data.scene.add(camera);
-  data.camera = camera;
-};
-
-const initRenderer = () => {
-  // 初始化渲染器
-  const canvas = document.querySelector("canvas.webgl");
-  const renderer = new THREE.WebGLRenderer({ canvas });
-  renderer.setSize(sizes.width, sizes.height);
-  // renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-  // document.body.appendChild(renderer.domElement);
-  data.renderer = renderer;
-};
-
-function loadModel(scene) {
-  //设置GLTFLoader
-  const loader = new GLTFLoader();
-  loader.load("/assets/pet-hospital-1.glb", (gltf) => {
-    // gltf.scene.traverse(function (child) {
-    //   // console.log(child.name);
-    // });
-    scene.add(gltf.scene);
-    // console.log(gltf);
-  });
-}
-
-function loadEnv(scene) {
-  //rgbeloader加载hdr贴图,给gltf对象打光
-  const rgbeLoader = new RGBELoader();
-  rgbeLoader.loadAsync("/assets/surgery_4k.hdr").then((envMap) => {
-    //球面全景图映射
-    envMap.mapping = THREE.EquirectangularReflectionMapping;
-    //设置背景贴图
-    scene.background = envMap;
-    scene.backgroundBlurriness = 0.5; //模糊度
-    scene.backgroundIntensity = 0.5; //透明度
-    //设置环境贴图（提供环境光）
-    scene.environment = envMap;
-  });
-}
-// // 获取交互点的信息
-// const interactivePoints = computed(() => {
-//   const res = [];
-//   rooms.forEach((room) => {
-//     if (room.interactivePoints && room.interactivePoints.length > 0) {
-//       room.interactivePoints.forEach((point) => {
-//         point = {
-//           room: room.key,
-//           ...point,
-//         };
-//         res.push(point);
-//       });
-//     }
-//   });
-//   return res;
-// });
-
-function createScene() {
-  const scene = new THREE.Scene();
-  data.scene = scene;
-}
 
 function makeTextSprite(room_name){
   let canvas = document.createElement("canvas");
@@ -208,17 +133,11 @@ const initScene = () => {
     0.1,
     1000
   );
-<<<<<<< Updated upstream
+
   camera.position.y = 25;
   camera.position.z = -30;
   data.camera = camera;
 
-=======
-  // camera.position.x = -5;
-  camera.position.y = 25;
-  camera.position.z = -30;
-  // data.scene.add(camera);
->>>>>>> Stashed changes
   //设置相机视角
   camera.lookAt(0, 0, 0);
   data.camera = camera;

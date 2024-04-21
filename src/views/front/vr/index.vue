@@ -2,6 +2,8 @@
   <div class = "container">
     <canvas class="webgl"> </canvas>
     <button id="tag" @click="goPanorama" style = "z-index: 10;">返回</button>
+    <pullUpMenu/>
+    <learnItem/>
   </div>  
 </template>
 
@@ -12,7 +14,8 @@ import * as THREE from 'three';
 //导入轨道控制器
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import { onMounted,reactive } from "vue";
-
+import pullUpMenu from "@/components/pullUpMenu/index.vue"; 
+import learnItem  from "@/components/learnItem/index.vue";
 const $route = useRoute();
 const $router = useRouter();
 let paramKey = $route.query.key;
