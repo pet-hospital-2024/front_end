@@ -2,8 +2,8 @@
   <div class="panorama">
     <canvas class="webgl"> </canvas>
     <!-- <p style="float:right">hello</p> -->
-    <!-- <pullUpMenu/>
-    <learnItem/> -->
+    <pullUpMenu/>
+    <learnItem/>
   </div>
 </template>
 
