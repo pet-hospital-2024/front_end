@@ -5,12 +5,16 @@
             创建考试
         </el-button>
         <el-table style="margin:10px 0" stripe :data="TestInfoStore.testInfoArr">
-            <el-table-column type="index" label="序号" width="80" align="center"/>
-            <el-table-column label="考试名称" width="200" align="center" prop="exam_name"></el-table-column>
-            <el-table-column  label="考试起始时间" prop="exam_start" width="150" align="center"/>
-            <el-table-column  label="考试截至时间" prop="exam_end" width="150" align="center"/>
-            <el-table-column  label="考试时长" width="80" prop="duration" align="center"/>
-            <el-table-column label="操作" align="center" width="240">
+            <el-table-column type="index" label="序号" min-width="10%" align="center"/>
+            <el-table-column label="考试名称" min-width="15%" align="center" prop="exam_name"></el-table-column>
+            <el-table-column  label="考试起始时间" prop="exam_start" min-width="15%" align="center"/>
+            <el-table-column  label="考试截至时间" prop="exam_end" min-width="15%" align="center"/>
+            <el-table-column  label="考试时长" min-width="15%" align="center">
+              <template v-slot="{row}">
+                <span>{{ row.duration }}分钟</span>
+              </template>
+            </el-table-column>
+            <el-table-column label="操作" align="center" min-width="30%">
               <template v-slot="{ index, row }">
                     <el-button @click="handleShowTestDetail(index, row)" size="small" :icon="ZoomIn">详情</el-button>
                     <el-button size="small" @click="handleEditTest(index,row)" :icon="Edit" type="info">编辑
@@ -35,7 +39,7 @@
 
       <!-- 创建考试对话框 -->
      <el-dialog v-model="AddTestDialogVisible" title="创建考试" width="600" style="margin-top: 100px;">
-    <el-form :model="addTestForm">
+    <el-form :model="addTestForm" label-width="auto">
         <el-form-item label="考试名称" required>
             <input v-model="addTestForm.exam_name">
         </el-form-item>
@@ -165,7 +169,7 @@
 
 <!-- 编辑考试页面 -->
 <el-dialog v-model="EditTestDialogVisible" title="编辑考试" width="600" style="margin-top: 100px;">
-    <el-form :model="editTestForm">
+    <el-form :model="editTestForm" label-width="auto">
         <el-form-item label="考试名称" required>
             <input v-model="editTestForm.exam_name" >
         </el-form-item>
@@ -208,7 +212,9 @@
             }"
           />
         </el-form-item>
-        <el-form-item v-if="editTestForm.paper_id!=''">试卷名称   {{ TestInfoStore.paper_name }}</el-form-item>
+        <el-form-item v-if="editTestForm.paper_id!=''" label="试卷名称">
+           <span style="font-weight: bold;">{{ TestInfoStore.paper_name }}</span>
+        </el-form-item>
     </el-form>
     <template #footer>
         <div class="dialog-footer" style="display: flex; justify-content: space-between; align-items: center;">

@@ -4,9 +4,9 @@
               添加科室
           </el-button>
       <el-table :data="departmentInfoStore.departmentInfoArr" style="margin:10px 0" stripe>
-        <el-table-column type="index" label="序号" width="150" align="center"></el-table-column>
-        <el-table-column prop="department_name" label="科室" width="200" align="center"/>
-        <el-table-column align="center" label="操作" width="300">
+        <el-table-column type="index" label="序号" min-width="20%" align="center"></el-table-column>
+        <el-table-column prop="department_name" label="科室" min-width="20%" align="center"/>
+        <el-table-column align="center" label="操作" min-width="40%">
           <template v-slot="{ row, index}">
             <el-button size="small" @click="handleEditDepartment(index,row)" :icon="Edit" type="info">编辑
                 </el-button>
@@ -14,7 +14,7 @@
                   :icon="Delete">删除</el-button>
           </template>
         </el-table-column>
-        <el-table-column  label="选择科室" align="center">
+        <el-table-column  label="选择科室" align="center" min-width="20%">
             <template v-slot="{ row, index}">
                 <el-button @click="handleEnterDepartment(index,row)" class="my-button" :icon="Pointer">进入科室</el-button>
             </template>
@@ -54,7 +54,7 @@
   </el-dialog>
 <!-- 编辑科室对话 -->
   <el-dialog v-model="EditDialogVisible" title="编辑科室" width="600" align-center>
-    <el-form style="max-width: 400px" :model="editDepartmentForm" ref="formRef" >
+    <el-form style="max-width: 400px" :model="editDepartmentForm" ref="formRef" label-width="auto" >
       <el-form-item label="科室ID" >
         <el-input v-model="editDepartmentForm.department_id" disabled/>
       </el-form-item>
@@ -102,7 +102,7 @@
   </el-card>
   <!-- 添加疾病对话框 -->
   <el-dialog v-model="AddDiseaseDialogVisible" title="添加疾病" width="600" align-center>
-    <el-form style="max-width: 400px" :model="addDiseaseForm" ref="formRef" >
+    <el-form style="max-width: 400px" :model="addDiseaseForm" ref="formRef" label-width="auto">
       <el-form-item label="科室ID">
         <el-input v-model="addDiseaseForm.department_id" disabled/>
       </el-form-item>
@@ -121,7 +121,7 @@
 
   <!-- 编辑疾病对话框 -->
   <el-dialog v-model="EditDiseaseDialogVisible" title="编辑疾病" width="600" align-center>
-    <el-form style="max-width: 400px" :model="editDiseaseForm" ref="formRef" >
+    <el-form style="max-width: 400px" :model="editDiseaseForm" ref="formRef" label-width="auto">
       <el-form-item label="科室ID">
         <el-input v-model="editDiseaseForm.disease_id" disabled/>
       </el-form-item>

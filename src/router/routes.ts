@@ -176,18 +176,19 @@ export const constantRoute = [
   },
   //病例管理相关界面跳转路由
   {
-    path:'/back',
+    path:'/back/hospital',
     component:()=>import('@/layout/back/index.vue'),
     name:'case_home',
+    redirect: "/back/hospital/case",
     meta:{
       title:'医院管理',
       hidden:false,
       icon:'OfficeBuilding',
     },
-    redirect: "/back/case",
+    
     children: [
       {
-        path: "/back/case",
+        path: "/back/hospital/case",
         component: () => import("@/views/back/case/index.vue"),
         name: "backCase",
         meta: {
@@ -197,7 +198,7 @@ export const constantRoute = [
         },
       },
       {
-        path: "/back/department",
+        path: "/back/hospital/department",
         component: () => import("@/views/back/department/index.vue"),
         name: "backDepartment",
         meta: {

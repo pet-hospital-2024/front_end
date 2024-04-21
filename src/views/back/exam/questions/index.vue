@@ -1,5 +1,22 @@
 <template>
-  
+      <!--顶部搜索-->
+    <el-card style="height: 80px;margin-bottom: 10px;" shadow="hover">
+    <el-form :inline="true" class="form" label-width="auto">
+      <el-form-item label="题目名:">
+        <el-input placeholder="请输入搜索题目" v-model="searchKeyword"></el-input>
+      </el-form-item>
+      <el-form-item>
+        <el-button
+          type="primary"
+          size="default"
+          @click="handleSearchQuestion"
+        >
+          搜索
+        </el-button>
+        <el-button size="default" @click="reset">重置</el-button>
+      </el-form-item>
+    </el-form>
+  </el-card>
     <el-card class="box-card">
         <el-button type="primary" size="default" icon="Plus" @click="handleAddQuestion">
             添加试题
@@ -11,16 +28,16 @@
         <!--表格展示信息-->
         <el-table :data="QuestionInfoStore.questionInfoArr" style="margin:10px 0" stripe 
         empty-text="无题干!" >
-            <el-table-column type="index" label="序号" width="80" align="center"/>
+            <el-table-column type="index" label="序号" min-width="10%" align="center"/>
 
-            <el-table-column label="题目类型" width="150" align="center">
+            <el-table-column label="题目类型" min-width="10%" align="center">
                 <template v-slot="{ row }">
                     {{ row.type === 'choice' ? '选择题' : '判断题' }}
                 </template>
             </el-table-column>
 
-            <el-table-column prop="question_body" label="题目描述" align="center" width="500" />
-            <el-table-column align="center" class="operation" width="240">
+            <el-table-column prop="question_body" label="题目描述" align="center" min-width="40%" />
+            <el-table-column align="center" class="operation" min-width="40%">
             <template v-slot="{ row, index }">
               <el-button @click="handleShowDetail(index, row)" size="small" :icon="ZoomIn">详情</el-button>
               <el-button size="small" @click="handleEditQuestion(row)" :icon="Edit" type="info">编辑
@@ -124,7 +141,7 @@
   <!-- 编辑试题对话框 -->
   <el-dialog v-model="EditQuestionDialogVisible" title="编辑试题" width="500" align-center>
 
-<el-form  style="max-width: 400px" :model="editQuestionForm" ref="formRef">
+<el-form  style="max-width: 400px" :model="editQuestionForm" ref="formRef" label-width="auto">
   <el-form-item label="题目ID" >
     <el-input v-model="editQuestionForm.question_id" disabled/>
   </el-form-item>
@@ -199,7 +216,7 @@
 
   <!--detail详情对话框-->
   <el-dialog title="试题详情" width="600" align-center v-model="showDetail" :QuestionInfo="QuestionInfo">
-    <el-form>
+    <el-form label-width="auto">
       <el-form-item label="题目类型:">
         <span>{{ QuestionInfo.type==='choice'?'选择题':'判断题' }}</span>
       </el-form-item>
@@ -252,12 +269,33 @@
 <script setup lang="ts">
 import useBackQuestionStore from "@/store/back/question"
 import {Delete, Edit, Failed, ZoomIn} from '@element-plus/icons-vue'
+import { ElNotification } from "element-plus";
 import { computed, ref,onMounted, reactive} from 'vue'
 //分页器当前页码
 let pageNo=ref<string>("1");
 //定义每页展示多少条数据
 let pageSize=ref<string>("10")  
 
+
+//搜索
+let searchKeyword = ref<string>("");
+
+
+const handleSearchQuestion = async () => {
+  await QuestionInfoStore.searchQuestionInfo(searchKeyword.value);
+
+}
+
+//重置搜索结果
+const reset= async ()=>{
+let res=await QuestionInfoStore.getAllQuestionInfo(pageNo.value,pageSize.value);
+if(res=='ok') {
+  ElNotification({
+      type:'success',
+      message:"重置成功！"
+    });
+}
+}
 
 
 let QuestionInfoStore=useBackQuestionStore();
@@ -464,6 +502,11 @@ const handleTypeJudgement = ()=>{
 /* Optional: Adjust spacing between buttons */
 .button-container > .el-button {
   margin: 0 5px; /* Adjust the spacing as needed */
+}
+.form {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 </style>

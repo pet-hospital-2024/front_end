@@ -68,9 +68,9 @@ export interface addMediaCaseData{
 export interface caseMediaResponseData extends responseData {
     data:Array<string>;
   }
-  export interface deleteMediaData{
+export interface deleteMediaData{
     media_url:string;
-  }
+}
 export interface mediaUrlResponseData extends responseData{
     data:Array<string>;
 }

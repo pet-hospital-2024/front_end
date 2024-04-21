@@ -1,8 +1,8 @@
 import { defineStore } from "pinia";
 import { ElNotification } from "element-plus";
 import type { questionInfoBySliceState } from "./types/type";
-import type { addQuestionData, responseQuestionData,responseData, diseaseAnddepartmentResponseData, editQuestionData, deleteQuestionData } from "@/api/back/exam/questions/type";
-import { reqAddQuestionInfo, reqDeleteQuestionInfo, reqDepartmentAndDisease, reqEditQuestionInfo, reqQuestionInfoBySlice } from "@/api/back/exam/questions";
+import type { addQuestionData, responseQuestionData,responseData, diseaseAnddepartmentResponseData, editQuestionData, deleteQuestionData, searchQuestionResponseData } from "@/api/back/exam/questions/type";
+import { reqAddQuestionInfo, reqDeleteQuestionInfo, reqDepartmentAndDisease, reqEditQuestionInfo, reqQuestionInfoBySlice, reqSearchQuestionByName } from "@/api/back/exam/questions";
 let useBackQuestionStore = defineStore("QuestionManagement",{
     state:():questionInfoBySliceState =>{
         return{
@@ -86,6 +86,23 @@ let useBackQuestionStore = defineStore("QuestionManagement",{
                     message:"删除试题失败！",
                 })
                 return Promise.reject(new Error(result.message));
+            }
+        },
+        async searchQuestionInfo(question_name:string){
+            let res:searchQuestionResponseData=await reqSearchQuestionByName(question_name);
+            if(res.code==1){
+                this.questionInfoArr=res.data.list;
+                ElNotification({
+                    type:'success',
+                    message:"查找用户成功！",
+                });
+                return 'ok'
+            }else{
+                ElNotification({
+                    type:'error',
+                    message:res.message,
+                });
+                return Promise.reject(new Error(res.message));
             }
         }
     }
