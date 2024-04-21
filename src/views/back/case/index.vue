@@ -127,10 +127,10 @@
   <el-dialog v-model="ShowCaseDetailDialogVisible" title="病例详情" width="700px" center>
     <el-card :model="caseTextDetailData" class="case-detail">
       <el-tabs @tab-click="handleTabClickDetail" v-model="FirstTabPane">
-        <div class="detail-heading">
+        <!-- <div class="detail-heading">
           <el-text class="case-title">{{ caseTextDetailData.case_name }}</el-text>
           
-        </div>
+        </div> -->
         <!-- <el-divider/> -->
         <el-tab-pane label="基本信息" name="Consultation">
           <div class="detail-section" >

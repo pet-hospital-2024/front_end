@@ -17,14 +17,14 @@ let userStore=useUserStore();
 <style scoped>
 .outter-box{
     width: calc(100% + 40);
-    height: 87%;
+    /* height: 88%; */
+    height: calc(100vh - 170px);
     background:linear-gradient(white,rgb(151, 167, 151));
     margin-left:-20px;
     margin-right: -20px;
     margin-bottom: -20px;
 }
 .container{
-
     display: flex;
     justify-content: center;
     align-items: center;

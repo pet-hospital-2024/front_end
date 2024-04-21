@@ -1,6 +1,6 @@
 <template>
   <div class="chatBox_contianer">
-      <h1 class="unique_h1">智能助教</h1>
+    <h1 class="unique_h1">智能助教</h1>
     <el-divider />
     <div class="chatRoom">
       <div
@@ -96,8 +96,13 @@ const userStore = useUserStore();
 
 const textarea = ref(""); //输入文本
 
-const parsedMarkdown = (text:string) => {
-  const md = new MarkdownIt();
+const parsedMarkdown = (text: string) => {
+  const md = new MarkdownIt({
+    html: true, // 在源码中启用HTML标签
+    linkify: true, // 将类似URL的文本自动转换为链接
+    breaks: true, // 转换段落里的 '\n' 到 <br>
+  });
+
   console.log(md.render(text));
   return md.render(text);
 };
@@ -324,7 +329,7 @@ onUnmounted(() => {
     margin-top: 10px;
   }
 
-  strong{
+  strong {
     font-weight: bold;
   }
 }

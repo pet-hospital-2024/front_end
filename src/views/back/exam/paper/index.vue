@@ -21,7 +21,7 @@
               </el-button>
               <el-button size="small" type="danger" @click="handleDeletePaper(index,row)" 
                 :icon="Delete">删除</el-button>
-              <el-button size="small" icon="Plus" type="primary" @click="handleEditPaperInfo(index,row)">添加试题</el-button>
+              <el-button size="small" icon="Plus" type="primary" @click="handleEditPaperInfo(index,row)">管理试题</el-button>
             </template>
 
 
