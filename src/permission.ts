@@ -13,7 +13,7 @@
   // 全局前置守卫
   router.beforeEach(async (to, from, next) => {
     //document.title = to.meta.title + ` | ${setting.title}`
-    console.log(to.path)
+    // console.log(to.path)
     nprogress.start();
     let token = userStore.token;
     if (token) {
