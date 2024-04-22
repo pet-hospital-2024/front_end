@@ -1,7 +1,6 @@
 <template>
   <div class="container">
     <canvas class="webgl"> </canvas>
-    <!-- <button @click="goPanorama" style="z-index: 2000;">返回导览</button> -->
     <div class="vr">
       <!-- 切换房间 -->
       <div class="switch">
@@ -16,33 +15,6 @@
           <i class="icon"></i>
         </span>
       </div>
-      <!-- 场景交互点 -->
-      <!-- <div
-        class="point"
-        v-for="(point, index) in interactivePoints"
-        :key="index"
-        :class="[`point-${index}`, `point-${point.key}`]"
-        @click="handleReactivePointClick(point)"
-        v-show="point.room === data.currentRoom"
-      >
-        <div class="label" :class="[`label-${index}`,`label-${point.key}`]">
-          <label class="label-tips">
-            <div class="cover">
-              <i
-                class="icon"
-                :style="{
-                  background: `url(${point.cover}) no-repeat center`,
-                  'background-size': 'contain',
-                }"
-              ></i>
-            </div>
-            <div class="info">
-              <p class="p1">{{ point.value }}</p>
-              <p class="p2">{{ point.description }}</p>
-            </div>
-          </label>
-        </div>
-      </div> -->
     </div>
     <pullUpMenu />
     <learnItem />
@@ -55,49 +27,46 @@ import { rooms } from "@/views/panorama/data.js";
 import * as THREE from "three";
 //导入轨道控制器
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
-import { onMounted, reactive, computed, watch } from "vue";
-
+import {
+  onMounted,
+  reactive,
+  computed,
+  watch,
+  onBeforeUnmount,
+  ref,
+} from "vue";
 import pullUpMenu from "@/components/pullUpMenu/index.vue";
 import learnItem from "@/components/learnItem/index.vue";
-import { Vector2 } from "three";
-import usePanoramaStore from "@/store/front/panorama"
+import usePanoramaStore from "@/store/front/panorama";
 
-let useStore=usePanoramaStore();
-
-const map=new Map([
-  ["平面012",6],
-  ["平面004",2],
-  ["平面011",5],
-  ["平面001",7],
-  ["平面003",8],
-  ["平面006",9],
-  ["平面002",1],
-]
-  
-)
-
-
+let useStore = usePanoramaStore();
 const $route = useRoute();
 const $router = useRouter();
-let paramKey = computed(() => $route.query.key);
 
-let location_id=map.get($route.query.key)
+const map = new Map([
+  ["平面012", 6],
+  ["平面004", 2],
+  ["平面011", 5],
+  ["平面001", 7],
+  ["平面003", 8],
+  ["平面006", 9],
+  ["平面002", 1],
+]);
+let location_id = map.get($route.query.key);
+
+let paramKey = computed(() => $route.query.key);
 const room = computed(
   () => rooms.filter((item) => item.key === paramKey.value)[0]
 );
+
 const raycaster = new THREE.Raycaster();
 const mouse = new THREE.Vector2();
 let sprites = [];
+const animationFrameID = ref(null);
 const sizes = {
-    width: window.innerWidth,
-    height: window.innerHeight,
-  };
-//实现paramKey更新后页面刷新
-watch(paramKey, (newValue, oldValue) => {
-  if (newValue !== oldValue) {
-    window.location.reload();
-  }
-});
+  width: window.innerWidth,
+  height: window.innerHeight,
+};
 
 const data = reactive({
   renderer: null,
@@ -107,13 +76,16 @@ const data = reactive({
   cameraZAxis: 2,
   currentRoom: room.value.name,
 });
-
 data.currentRoom = room.value.name;
 
-const goPanorama = () => {
-  $router.push({ path: "/front/panorama" });
-};
+//实现paramKey更新后页面刷新
+watch(paramKey, (newValue, oldValue) => {
+  if (newValue !== oldValue) {
+    window.location.reload();
+  }
+});
 
+//房间内跳转到别的房间
 function switchRoom(target_room) {
   $router.push({
     path: "/front/vr",
@@ -122,10 +94,6 @@ function switchRoom(target_room) {
     },
   });
 }
-
-const handleReactivePointClick = (point) => {
-  console.log(point, "clicked");
-};
 
 // 获取room交互点的信息
 const interactivePoints = computed(() => {
@@ -143,7 +111,7 @@ const interactivePoints = computed(() => {
   });
   return res;
 });
-
+//创建相机
 const initCamera = () => {
   //创建相机
   const camera = new THREE.PerspectiveCamera(
@@ -153,12 +121,10 @@ const initCamera = () => {
     1000
   );
   camera.position.y = 1;
-  // camera.position.z = -1;
-  // data.scene.add(camera);
   data.camera = camera;
   return camera;
 };
-
+//创建渲染器
 const initRenderer = () => {
   // 初始化渲染器
   const canvas = document.querySelector("canvas.webgl");
@@ -169,7 +135,7 @@ const initRenderer = () => {
   data.renderer = renderer;
   return renderer;
 };
-
+//初始化轨道控制器
 const initControls = (camera, renderer) => {
   // 添加轨道控制器
   const controls = new OrbitControls(camera, renderer.domElement);
@@ -184,7 +150,7 @@ const initControls = (camera, renderer) => {
   data.controls = controls;
   return controls;
 };
-
+//加载房间背景
 function loadEnv(scene) {
   const envMap = new THREE.TextureLoader().load(room.value.map);
   //球面全景图映射
@@ -195,21 +161,21 @@ function loadEnv(scene) {
   scene.environment = envMap;
   return scene;
 }
+
+//创建scene
 function createScene() {
   const scene = new THREE.Scene();
   data.scene = scene;
   return scene;
 }
 
-/* 创建sprite */
+// 创建sprite
 function makeTextSprite(message, position, parameters) {
-  // console.log("3",message);
-  // console.log("4",parameters);
   if (parameters === undefined) parameters = {};
   let fontface = parameters.hasOwnProperty.call("fontface")
     ? parameters["fontface"]
     : "Arial";
-  /* 字体大小 */
+  // 字体大小
   let fontsize = parameters.hasOwnProperty.call("fontsize")
     ? parameters["fontsize"]
     : 18;
@@ -217,11 +183,11 @@ function makeTextSprite(message, position, parameters) {
   let color = parameters.hasOwnProperty.call("color")
     ? parameters["color"]
     : "rgba(70, 135, 61, 1.0)";
-  /* 边框厚度 */
+  // 边框厚度
   let borderThickness = parameters.hasOwnProperty.call("borderThickness")
     ? parameters["borderThickness"]
     : 1;
-  /* 边框颜色 */
+  // 边框颜色
   let borderColor = parameters.hasOwnProperty.call("borderColor")
     ? parameters["borderColor"]
     : {
@@ -230,7 +196,7 @@ function makeTextSprite(message, position, parameters) {
         b: 183,
         a: 1.0,
       };
-  /* 背景颜色 */
+  // 背景颜色
   //rgb(218, 249, 214)
   let backgroundColor = parameters.hasOwnProperty.call("backgroundColor")
     ? parameters["backgroundColor"]
@@ -240,15 +206,15 @@ function makeTextSprite(message, position, parameters) {
         b: 214,
         a: 1.0,
       };
-  /* 创建画布 */
+  // 创建画布
   let canvas = document.createElement("canvas");
   let context = canvas.getContext("2d");
-  /* 字体加粗 */
+  // 字体加粗
   context.font = "Bold " + fontsize + "px " + fontface;
-  /* 获取文字的大小数据，高度取决于文字的大小 */
+  // 获取文字的大小数据，高度取决于文字的大小
   let metrics = context.measureText(message);
   let textWidth = metrics.width;
-  /* 背景颜色 */
+  // 背景颜色
   context.fillStyle =
     "rgba(" +
     backgroundColor.r +
@@ -259,7 +225,7 @@ function makeTextSprite(message, position, parameters) {
     "," +
     backgroundColor.a +
     ")";
-  /* 边框的颜色 */
+  // 边框的颜色
   context.strokeStyle =
     "rgba(" +
     borderColor.r +
@@ -271,7 +237,7 @@ function makeTextSprite(message, position, parameters) {
     borderColor.a +
     ")";
   context.lineWidth = borderThickness;
-  /* 绘制圆角矩形 */
+  // 绘制圆角矩形
   roundRect(
     context,
     borderThickness / 2,
@@ -280,30 +246,26 @@ function makeTextSprite(message, position, parameters) {
     fontsize * 1.4 + borderThickness,
     6
   );
-  /* 字体颜色 */
+  // 字体颜色
   context.fillStyle = color;
   context.fillText(message, borderThickness, fontsize + borderThickness);
-  /* 画布内容用于纹理贴图 */
-  // console.log(context);
+  // 画布内容用于纹理贴图
   let texture = new THREE.Texture(canvas);
-  // console.log("11",texture);
   texture.needsUpdate = true;
   let spriteMaterial = new THREE.SpriteMaterial({
     map: texture,
   });
   let sprite = new THREE.Sprite(spriteMaterial);
   sprites.push(sprite);
-  // console.log("111",sprite.position);
-  // console.log(sprite.material);//有
-  // console.log(position);
   sprite.position.set(position.x, position.y, position.z);
-  // console.log("changed",sprite.position);
-  /* 缩放比例 */
+  data.controls.target = position;
+  data.controls.update();
+  // 缩放比例
   sprite.scale.set(15, 8, 0);
   return sprite;
 }
 
-/* 绘制圆角矩形 */
+// 绘制圆角矩形
 function roundRect(ctx, x, y, w, h, r) {
   ctx.beginPath();
   ctx.moveTo(x + r, y);
@@ -345,10 +307,10 @@ const initEvents = () => {
     const intersects = raycaster.intersectObjects(sprites);
     // console.log("click", intersects[0]);
     if (intersects.length > 0) {
-      useStore.itemVisibility=true;
+      useStore.itemVisibility = true;
       // console.log("click", intersects[0].texture);
-      console.log(useStore.role_id,location_id);
-      useStore.getLearnItem(location_id,useStore.role_id);
+      console.log(useStore.role_id, location_id);
+      useStore.getLearnItem(location_id, useStore.role_id);
     }
   };
   resizeHandler = () => {
@@ -365,28 +327,43 @@ const initEvents = () => {
   window.addEventListener("resize", resizeHandler);
   window.addEventListener("click", clickHandler);
 };
-const initScene = () => {
 
+const cleanup = () => {
+  window.removeEventListener("click", clickHandler);
+  window.removeEventListener("resize", resizeHandler);
+
+  // Three.js资源清理
+  data.scene.traverse((object) => {
+    if (object instanceof THREE.Mesh || object instanceof THREE.Sprite) {
+      object.geometry.dispose();
+      object.material.dispose();
+    }
+  });
+  if (data.camera) {
+    // 清理相机，如果需要的话
+    cancelAnimationFrame(animationFrameID.value);
+    data.scene.remove(data.camera);
+  }
+  if (data.renderer) {
+    data.renderer.dispose();
+  }
+  // data.scene.remove(data.camera);
+};
+
+const initScene = () => {
   let scene = createScene();
   let camera = initCamera();
   let renderer = initRenderer();
   let controls = initControls(camera, renderer);
   loadEnv(scene);
-  // console.log(data.currentRoom);
   showPoints(data.currentRoom);
   initEvents();
   //添加世界坐标辅助器
-  const axesHelper = new THREE.AxesHelper(50);
-  scene.add(axesHelper);
-
-  // let mouse = new Vector2();
-  // window.addEventListener("mousemove", (e) => {
-  //   mouse.x = 2 * (e.clientX / window.innerWidth) - 1;
-  //   mouse.y = -2 * (e.clientY / window.innerHeight) + 1;
-  // });
+  // const axesHelper = new THREE.AxesHelper(50);
+  // scene.add(axesHelper);
 
   function render() {
-    requestAnimationFrame(render);
+    animationFrameID.value = requestAnimationFrame(render);
     controls.update();
     renderer.render(scene, camera);
   }
@@ -395,8 +372,9 @@ const initScene = () => {
 
 onMounted(() => {
   initScene();
-  // console.log(data.currentRoom);
-  console.log("sprites",sprites);
+});
+onBeforeUnmount(() => {
+  cleanup();
 });
 </script>
 
