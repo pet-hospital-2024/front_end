@@ -1,4 +1,5 @@
 <template>
+  <div>
     <el-card>
       <el-button type="primary" size="default" icon="Plus" @click="handleAddDepartment">
               添加科室
@@ -139,13 +140,14 @@
   </el-dialog>
   <!-- 删除疾病对话框 -->
   </el-drawer>
+  </div>
 </template>
 
   <script setup lang="ts">
   
   //获取仓库对象
 
-  import {Delete, Edit, Pointer, ZoomIn} from '@element-plus/icons-vue'
+  import {Delete, Edit, Pointer,} from '@element-plus/icons-vue'
   import useBackDepartmentInfoStore from "@/store/back/department";
   let departmentInfoStore=useBackDepartmentInfoStore();
 

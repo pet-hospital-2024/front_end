@@ -1,5 +1,6 @@
 <template>
-    <!--顶部搜索-->
+  <div>
+        <!--顶部搜索-->
   <el-card style="height: 80px" shadow="hover">
     <el-form :inline="true" class="form" label-width="auto">
       <el-form-item label="用户名:" >
@@ -19,6 +20,8 @@
   </el-card>
 
 
+
+  
  <!--下方表单-->
  <el-card style="margin: 10px 0;">
       <!--添加用户-->
@@ -193,13 +196,14 @@
       </div>
     </template>
 </el-drawer>
+  </div>
 </template>
 
 <script setup lang="ts">
 
 //获取仓库对象
 
-import { Delete, Edit,Plus,Lock,ZoomIn,Unlock } from '@element-plus/icons-vue';
+import { Delete, Edit,Plus,Lock,ZoomIn} from '@element-plus/icons-vue';
 import { ref,reactive,watch } from 'vue'
 //点击addUser之前ref(false)，不展示对话框
 const dialogAddUser=ref(false);
@@ -231,7 +235,7 @@ const tableRowClassName = ({
   row: roleInfoItem
 
 }) => {
-  if ( row.identity == 'teacher') {
+  if ( row.identity == 'banned') {
     return 'warning-row'
   } 
   return ''
@@ -251,7 +255,7 @@ let send_data = ref<dataType>({
 // 监听 searchKeyword 的变化，并更新 send_data
 watch(searchKeyword, (newValue) => {
   send_data.value.username = newValue;
-  console.log(send_data);
+  
 });
 
 

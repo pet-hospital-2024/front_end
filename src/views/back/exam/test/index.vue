@@ -1,4 +1,5 @@
 <template>
+  <div>
     <el-card>
         <!--添加考试-->
         <el-button type="primary" size="default" icon="Plus" @click="handleAddTest">
@@ -229,10 +230,11 @@
         </div>
       </template>
 </el-dialog>
+  </div>
 
 </template>
 <script setup lang="ts">
-import { Delete, Edit,Plus,Remove,ZoomIn } from '@element-plus/icons-vue';
+import { Delete, Edit,ZoomIn } from '@element-plus/icons-vue';
 //获取仓库对象
 
 //目前首页挂载完毕发请求获取用户信息
@@ -264,7 +266,7 @@ const handleInnerPageChange = async(pager="1")=>{
   pageNo.value=pager;
   await PaperInfoStore.getAllPaperInfo(innerPageNo.value,innerPageSize.value);
 }
-let paperName=ref();
+
 let AddTestDialogVisible=ref<boolean>(false);
 let addTestForm=reactive<addTestData>({
   paper_id:"",
@@ -346,7 +348,7 @@ const submitEditTestForm = async (index:any,row:any)=>{
   // exam_start.value = exam_start.value.replace(/\//g, '.');
   // exam_end.value = exam_end.value.replace(/\//g, '.');
   
-  console.log(editTestForm);
+  
   let result=await TestInfoStore.editTestInfo(editTestForm);
   if(result=='ok'){
     await TestInfoStore.getAllTestInfo(pageNo.value,pageSize.value);
