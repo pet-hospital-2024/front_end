@@ -245,12 +245,6 @@ const initScene = () => {
   camera.position.z = -30;
   data.camera = camera;
 
-=======
-  // camera.position.x = -5;
-  camera.position.y = 25;
-  camera.position.z = -30;
-  // data.scene.add(camera);
->>>>>>> Stashed changes
   //设置相机视角
   camera.lookAt(0, 0, 0);
   data.camera = camera;
