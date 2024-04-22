@@ -75,7 +75,6 @@ const cleanup = () => {
   window.removeEventListener("resize", resizeHandler);
   
   // Three.js资源清理
-  data.renderer.dispose();
   data.scene.traverse(object => {
     if (object instanceof THREE.Mesh) {
       object.geometry.dispose();

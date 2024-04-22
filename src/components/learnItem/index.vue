@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-dialog v-model="useStore.itemVisibility" draggable style="padding: 20px;">
+    <el-dialog v-model="useStore.itemVisibility" draggable style="padding: 20px 30px;">
       <div class="container">
         <h2 style="margin-top: 10px">职责说明</h2>
         <p>
@@ -42,8 +42,8 @@ export default {
 .container {
     display: flex;
     flex-direction: column;
-    width: 95%;
-    margin-left: 30px;
+    width: 100%;
+    // margin-left: 30px;
     h2 {
       font-size: 24px;
       font-weight: bold;

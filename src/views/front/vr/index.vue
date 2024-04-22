@@ -60,19 +60,44 @@ import { onMounted, reactive, computed, watch } from "vue";
 import pullUpMenu from "@/components/pullUpMenu/index.vue";
 import learnItem from "@/components/learnItem/index.vue";
 import { Vector2 } from "three";
+import usePanoramaStore from "@/store/front/panorama"
+
+let useStore=usePanoramaStore();
+
+const map=new Map([
+  ["平面012",6],
+  ["平面004",2],
+  ["平面011",5],
+  ["平面001",7],
+  ["平面003",8],
+  ["平面006",9],
+  ["平面002",1],
+]
+  
+)
+
 
 const $route = useRoute();
 const $router = useRouter();
-let paramKey = computed(()=>$route.query.key);
-const room = computed(()=>rooms.filter((item) => item.key === paramKey.value)[0]);
+let paramKey = computed(() => $route.query.key);
 
+let location_id=map.get($route.query.key)
+const room = computed(
+  () => rooms.filter((item) => item.key === paramKey.value)[0]
+);
+const raycaster = new THREE.Raycaster();
+const mouse = new THREE.Vector2();
+let sprites = [];
+const sizes = {
+    width: window.innerWidth,
+    height: window.innerHeight,
+  };
 //实现paramKey更新后页面刷新
-watch(paramKey,(newValue,oldValue)=>{
-  if(newValue!== oldValue){
+watch(paramKey, (newValue, oldValue) => {
+  if (newValue !== oldValue) {
     window.location.reload();
   }
-})
-
+});
 
 const data = reactive({
   renderer: null,
@@ -102,7 +127,7 @@ const handleReactivePointClick = (point) => {
   console.log(point, "clicked");
 };
 
-// 获取交互点的信息
+// 获取room交互点的信息
 const interactivePoints = computed(() => {
   const res = [];
   rooms.forEach((room) => {
@@ -267,13 +292,14 @@ function makeTextSprite(message, position, parameters) {
     map: texture,
   });
   let sprite = new THREE.Sprite(spriteMaterial);
+  sprites.push(sprite);
   // console.log("111",sprite.position);
   // console.log(sprite.material);//有
   // console.log(position);
-  sprite.position.set(position.x,position.y,position.z);
+  sprite.position.set(position.x, position.y, position.z);
   // console.log("changed",sprite.position);
   /* 缩放比例 */
-  sprite.scale.set(15, 8, 0)
+  sprite.scale.set(15, 8, 0);
   return sprite;
 }
 
@@ -295,26 +321,52 @@ function roundRect(ctx, x, y, w, h, r) {
 }
 
 function showPoints(room_name) {
-    /* 根据room_name来获取到房间内的交互点 */
-    //let points = [],sprite;
-    // console.log("0",interactivePoints.value);
-    interactivePoints.value.forEach((point) => {
+  /* 根据room_name来获取到房间内的交互点 */
+  //let points = [],sprite;
+  // console.log("0",interactivePoints.value);
+  interactivePoints.value.forEach((point) => {
     if (point.room === room_name) {
       // console.log("1",point.value);//exist
-      data.scene.add(makeTextSprite(point.value,point.position));
+      data.scene.add(makeTextSprite(point.value, point.position));
       // sprite = makeTextSprite(point.value);
       // points.push(sprite);
       // sprite.position.set(point.position);
     }
-  })
-  
+  });
+
   // console.log(interactivePoints.value);//所有房间的interactivePoints信息
 }
-const initScene = () => {
-  const sizes = {
-    width: window.innerWidth,
-    height: window.innerHeight,
+let clickHandler, resizeHandler;
+const initEvents = () => {
+  clickHandler = function (event) {
+    mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+    mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+    raycaster.setFromCamera(mouse, data.camera);
+    const intersects = raycaster.intersectObjects(sprites);
+    // console.log("click", intersects[0]);
+    if (intersects.length > 0) {
+      useStore.itemVisibility=true;
+      // console.log("click", intersects[0].texture);
+      console.log(useStore.role_id,location_id);
+      useStore.getLearnItem(location_id,useStore.role_id);
+    }
   };
+  resizeHandler = () => {
+    sizes.width = window.innerWidth;
+    sizes.height = window.innerHeight;
+    // 更新渲染
+    data.renderer.setSize(sizes.width, sizes.height);
+    data.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    // 更新相机
+    data.camera.aspect = sizes.width / sizes.height;
+    data.camera.updateProjectionMatrix();
+  };
+  //监听窗口缩放并自动适应
+  window.addEventListener("resize", resizeHandler);
+  window.addEventListener("click", clickHandler);
+};
+const initScene = () => {
+
   let scene = createScene();
   let camera = initCamera();
   let renderer = initRenderer();
@@ -322,26 +374,16 @@ const initScene = () => {
   loadEnv(scene);
   // console.log(data.currentRoom);
   showPoints(data.currentRoom);
+  initEvents();
   //添加世界坐标辅助器
   const axesHelper = new THREE.AxesHelper(50);
   scene.add(axesHelper);
-  //监听窗口缩放并自动适应
-  window.addEventListener("resize", () => {
-    sizes.width = window.innerWidth;
-    sizes.height = window.innerHeight;
-    // 更新渲染
-    renderer.setSize(sizes.width, sizes.height);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-    // 更新相机
-    camera.aspect = sizes.width / sizes.height;
-    camera.updateProjectionMatrix();
-  });
 
-  let mouse = new Vector2();
-  window.addEventListener("mousemove", (e) => {
-    mouse.x = 2 * (e.clientX / window.innerWidth) - 1;
-    mouse.y = -2 * (e.clientY / window.innerHeight) + 1;
-  });
+  // let mouse = new Vector2();
+  // window.addEventListener("mousemove", (e) => {
+  //   mouse.x = 2 * (e.clientX / window.innerWidth) - 1;
+  //   mouse.y = -2 * (e.clientY / window.innerHeight) + 1;
+  // });
 
   function render() {
     requestAnimationFrame(render);
@@ -354,6 +396,7 @@ const initScene = () => {
 onMounted(() => {
   initScene();
   // console.log(data.currentRoom);
+  console.log("sprites",sprites);
 });
 </script>
 
@@ -377,14 +420,14 @@ onMounted(() => {
     left: 24px;
     top: 20%;
     z-index: 11;
-    -webkit-animation: slideInRight 1s .3s;
-    animation: slideInRight 1s .3s;
+    -webkit-animation: slideInRight 1s 0.3s;
+    animation: slideInRight 1s 0.3s;
     -webkit-animation-fill-mode: both;
     animation-fill-mode: both;
 
     .button {
       display: block;
-      background: rgba(27, 25, 24, .5);
+      background: rgba(27, 25, 24, 0.5);
       border-radius: 12px;
       display: flex;
       align-items: center;
@@ -393,7 +436,7 @@ onMounted(() => {
       -moz-backdrop-filter: blur(4px);
       backdrop-filter: blur(4px);
       cursor: pointer;
-      transition: all .25s ease-in-out;
+      transition: all 0.25s ease-in-out;
 
       .text {
         color: rgba(255, 255, 255, 1);
@@ -416,12 +459,10 @@ onMounted(() => {
       }
 
       &:hover {
-        background: rgba(27, 25, 24, .2);
-        box-shadow: 1px 1px 2px rgba(0, 0, 0, .2);
+        background: rgba(27, 25, 24, 0.2);
+        box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
       }
     }
   }
 }
-
-
 </style>
