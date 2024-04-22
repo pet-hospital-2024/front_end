@@ -50,7 +50,7 @@ const props=defineProps({
 })
 console.log(props)
 //子组件向父组件传值
-import { defineEmits } from "vue";
+
 const emit = defineEmits(['upload_state'])
 
 let userStore = useUserStore();

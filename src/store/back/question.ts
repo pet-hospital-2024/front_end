@@ -94,7 +94,7 @@ let useBackQuestionStore = defineStore("QuestionManagement",{
                 this.questionInfoArr=res.data.list;
                 ElNotification({
                     type:'success',
-                    message:"查找用户成功！",
+                    message:"查找题目成功！",
                 });
                 return 'ok'
             }else{

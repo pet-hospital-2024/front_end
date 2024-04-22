@@ -62,8 +62,8 @@ export default{
         width: 260px;
         height: 100vh;
         background-color:rgb(152, 181, 172);
-        //overflow: hidden;//存在问题：折叠时字体展示
-        transition:all 0.3s;
+        overflow: hidden;//存在问题：折叠时字体展示
+        transition:all 0.6s;
         .scrollbar{
             width: 100%;
             //scrollbar-height=100%vh-logo-height
@@ -85,7 +85,7 @@ export default{
         //background-color: green;
         left:260px;
         top:0;
-        transition:all 0.3s;
+        transition:all 0.6s;
         &.fold{
             //tabbar折叠后对应伸缩，width为100vw-fold宽度（50px）
             width: calc(100vw - 62px);
@@ -101,7 +101,7 @@ export default{
         top:50px;
         padding: 20px;
         overflow: auto;
-        transition: all 0.3s;
+        transition: all 0.6s;
         &.fold{
             //应与tabbar相同
             width: calc(100vw - 62px);

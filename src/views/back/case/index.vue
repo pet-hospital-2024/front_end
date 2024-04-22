@@ -1,4 +1,5 @@
 <template>
+  <div>
     <el-card style="height: 80px;margin-bottom: 10px;" shadow="hover">
     <el-form :inline="true" class="form">
       <el-form-item label="病例:">
@@ -160,7 +161,7 @@
               <el-divider v-if="VideoInfoArr.length"/>
               <div v-if="VideoInfoArr.length">
                 <p><strong>视频</strong></p>
-                <div v-for="item in VideoInfoArr" :key="url">
+                <div v-for="item in VideoInfoArr" :key="item">
                   <video width="100%" controls >
                     <source :src="item" type="video/mp4">
                   </video>
@@ -190,7 +191,7 @@
               <el-divider v-if="VideoInfoArr.length"/>
               <div v-if="VideoInfoArr.length">
                 <p><strong>视频</strong></p>
-                <div v-for="item in VideoInfoArr" :key="url">
+                <div v-for="item in VideoInfoArr" :key="item">
                   <video width="100%" controls >
                     <source :src="item" type="video/mp4">
                   </video>
@@ -218,7 +219,7 @@
               <el-divider v-if="VideoInfoArr.length"/>
               <div v-if="VideoInfoArr.length">
                 <p><strong>视频</strong></p>
-                <div v-for="item in VideoInfoArr" :key="url">
+                <div v-for="item in VideoInfoArr" :key="item">
                   <video width="100%" controls >
                     <source :src="item" type="video/mp4">
                   </video>
@@ -246,7 +247,7 @@
               <el-divider v-if="VideoInfoArr.length"/>
               <div v-if="VideoInfoArr.length">
                 <p><strong>视频</strong></p>
-                <div v-for="item in VideoInfoArr" :key="url">
+                <div v-for="item in VideoInfoArr" :key="item">
                   <video width="100%" controls >
                     <source :src="item" type="video/mp4">
                   </video>
@@ -497,20 +498,21 @@
     <el-button @click="editCaseDialogVisible = false">取消</el-button>
   </template>
 </el-dialog>
+  </div>
 
 </template>
 <script setup lang="ts">
 
 
 
-import { ElMessage, ElMessageBox, ElNotification, genFileId, type UploadFile, type UploadInstance, type UploadProps, type UploadRawFile, type UploadUserFile } from 'element-plus'
+import { ElMessage, ElMessageBox, ElNotification, genFileId, type UploadFile, type UploadInstance, type UploadProps, type UploadRawFile, } from 'element-plus'
 
 //获取仓库对象
 
 import {Delete, Edit, ZoomIn} from '@element-plus/icons-vue'
 import useBackCaseInfoStore from '@/store/back/case';
-import { onMounted, reactive, ref, watch } from 'vue';
-import type { addCaseTextData, caseTextInfoArr, caseTextInfoItem, deleteCaseTextData, deleteMediaData, editCaseTextData, searchCaseData } from '@/api/back/case/type';
+import { onMounted, reactive, ref } from 'vue';
+import type { addCaseTextData, caseTextInfoItem, deleteCaseTextData, deleteMediaData, editCaseTextData } from '@/api/back/case/type';
 import type { diseaseQuestionInfoArr } from '@/api/back/exam/questions/type';
 import useBackQuestionStore from "@/store/back/question"
 
@@ -543,7 +545,7 @@ const uploadState=async (val:any)=>{
 }
 
 const handleSearchCase = async () => {
-  console.log("searchCase"+searchKeyword.value);
+ 
   await caseInfoStore.searchCaseInfo(searchKeyword.value);
 }
 //重置搜索结果
@@ -609,7 +611,7 @@ const handleShowCaseDetail=async (row:any)=>{
 let ImageInfoArr=ref<string[]>([]);
 let VideoInfoArr=ref<string[]>([]);
 const handleTabClickEdit = async (tab:any)=>{
-  console.log(tab.paneName);
+  
   ImageInfoArr.value=[];
   VideoInfoArr.value=[];
   await caseInfoStore.getMediaUrlInfo(editTextCaseForm.case_id,"image",tab.paneName)
@@ -618,6 +620,9 @@ const handleTabClickEdit = async (tab:any)=>{
   VideoInfoArr.value=caseInfoStore.mediaUrlArr
   
   mediaSendData.category=tab.paneName;
+  console.log(tab.paneName);
+  console.log(ImageInfoArr);
+  console.log(VideoInfoArr);
   
 }
 const handleTabClickDetail = async (tab:any)=>{
@@ -779,7 +784,7 @@ const submitEditTextCaseForm = async ()=>{
 const uploadImage = async (file:UploadFile)=>{
   let imageFormData=new FormData();
   imageFormData.append('file', file.raw);
-  console.log(file.raw);
+  
   imageFormData.append('case_id', mediaSendData.case_id);
   imageFormData.append('category',mediaSendData.category);
   let res=await caseInfoStore.addMediaInfo(imageFormData);
@@ -797,7 +802,7 @@ const handleExceed: UploadProps['onExceed'] = (files) => {
   const file = files[0] as UploadRawFile
   file.uid = genFileId();
   upload.value!.handleStart(file)
-  console.log(file);
+  
 }
 //删除多媒体--byUrl
 
@@ -820,7 +825,7 @@ let deleteMediaSendData=reactive<deleteMediaData>({
 })
 const handleDeleteImage = async(imgUrl:string,category:string)=>{
   deleteMediaSendData.media_url=imgUrl;
-  console.log(deleteMediaSendData);
+  
   let res=await caseInfoStore.deleteMediaInfo(deleteMediaSendData)
   if(res=='ok'){
     await caseInfoStore.getMediaUrlInfo(editTextCaseForm.case_id,"image",category)
@@ -831,9 +836,9 @@ const handleDeleteImage = async(imgUrl:string,category:string)=>{
 //删除视频--为什么那么慢？？？？？？？？？？
 //请求被挂起--超时！  
 const handleDeleteVideo=async (videoUrl:string,category:string)=>{
-  console.log(videoUrl);
+  
   deleteMediaSendData.media_url=videoUrl;
-  console.log(deleteMediaSendData);
+  
   let res=await caseInfoStore.deleteMediaInfo(deleteMediaSendData)
   if(res=='ok'){
     await caseInfoStore.getMediaUrlInfo(editTextCaseForm.case_id,"video",category)

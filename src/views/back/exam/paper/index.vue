@@ -1,4 +1,5 @@
 <template>
+  <div>
     <el-card>
         <el-button type="primary" size="default" icon="Plus" @click="handleAddPaper">
             创建试卷
@@ -212,6 +213,7 @@
   </div>
 </template>
 </el-dialog>
+  </div>
 </template>
 <script setup lang="ts">
 

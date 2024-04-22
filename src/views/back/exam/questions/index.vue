@@ -1,6 +1,7 @@
 <template>
-      <!--顶部搜索-->
-    <el-card style="height: 80px;margin-bottom: 10px;" shadow="hover">
+  <div>
+         <!--顶部搜索-->
+         <el-card style="height: 80px;margin-bottom: 10px;" shadow="hover">
     <el-form :inline="true" class="form" label-width="auto">
       <el-form-item label="题目名:">
         <el-input placeholder="请输入搜索题目" v-model="searchKeyword"></el-input>
@@ -260,6 +261,7 @@
       </div>
     </template>
   </el-dialog>
+  </div>
 
 </template>
 
