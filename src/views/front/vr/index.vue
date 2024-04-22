@@ -258,8 +258,6 @@ function makeTextSprite(message, position, parameters) {
   let sprite = new THREE.Sprite(spriteMaterial);
   sprites.push(sprite);
   sprite.position.set(position.x, position.y, position.z);
-  data.controls.target = position;
-  data.controls.update();
   // 缩放比例
   sprite.scale.set(15, 8, 0);
   return sprite;
