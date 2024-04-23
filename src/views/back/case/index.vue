@@ -875,6 +875,16 @@ const handleDeleteImage = async(imgUrl:string,category:string)=>{
 //删除视频--为什么那么慢？？？？？？？？？？
 //请求被挂起--超时！  
 const handleDeleteVideo=async (videoUrl:string,category:string)=>{
+  const videoElements = document.querySelectorAll('video');
+
+// 遍历每个视频元素并暂停播放（如果正在播放）
+videoElements.forEach(videoElement => {
+    // 检查视频是否正在播放
+    if (!videoElement.paused) {
+        videoElement.pause(); // 暂停视频播放
+    }
+});
+
   try{    
     await ElMessageBox.confirm(
       '您确定删除该多媒体吗？',
