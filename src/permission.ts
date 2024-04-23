@@ -39,6 +39,7 @@
           next();
           return;
         } else if (identity !== "user" && to.path.startsWith("/back")) {
+          chatStore.hide();
           if (identity === "teacher" && to.meta.title === "用户管理") {
               // 如果用户身份为 "teacher" 并且试图访问 "用户管理" 模块，则跳转到其他页面
               ElMessage.error('无权访问该页面');

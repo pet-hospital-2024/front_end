@@ -15,7 +15,8 @@
         </div>
 
         <el-card class="item4" shadow="hover" @click="goCase">
-          <p>病例学习</p> 
+
+          <p>病例学习</p>
         </el-card>
       </div>
     </div>
@@ -59,7 +60,8 @@ const goDetail = (role_id: string) => {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 36px;
+  font-size: 32px;
+  font-family: Georgia, "Times New Roman", Times, serif;
   // margin-top: 100px;
 
   .box {
@@ -107,13 +109,23 @@ const goDetail = (role_id: string) => {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    width: 30vw;
+    width: 25vw;
     height: 70vh;
     margin-left: 2vw;
     margin-top: 5vh;
     border-radius: 15px;
     background-color: #dadfc4;
+    font-size: 42px;
     cursor: pointer;
+  }
+  .item1:hover,
+  .item2:hover,
+  .item3:hover {
+    background-color: #789c8b;
+  }
+
+  .item4:hover {
+    background-color: #aab08f;
   }
 }
 </style>

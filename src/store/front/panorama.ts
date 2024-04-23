@@ -8,7 +8,7 @@ import { reqLearnItem } from "@/api/front/panorama/index";
 let usePanoramaStore = defineStore("panorama", {
   state: () => {
     return {
-      role_id: 1,
+      role_id: "1",
       itemVisibility: false,
       learnItem: {
         learn_item_url: "",

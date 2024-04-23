@@ -17,7 +17,7 @@
         </el-table-column>
         <el-table-column  label="选择科室" align="center" min-width="20%">
             <template v-slot="{ row, index}">
-                <el-button @click="handleEnterDepartment(index,row)" class="my-button" :icon="Pointer">进入科室</el-button>
+                <el-button @click="handleEnterDepartment(index,row)" class="my-button" :icon="Pointer">管理</el-button>
             </template>
         </el-table-column>
       </el-table>

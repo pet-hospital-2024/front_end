@@ -31,9 +31,9 @@
           <el-table :data="useStore.locationListArr" style="width: 100%">
             <el-table-column prop="location_name" label="科室" width="300" />
             <el-table-column prop="learn_text" label="详情" />
-            <el-table-column prop="operation" label="操作" width="200">
-              <template #default>
-                <el-button plain type="primary" size="default" color=" rgb(152, 181, 172)"
+            <el-table-column prop="location_id" label="操作" width="200">
+              <template #default="{row}">
+                <el-button plain type="primary" size="default" @click="goRoom(row.location_id,role)"
                   >实景操作</el-button
                 >
               </template>
@@ -52,8 +52,9 @@ import { useRouter,useRoute } from "vue-router";
 let $router = useRouter();
 let $route = useRoute();
 import useFrontRoleStore from "@/store/front/role";
-// import type { TabsPaneContext } from "element-plus";
+import usePanoramaStore from "@/store/front/panorama";
 
+let useVRStore = usePanoramaStore();
 let useStore=useFrontRoleStore();
 
 const activeName = ref("first");
@@ -85,6 +86,27 @@ const goBack = () => {
   // $router.replace({ path: "/front/study" });
   $router.go(-1);
 };
+
+const map = new Map([
+  ["6", "平面012"],
+  ["2", "平面004"],
+  ["5", "平面011"],
+  ["7", "平面001"],
+  ["8", "平面003"],
+  ["9", "平面006"],
+  ["1", "平面002"],
+]);
+
+const goRoom = (location_id:string,role:string) => {
+  // console.log(location_id,role);
+  useVRStore.role_id=role;
+  $router.push({
+    path: "/front/vr",
+    query: {
+      key: map.get(location_id),
+    },
+  });
+}
 
 const dutyData = [
   {
