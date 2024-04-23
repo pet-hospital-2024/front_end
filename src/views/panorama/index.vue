@@ -14,8 +14,8 @@ import { rooms } from "@/views/panorama/data.js";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 //导入hdr加载器
 import { RGBELoader } from "three/examples/jsm/loaders/RGBELoader.js";
-//导入DRACOLoader，加快gltf加载速度
-import { DRACOLoader } from "three/addons/loaders/DRACOLoader.js";
+//导入DRACOLoader，加载压缩gltf模型
+import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader";
 
 let $router = useRouter();
 
@@ -137,9 +137,9 @@ function makeTextSprite(room_name) {
   //backgroundcolor
   ctx.fillStyle = "rgb(255,255,255)";
   //text
-  ctx.font = "Bold 80px KaiTi";
+  ctx.font = "Bold 85px KaiTi";
   ctx.textAlign = "center";
-  ctx.fillStyle = "rgb(125, 218, 88)";
+  ctx.fillStyle = "rgb(100, 183, 66)";
   ctx.fillText(room_name, ctx.canvas.width / 2, ctx.canvas.height / 2 + 10);
   let texture = new THREE.Texture(canvas);
   texture.needsUpdate = true;
@@ -208,8 +208,13 @@ const initScene = () => {
   //导入模型
   //设置GLTFLoader
   const loader = new GLTFLoader();
+  const dracoloader = new DRACOLoader();
+  dracoloader.setDecoderPath("/draco/");
+  dracoloader.setDecoderConfig({type : "js"});
+  loader.setDRACOLoader(dracoloader);
+  dracoloader.preload();
   let models = [];
-  loader.load("/assets/pet-hospital-1.glb", (gltf) => {
+  loader.load("/assets/pet-hospital_compressed_2.glb", (gltf) => {
     gltf.scene.traverse(function (child) {
       // console.log(child.name,child.position);
       if (child.isMesh && child.name !== "平面") {
@@ -232,6 +237,10 @@ const initScene = () => {
 
   initEvents();
 
+  //添加环境光
+  let alight = new THREE.AmbientLight(0xccbbff);
+  alight.intensity = 0.8;
+  data.scene.add(alight);
   //渲染
   let hoveredColor = 0x00ff00;
   let INTERSECTED = null;

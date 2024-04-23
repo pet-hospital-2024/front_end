@@ -1,5 +1,6 @@
 <template>
   <div class="menu-container">
+    <button @click="goPanorama">返回导览</button>
     <button @click="toggleMenu">{{ menuItems[selectedItem] }}</button>
     <ui class="menu" v-show="isOpen">
       <li
@@ -17,7 +18,9 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import usePanoramaStore from "@/store/front/panorama";
+import { useRouter } from "vue-router"; 
 let useStore=usePanoramaStore();
+let $router = useRouter();
 
 let role=parseInt(useStore.role_id);
 console.log(role);
@@ -25,7 +28,11 @@ console.log(role);
 const isOpen = ref(false);
 const selectedItem = ref(role-1); // 默认选择第一个菜单项
 const menuItems = ref(["兽医", "医助", "前台"]); // 菜单项
-// const selectedRole = ref(1);
+const selectedRole = ref(1);
+
+function goPanorama() {
+  $router.push("/front/panorama");
+}
 
 function toggleMenu() {
   isOpen.value = !isOpen.value;
@@ -61,6 +68,7 @@ export default {
 
 .menu-container button {
   background: rgba($color: #ffffff, $alpha: 0.3);
+  margin-right: 10px;
   padding: 0;
   border: 1px solid rgb(255, 255, 255);
   cursor: pointer;
