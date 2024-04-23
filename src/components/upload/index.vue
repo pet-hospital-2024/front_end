@@ -3,7 +3,7 @@
     <el-upload
       
       multiple
-      
+      :show-file-list="false"
       :auto-upload="true"
       :http-request="checkedFile"
       :on-remove="removeFile"
@@ -48,7 +48,7 @@ const props=defineProps({
     default:''
   }
 })
-console.log(props)
+// console.log(props)
 //子组件向父组件传值
 
 const emit = defineEmits(['upload_state'])
@@ -74,7 +74,7 @@ const state = reactive({
 
 //移除文件
 const removeFile = (file) => {
-  console.log("remove", file);
+  // console.log("remove", file);
   if (state.requestCancelQueue[file.uid]) {
     state.requestCancelQueue[file.uid]();
     delete state.requestCancelQueue[file.uid];
@@ -100,18 +100,18 @@ const getSize = (size) => {
 
 //检查文件
 const checkedFile = async (options) => {
-  console.log(options);
+  // console.log(options);
   const { file, onProgress, onSuccess, onError } = options;
   //是否超过最大上限
   if (file.size > state.maxSize) {
-    console.log(file.size);
+    // console.log(file.size);
     return ElMessage({
       message: `您选择的文件大于${getSize(state.maxSize)}`,
       type: "error",
     });
   }
   state.fileKeep = file;
-  console.log(state.fileKeep);
+  // console.log(state.fileKeep);
   const uploadFunc =
     //分块上传还是单个上传
     file.size > state.multiUploadSize ? splitUpload : singleUpload;
@@ -132,7 +132,7 @@ const checkedFile = async (options) => {
 
 //单文件上传
 const singleUpload = async (file, onProgress) => {
-  console.log(onProgress);
+  // console.log(onProgress);
   await postFile(
     {
       file,
@@ -148,7 +148,7 @@ const singleUpload = async (file, onProgress) => {
   reader.onload = () => {
     const hash = SparkMD5.ArrayBuffer.hash(reader.result);
     state.fileMd5Keep = hash;
-    console.log("Hash for single file:", hash);
+    // console.log("Hash for single file:", hash);
     validateFile({
       case_id: props.case_id,
       file_name: file.name,
@@ -171,7 +171,7 @@ const singleUpload = async (file, onProgress) => {
 
 //分块上传
 const splitUpload = async (file, onProgress) => {
-  console.log("Splitting");
+  // console.log("Splitting");
   const chunks = Math.ceil(file.size / state.eachSize);
   state.chunksKeep = chunks;
   const fileChunks = [];
@@ -183,7 +183,7 @@ const splitUpload = async (file, onProgress) => {
   }
   state.fileChunksKeep = fileChunks;
 
-  console.log("File chunks split complete", fileChunks);
+  // console.log("File chunks split complete", fileChunks);
 
   state.showProgress = true;
   let currentChunk = 0;
@@ -211,7 +211,7 @@ const splitUpload = async (file, onProgress) => {
   for (const chunk of fileChunks) {
     const reader = new FileReader();
     await new Promise((resolve, reject) => {
-      console.log(spark);
+      // console.log(spark);
       reader.onload = function () {
         spark.append(reader.result);
         resolve();
@@ -220,10 +220,10 @@ const splitUpload = async (file, onProgress) => {
       reader.readAsArrayBuffer(chunk);
     });
   }
-  console.log(spark);
+  // console.log(spark);
   const finalMD5 = spark.end();
   state.fileMd5Keep = finalMD5;
-  console.log("Final MD5 for chunked file:", finalMD5);
+  // console.log("Final MD5 for chunked file:", finalMD5);
 
   await validateFile({
     case_id: props.case_id,
@@ -245,8 +245,8 @@ const postFile = async (params, onProgress) => {
   formData.append("chunk", params.chunk);
   // formData.append("chunks", params.chunks);
   formData.append("file_name", params.file_name);
-  console.log(params.file_name);  
-  console.log(formData.get('file_name'))
+  // console.log(params.file_name);  
+  // console.log(formData.get('file_name'))
   // formData.append("fullSize", params.fullSize);
   // formData.append("chunked", params.chunked ? "true" : "false");
   formData.append("case_id", props.case_id);
@@ -294,15 +294,15 @@ const validateFile = async (params) => {
   try {
     // console.log(111);
     const response = await axios.post("/api/disease/checkChunk", formData, config);
-    console.log("Upload response:", response.data);
-    console.log(response.data.code);
-    console.log(response.status);
+    // console.log("Upload response:", response.data);
+    // console.log(response.data.code);
+    // console.log(response.status);
     if (response.data.code === -2) {
-      console.log("Resuming upload for failed chunks");
+      // console.log("Resuming upload for failed chunks");
       againSplitUpload(state.fileKeep, response.data.error_file);
     } else if (response.data.code === 1) {
       emit("upload_state","ok")
-      console.log(emit);
+      // console.log(emit);
       ElMessage({
         message: "上传成功",
         type: "success",
