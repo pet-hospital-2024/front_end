@@ -55,7 +55,7 @@ const useFrontCaseStore = defineStore("FrontCase", {
         "image",
         category
       );
-      console.log(res);
+      
       if (res.code == 1) {
         this.pictureList = res.data;
       }

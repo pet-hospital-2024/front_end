@@ -21,7 +21,7 @@
       await userStore.getUserIdentity();
       const identity = userStore.userData?.identity;
       if (to.path === "/login") {
-        console.log(identity);
+        // console.log(identity);
         // 用户已登录，尝试访问登录页时，根据用户身份重定向
         next(identity === "user" ? "/front" : "/back");
         // next("/front");

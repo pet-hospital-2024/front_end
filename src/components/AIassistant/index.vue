@@ -35,7 +35,7 @@ const showChatBox = () => {
   position: fixed;
   right: 30px;
   bottom: 30px;
-  z-index: 999;
+  z-index: 9999;
   width: 88px;
   height: 88px;
   border-radius: 50%;

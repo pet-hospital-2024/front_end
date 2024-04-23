@@ -84,10 +84,10 @@ let useBackCaseInfoStore=defineStore("caseManagement",{
         async searchCaseInfo(data:string){
             let result:searchCaseResponseData=await searchCaseById(data);
             if(result.code==1){
-                console.log(Object.prototype.toString.call(result.data));
+                
                 this.caseTextInfoArr = result.data.list;
                 this.total = result.data.total;
-                console.log(this.caseTextInfoArr);
+                
                 ElNotification({
                     type:'success',
                     message:"查询病例成功！",
@@ -99,7 +99,8 @@ let useBackCaseInfoStore=defineStore("caseManagement",{
                     type:'error',
                     message:"查询病例失败"+result.message,
                 });
-                return Promise.reject(new Error(result.message));
+                Promise.reject(new Error(result.message));
+                return "fail";
             }
 
         },
@@ -112,12 +113,12 @@ let useBackCaseInfoStore=defineStore("caseManagement",{
             if(result.code==1){
                 this.casePictureInfoArr=result.data;
             }
-            console.log(this.casePictureInfoArr);
+            
             let res:caseMediaResponseData=await getCaseMediabyId(case_id,'video',category);
             if(res.code==1){
                 this.caseVideoInfoArr=res.data;
             }
-            console.log(this.caseVideoInfoArr);
+            
         },
         async addMediaInfo(data:FormData){
             let result:responseData=await addCaseByMedia(data)

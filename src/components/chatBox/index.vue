@@ -103,7 +103,7 @@ const parsedMarkdown = (text: string) => {
     breaks: true, // 转换段落里的 '\n' 到 <br>
   });
 
-  console.log(md.render(text));
+  // console.log(md.render(text));
   return md.render(text);
 };
 onMounted(() => {
@@ -167,10 +167,10 @@ const getAIResponse = async (text: string) => {
       openWhenHidden: true,
       signal: currentController.signal,
       onmessage: (event) => {
-        console.log("返回数据", event);
+        // console.log("返回数据", event);
         if (event.data) {
           const data = event.data;
-          console.log(data);
+          // console.log(data);
           // concatContent += data;
           if (index == 0) {
             useStore.messageArr.push({
@@ -187,7 +187,7 @@ const getAIResponse = async (text: string) => {
       },
       onclose() {
         // 数据返回结束时触发
-        console.log("关闭连接成功");
+        // console.log("关闭连接成功");
       },
       onerror(err) {
         console.log("eventSource error");

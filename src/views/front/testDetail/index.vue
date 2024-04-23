@@ -6,7 +6,7 @@
           <div class="title">
             <p>{{ useStore.testData?.paper_name }}</p>
           </div>
-          <div class="paper">
+          <div class="paper" v-loading="loading">
             <div
               class="question"
               v-for="(question, index) in useStore.questionListArr"
@@ -194,9 +194,12 @@ const formatTime = (seconds: number): string => {
 };
 
 // let questions=<QuestionListArr>[];
+  let loading=ref<boolean>(false);
 onMounted(() => {
   //初始化试卷
+  loading.value=true;
   useStore.getQuestionListArr($route.query.paper_id as string);
+  loading.value=false;
 
   //成绩展示部分
   const isSubmitted = localStorage.getItem("isSubmitted");
@@ -286,7 +289,7 @@ const submitConfirm = () => {
   let message =
     "提交前请仔细检查，一旦提交将无法更改。您确定要提交试卷吗？";
   let confirmButtonText = "提交";
-  console.log(allAnswered);
+  // console.log(allAnswered);
   if (!allAnswered) {
     message =
       "还有题目未完成，确定要提交吗？您还可以返回检查和完成剩余的题目。";
@@ -571,4 +574,5 @@ const confirmExit = () => {
     box-sizing: border-box;
   }
 }
+
 </style>

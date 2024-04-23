@@ -5,7 +5,7 @@
         <el-button type="primary" size="default" icon="Plus" @click="handleAddTest">
             创建考试
         </el-button>
-        <el-table style="margin:10px 0" stripe :data="TestInfoStore.testInfoArr">
+        <el-table style="margin:10px 0" stripe :data="TestInfoStore.testInfoArr" v-loading="loading">
             <el-table-column type="index" label="序号" min-width="10%" align="center"/>
             <el-table-column label="考试名称" min-width="15%" align="center" prop="exam_name"></el-table-column>
             <el-table-column  label="考试起始时间" prop="exam_start" min-width="15%" align="center"/>
@@ -42,7 +42,7 @@
      <el-dialog v-model="AddTestDialogVisible" title="创建考试" width="600" style="margin-top: 100px;">
     <el-form :model="addTestForm" label-width="auto">
         <el-form-item label="考试名称" required>
-            <input v-model="addTestForm.exam_name">
+            <input v-model="addTestForm.exam_name" placeholder="请输入考试名称">
         </el-form-item>
         <el-form-item label="考试开始日期">
           <el-date-picker
@@ -83,7 +83,9 @@
             }"
           />
         </el-form-item>
-        <el-form-item v-if="addTestForm.paper_id!=''">试卷名称   {{ TestInfoStore.paper_name }}</el-form-item>
+        <el-form-item v-if="addTestForm.paper_id!=''" label="试卷名称">
+           <span style="font-weight: bold;">{{ TestInfoStore.paper_name }}</span>
+        </el-form-item>
     </el-form>
     
     
@@ -104,7 +106,7 @@
 
 
  <!-- 选择试卷界面 -->
- <el-drawer v-model="SelectPaperDialogVisible"  size="40%" @open="open" >
+ <el-drawer v-model="SelectPaperDialogVisible"  size="40%" @open="open" v-loading="openLoading">
   <el-card style="min-height: 500px;">
     <el-table :data="PaperInfoStore.paperInfoArr" style="margin:10px 0;height: 100%;" stripe  >
             <el-table-column type="index" label="序号" width="70" align="center" />
@@ -246,25 +248,46 @@ let TestInfoStore=useBackTestInfoStore();
 let pageNo = ref<string>('1')
 
 let pageSize = ref<string>('10')
+//加载动画ref
+let loading=ref<boolean>(false);
+
 //页面变化
 const handlePageChange = async(pager="1")=>{
   pageNo.value=pager;
-  await TestInfoStore.getAllTestInfo(pageNo.value,pageSize.value);
+  loading.value=true;
+  let res=await TestInfoStore.getAllTestInfo(pageNo.value,pageSize.value);
+  if(res=='ok'){
+    loading.value=false
+  }
 }
 onMounted(async()=>{
-  await TestInfoStore.getAllTestInfo(pageNo.value,pageSize.value);
+  loading.value=true;
+ let res = await TestInfoStore.getAllTestInfo(pageNo.value,pageSize.value);
+ if(res=='ok'){
+  loading.value=false;
+ }
 })
 import useBackPaperInfoStore from '@/store/back/paper';
 let PaperInfoStore=useBackPaperInfoStore();
 let innerPageNo = ref<string>('1')
 
 let innerPageSize = ref<string>('10')
+//内部表格加载动画ref
+let openLoading = ref<boolean>(false);
 const open=async()=>{
-await PaperInfoStore.getAllPaperInfo(innerPageNo.value,innerPageSize.value)
+  openLoading.value=true;
+  let res = await PaperInfoStore.getAllPaperInfo(innerPageNo.value,innerPageSize.value);
+  if(res=='ok'){
+    openLoading.value=false;
+  }
 }
 const handleInnerPageChange = async(pager="1")=>{
   pageNo.value=pager;
-  await PaperInfoStore.getAllPaperInfo(innerPageNo.value,innerPageSize.value);
+  openLoading.value=true;
+  let res = await PaperInfoStore.getAllPaperInfo(innerPageNo.value,innerPageSize.value);
+  if(res=='ok'){
+    openLoading.value=false;
+  }
 }
 
 let AddTestDialogVisible=ref<boolean>(false);
@@ -299,14 +322,11 @@ const SelectPaper=async (row:any,index:any)=>{
   SelectPaperDialogVisible.value=false;
 }
 const submitAddTestForm = async ()=>{
-
-  // const { exam_start, exam_end } = toRefs(addTestForm);
-  // exam_start.value = exam_start.value.replace(/\//g, '.');
-  // exam_end.value = exam_end.value.replace(/\//g, '.');
-  
     let result=await TestInfoStore.addTestInfo(addTestForm);
     if(result==='ok'){
+      loading.value=true;
       await TestInfoStore.getAllTestInfo(pageNo.value,pageSize.value);
+      loading.value=false;
       AddTestDialogVisible.value=false;
     }
 } 
@@ -359,6 +379,7 @@ const submitEditTestForm = async (index:any,row:any)=>{
 //删除考试
 import { ElMessage, ElMessageBox } from 'element-plus'
 import type { editTestData, addTestData, deleteTestData } from '@/api/back/exam/test/type';
+
 const handleDeleteTest = async (index: any, row: any) => {
   try {
     await ElMessageBox.confirm(
@@ -389,3 +410,8 @@ const handleDeleteTest = async (index: any, row: any) => {
 //根据paper_id获取paper_name
 
 </script>
+<style scoped>
+.el-loading-mask {
+  z-index: 9 !important
+}
+</style>

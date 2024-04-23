@@ -24,12 +24,12 @@ export interface deletePaperData{
 export interface addQuestionForPaperData{
     paper_id: string;
     question_id: string;
-    question_order: number;
-    question_value: number;
+    question_order: number|null;
+    question_value: number|null;
 }
 export interface addPaperData{
     paper_name:string;
-    duration:number;
+    duration:number|null;
 }
 export interface deleteQuestionFromPaperData{
     paper_id:string;

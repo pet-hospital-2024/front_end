@@ -4,7 +4,7 @@
         <el-button type="primary" size="default" icon="Plus" @click="handleAddPaper">
             创建试卷
         </el-button>
-        <el-table :data="PaperInfoStore.paperInfoArr" style="margin:10px 0" stripe >
+        <el-table :data="PaperInfoStore.paperInfoArr" style="margin:10px 0" stripe v-loading="loading">
             <el-table-column type="index" label="序号" min-width="10%" align="center" />
             <el-table-column label="试卷名称" min-width="15%" align="center" prop="paper_name"></el-table-column>
             <el-table-column label="题目数量" min-width="10%" align="center" prop="question_number"/>
@@ -72,7 +72,7 @@
 <!-- 编辑试卷基本信息对话 -->
 <el-dialog title="编辑试卷信息试卷" width="600" align-center v-model="EditPaperDialogVisible">
   <el-form v-model="editPaperForm" label-width="auto">
-    <el-form-item label="试卷ID" required>
+    <el-form-item label="试卷ID">
             <input v-model="editPaperForm.paper_id" disabled>
         </el-form-item>
         <el-form-item label="试卷名称" required>
@@ -102,7 +102,7 @@
             添加试题
         </el-button>
     <el-table :data="PaperInfoStore.questionInfoArr" size="80%" height="350">
-      <el-table-column label="题目ID" prop="question_id" width="80" align="center"></el-table-column>
+      <el-table-column label="题目序号" prop="order" width="80" align="center"></el-table-column>
       <el-table-column label="题目类型"  width="100" align="center">
         <template v-slot="{ row }">
           <span v-if="row.type === 'choice'">选择题</span>
@@ -112,7 +112,7 @@
       </el-table-column>
       <el-table-column label="题目内容" align="center">
         <template v-slot="{ row }">
-          <span>{{ row.order }}. {{ row.question_body }} ({{ row.value }}分)</span>
+          <span>{{ row.question_body }} ({{ row.value }}分)</span>
         </template>
       </el-table-column>
       <el-table-column fixed="right" label="操作" width="70">
@@ -163,11 +163,16 @@
 </el-dialog>
 <el-dialog title="选择试题信息" v-model="QuestionFormDialogVisible">
   <el-form :model="sendData" label-width="auto">
-    <el-form-item label="题目序号">
-      <el-input v-model="sendData.question_order" required></el-input>
+    <el-form-item label="题目序号" required>
+      <el-input v-model="sendData.question_order" disabled :value="nextQuestionOrder"></el-input>
     </el-form-item>
-    <el-form-item label="分值">
-      <el-input v-model="sendData.question_value" required></el-input>
+    <!-- <el-form-item>
+      <span>
+        {{  }}
+      </span>
+    </el-form-item> -->
+    <el-form-item label="分值" required>
+      <el-input v-model="sendData.question_value" required placeholder="输入题目分值"></el-input>
     </el-form-item>
 
     
@@ -182,8 +187,9 @@
 </el-dialog>
 
 <!--detail详情对话框-->
-<el-dialog title="试卷详情" width="600" align-center v-model="PaperDetailDialogVisible" :QuestionInfo="PaperInfoStore.questionInfoArr">
-  <el-card>
+<el-dialog title="试卷详情" width="600" align-center v-model="PaperDetailDialogVisible">
+  
+  <el-card v-if="PaperInfoStore.questionInfoArr.length" v-loading="detailLoading">
   <div class="paper">
     <div v-for="(question, index) in PaperInfoStore.questionInfoArr" :key="question.question_id" class="question-item">
       <div class="question-header">
@@ -204,6 +210,7 @@
     </div>
   </div>
 </el-card>
+<el-empty v-else></el-empty>
 
 <template #footer>
   <div class="dialog-footer">
@@ -227,10 +234,14 @@ import { ref,onMounted, reactive } from 'vue';
 let pageNo=ref<string>("1");
 //定义每页展示多少条数据
 let pageSize=ref<string>("10")  
-
+//加载页面的ref
+let loading = ref<boolean>(false);
+let detailLoading=ref<boolean>(false);
 //目前首页挂载完毕发请求获取用户信息
 onMounted(async()=>{
-  await PaperInfoStore.getAllPaperInfo(pageNo.value,pageSize.value);
+  loading.value=true;
+  let res = await PaperInfoStore.getAllPaperInfo(pageNo.value,pageSize.value);
+  if(res==='ok')loading.value=false;
 })
 //页面信息变化
 const handlePageChange = async(pager="1")=>{
@@ -304,25 +315,21 @@ const handleEditPaper = (index:any,row:any)=>{
   editPaperForm.paper_name=row.paper_name;
 }
 const submitEditPaperForm = async()=>{
-  console.log(editPaperForm);
+  
   let result=await PaperInfoStore.editPaperBasicInfo(editPaperForm);
   if(result=='ok'){
     await PaperInfoStore.getAllPaperInfo(pageNo.value,pageSize.value);
     EditPaperDialogVisible.value=false;
   }
 }
-//展示试卷详情
-// const openShowDetail= async ()=>{
 
-// }
 let PaperDetailDialogVisible=ref(false);
-// interface PaperDataType{
-//   paper_id:string;
-//   paper_name:
-// }
+
 
 const handleShowPaperDetail=async(index:any,row:any)=>{
+  
   let result=await PaperInfoStore.getQuestionsById(row.paper_id)
+  if(result==='ok') 
   PaperDetailDialogVisible.value=true;
 }
 //查看试卷题目信息
@@ -337,11 +344,21 @@ const handleEditPaperInfo= async(index:any,row:any)=>{
 }
 //向试卷添加试题
 import useBackQuestionStore from '@/store/back/question';
+
 let AddQuestionToPaperDialogVisible=ref(false);
 let questionInfoStore=useBackQuestionStore();
 let innerPageNo=ref('1')
 let innerPageSize=ref('10')
+
 const handleAddQuestionToPaper=async()=>{
+  if(PaperInfoStore.questionInfoArr.length>=20){
+    
+    ElMessageBox({
+      type:"warning",
+      message:"已到达最大题目上限，请删去题目后再添加！"
+    })
+    return;
+  }
   AddQuestionToPaperDialogVisible.value=true;
   await questionInfoStore.getAllQuestionInfo(innerPageNo.value,innerPageSize.value);
 
@@ -355,23 +372,34 @@ let QuestionFormDialogVisible=ref(false);
 let sendData=reactive<addQuestionForPaperData>({
   paper_id:'',
   question_id:'',
-  question_order:0,
-  question_value:0,
+  question_order:null,
+  question_value:null,
 })
+let nextQuestionOrder=ref();
 const handleSelectQuestion = (row:any)=>{
+  // for(let index=0;index<PaperInfoStore.questionInfoArr.length;index++){
+  //     PaperInfoStore.questionInfoArr[index].order=index+1;
+  //    }
   QuestionFormDialogVisible.value=true;
   sendData.question_id=row.question_id;
+  nextQuestionOrder.value=PaperInfoStore.questionInfoArr.length + 1;
+  sendData.question_order=nextQuestionOrder.value;
 }
 const submitAddQuestionForPaper=async()=>{
+  
   let result=await PaperInfoStore.addQuestionForPaper(sendData);
   if(result=='ok'){
-    
+    sendData.question_value=null;
     await PaperInfoStore.getQuestionsById(sendData.paper_id);
     await PaperInfoStore.getAllPaperInfo(pageNo.value,pageSize.value);
     QuestionFormDialogVisible.value=false;
     AddQuestionToPaperDialogVisible.value=false;
+
   }
+  
+
 }
+
 //向试卷删除试题
 let deleteSendData=reactive<deleteQuestionFromPaperData>({
       paper_id:'',
@@ -396,7 +424,9 @@ const handleDeleteQuestionFromPaper = async(row:any)=>{
         await PaperInfoStore.getQuestionsById(deleteSendData.paper_id);
         await PaperInfoStore.getAllPaperInfo(pageNo.value,pageSize.value);
 
+     
      }
+
 
   } catch (error) {
     // 取消删除时显示提示信息
@@ -443,4 +473,7 @@ const handleDeleteQuestionFromPaper = async(row:any)=>{
   .correct-answer {
     font-weight: bold;
   }
+  .el-loading-mask {
+  z-index: 9 !important
+}
 </style>

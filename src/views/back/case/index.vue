@@ -23,7 +23,7 @@
             添加病例
       </el-button>
     </div>
-    <el-table style="margin:10px 0" stripe :data="caseInfoStore.caseTextInfoArr">
+    <el-table style="margin:10px 0" stripe :data="caseInfoStore.caseTextInfoArr" v-loading="loading">
       <!-- <el-table-column type="index" label="序号" width="80" align="center"/> -->
       <el-table-column  label="病例ID" min-width="20%" align="center" prop="case_id"/>
       <el-table-column  label="病例名称" min-width="20%" align="center" prop="case_name"/>
@@ -523,14 +523,20 @@ let pageSize=ref('10')
 //目前首页挂载完毕发请求获取用户信息
 //upload大文件组件
 import Upload from '@/components/upload/index.vue'
+//加载页面ref
+let loading = ref<boolean>(false);
 onMounted(async()=>{
-  await caseInfoStore.getAllTextCaseInfo(pageNo.value,pageSize.value);
+  loading.value=true;
+  let res = await caseInfoStore.getAllTextCaseInfo(pageNo.value,pageSize.value);
+  if(res=='ok') loading.value=false;
   await QuestionInfoStore.getDepartmentAndDiseaseInfo();
 })
 
 const handlePageChange = async(pager="1")=>{
   pageNo.value=pager;
-  await caseInfoStore.getAllTextCaseInfo(pageNo.value,pageSize.value);
+  loading.value=true;
+  let res = await caseInfoStore.getAllTextCaseInfo(pageNo.value,pageSize.value);
+  if(res=='ok') loading.value=false;
 }
 //搜索病例
 let searchKeyword = ref<string>("");
@@ -545,18 +551,39 @@ const uploadState=async (val:any)=>{
 }
 
 const handleSearchCase = async () => {
- 
-  await caseInfoStore.searchCaseInfo(searchKeyword.value);
+  if(searchKeyword.value===""){
+    ElNotification({
+      type:"warning",
+      message:"请输入病例!"
+    })
+    return ;
+  }
+  loading.value=true;
+  
+  try{
+    let res = await caseInfoStore.searchCaseInfo(searchKeyword.value);
+    if(res==='ok'){
+      loading.value=false;
+    }else{
+      loading.value=false;
+    }
+  }
+  catch{
+    loading.value=false;
+  }
 }
 //重置搜索结果
 const reset= async ()=>{
+  loading.value=true;
   let result=await caseInfoStore.getAllTextCaseInfo(pageNo.value,pageSize.value);
   if(result=='ok') {
+    loading.value=false;
   ElNotification({
       type:'success',
       message:"重置成功！"
     });
   }
+  searchKeyword.value="";
 }
 interface MediaInfoType{
   case_id:string;
@@ -964,5 +991,8 @@ const handleDeleteVideo=async (videoUrl:string,category:string)=>{
 .deleteIcon {
   color: white;
   font-size: 1.5em;
+}
+.el-loading-mask {
+  z-index: 10 !important
 }
 </style>

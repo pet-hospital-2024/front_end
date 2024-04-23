@@ -28,7 +28,7 @@
 
         <!--表格展示信息-->
         <el-table :data="QuestionInfoStore.questionInfoArr" style="margin:10px 0" stripe 
-        empty-text="无题干!" >
+        empty-text="无题干!" v-loading="loading">
             <el-table-column type="index" label="序号" min-width="10%" align="center"/>
 
             <el-table-column label="题目类型" min-width="10%" align="center">
@@ -270,28 +270,49 @@
 <!--相关配置-->
 <script setup lang="ts">
 import useBackQuestionStore from "@/store/back/question"
-import {Delete, Edit, Failed, ZoomIn} from '@element-plus/icons-vue'
+import {Delete, Edit, ZoomIn} from '@element-plus/icons-vue'
 import { ElNotification } from "element-plus";
-import { computed, ref,onMounted, reactive} from 'vue'
+import { ref,onMounted, reactive} from 'vue'
 //分页器当前页码
 let pageNo=ref<string>("1");
 //定义每页展示多少条数据
 let pageSize=ref<string>("10")  
-
+//加载动画ref
+let loading=ref<boolean>(false);
 
 //搜索
 let searchKeyword = ref<string>("");
 
 
 const handleSearchQuestion = async () => {
-  await QuestionInfoStore.searchQuestionInfo(searchKeyword.value);
+    if (searchKeyword.value === "") {
+        ElNotification({
+            type: "warning",
+            message: "请输入题目!"
+        });
+        return;
+    }
 
+    loading.value = true;
+    try {
+        let res = await QuestionInfoStore.searchQuestionInfo(searchKeyword.value);
+        if (res === 'ok') {
+            loading.value = false; // 成功时隐藏 loading
+        } else {
+            loading.value = false; // 失败时也隐藏 loading
+        }
+    } catch (error) {
+        loading.value = false; // 发生错误时隐藏 loading
+    }
 }
+
 
 //重置搜索结果
 const reset= async ()=>{
+  loading.value=true;
 let res=await QuestionInfoStore.getAllQuestionInfo(pageNo.value,pageSize.value);
 if(res=='ok') {
+  loading.value=false;
   ElNotification({
       type:'success',
       message:"重置成功！"
@@ -302,13 +323,21 @@ if(res=='ok') {
 
 let QuestionInfoStore=useBackQuestionStore();
 onMounted(async ()=>{
-  await QuestionInfoStore.getAllQuestionInfo(pageNo.value,pageSize.value);
+  loading.value=true;
+  let res = await QuestionInfoStore.getAllQuestionInfo(pageNo.value,pageSize.value);
+  if(res=='ok'){
+    loading.value=false;
+  }
   await QuestionInfoStore.getDepartmentAndDiseaseInfo();
 })
 
 const handlePageChange = async(pager="1")=>{
   pageNo.value=pager;
-  await QuestionInfoStore.getAllQuestionInfo(pageNo.value,pageSize.value);
+  loading.value=true;
+  let res = await QuestionInfoStore.getAllQuestionInfo(pageNo.value,pageSize.value);
+  if(res=='ok'){
+    loading.value=false;
+  }
 }
 
 //展示试题详情
@@ -424,7 +453,7 @@ const handleEditQuestion=(row:any)=>{
         item => item.department_name === editQuestionForm.department_name
       );
       diseaseInfo.value= selectedDepartment ? selectedDepartment.diseases : []
-  console.log(editQuestionForm);
+  
 }
 const cancleEditQuestionForm=()=>{
   EditQuestionDialogVisible.value=false;
@@ -443,6 +472,7 @@ const submitEditQuestionForm= async ()=>{
 }
 //点击“删除试题”
 import { ElMessage, ElMessageBox } from 'element-plus'
+import { tr } from "element-plus/es/locale";
 
 
 
@@ -510,6 +540,8 @@ const handleTypeJudgement = ()=>{
   justify-content: space-between;
   align-items: center;
 }
-
+.el-loading-mask {
+  z-index: 9 !important
+}
 </style>
 

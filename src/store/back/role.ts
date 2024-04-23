@@ -95,7 +95,8 @@ let useBackUserInfoStore=defineStore(
                         type:'error',
                         message:"查找用户失败"+result.message,
                     });
-                    return Promise.reject(new Error(result.message));
+                    Promise.reject(new Error(result.message));
+                    return "fail";
                 }
             },
             async banUser(username:banRoleData){

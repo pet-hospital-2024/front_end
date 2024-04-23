@@ -102,7 +102,8 @@ let useBackQuestionStore = defineStore("QuestionManagement",{
                     type:'error',
                     message:res.message,
                 });
-                return Promise.reject(new Error(res.message));
+                Promise.reject(new Error(res.message));
+                return "fail"
             }
         }
     }
