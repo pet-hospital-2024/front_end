@@ -19,10 +19,13 @@ import { ref } from "vue";
 import usePanoramaStore from "@/store/front/panorama";
 let useStore=usePanoramaStore();
 
+let role=parseInt(useStore.role_id);
+console.log(role);
+
 const isOpen = ref(false);
-const selectedItem = ref(0); // 默认选择第一个菜单项
+const selectedItem = ref(role-1); // 默认选择第一个菜单项
 const menuItems = ref(["兽医", "医助", "前台"]); // 菜单项
-const selectedRole = ref(1);
+// const selectedRole = ref(1);
 
 function toggleMenu() {
   isOpen.value = !isOpen.value;

@@ -171,7 +171,7 @@
 </el-drawer>
 
 <!-- 编辑考试页面 -->
-<el-dialog v-model="EditTestDialogVisible" title="编辑考试" width="600" style="margin-top: 100px;">
+<el-dialog v-model="EditTestDialogVisible" title="编辑考试" width="600" style="margin-top: 100px; padding: 30px;">
     <el-form :model="editTestForm" label-width="auto">
         <el-form-item label="考试名称" required>
             <input v-model="editTestForm.exam_name" >

@@ -140,7 +140,7 @@
   </el-dialog>
 
   <!-- 编辑试题对话框 -->
-  <el-dialog v-model="EditQuestionDialogVisible" title="编辑试题" width="500" align-center>
+  <el-dialog v-model="EditQuestionDialogVisible" title="编辑试题" width="500" style="padding: 30px;" align-center>
 
 <el-form  style="max-width: 400px" :model="editQuestionForm" ref="formRef" label-width="auto">
   <el-form-item label="题目ID" >
@@ -472,7 +472,6 @@ const submitEditQuestionForm= async ()=>{
 }
 //点击“删除试题”
 import { ElMessage, ElMessageBox } from 'element-plus'
-import { tr } from "element-plus/es/locale";
 
 
 

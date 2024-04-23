@@ -288,7 +288,8 @@ const videoUrls = ["/xueya.mp4", "/xueya.mp4"];
     font-size: 40px;
     margin-top: 10px;
     margin-bottom: 20px;
-    font-weight: 500;
+    font-weight: 600;
+    font-family: Georgia, "Times New Roman", Times, serif;
   }
   .caseCard {
     width: 90%;

@@ -70,7 +70,7 @@
  </el-dialog>
 
 <!-- 编辑试卷基本信息对话 -->
-<el-dialog title="编辑试卷信息试卷" width="600" align-center v-model="EditPaperDialogVisible">
+<el-dialog title="编辑试卷信息试卷" width="600" style="padding: 30px;" align-center v-model="EditPaperDialogVisible">
   <el-form v-model="editPaperForm" label-width="auto">
     <el-form-item label="试卷ID">
             <input v-model="editPaperForm.paper_id" disabled>
