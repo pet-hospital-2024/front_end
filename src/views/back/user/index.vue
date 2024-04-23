@@ -518,7 +518,7 @@ const handleBanUser = async (index:any,row:any)=>{
     // 取消删除时显示提示信息
     ElMessage({
       type: 'info',
-      message: '已取消禁用',
+      message: '已取消',
     });
   }
 }
@@ -540,7 +540,7 @@ const handleRecoverUser = (index:any,row:any)=>{
   z-index: 900 !important
 }
 .el-table >>> .warning-row {
-  --el-table-tr-bg-color: var(--el-color-warning-light-7);
+  --el-table-tr-bg-color: var(--el-color-warning-light-9);
 }
 .form {
   display: flex;
