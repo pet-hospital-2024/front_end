@@ -128,11 +128,6 @@
   <el-dialog v-model="ShowCaseDetailDialogVisible" title="病例详情" width="700px" center>
     <el-card :model="caseTextDetailData" class="case-detail">
       <el-tabs @tab-click="handleTabClickDetail" v-model="FirstTabPane">
-        <!-- <div class="detail-heading">
-          <el-text class="case-title">{{ caseTextDetailData.case_name }}</el-text>
-          
-        </div> -->
-        <!-- <el-divider/> -->
         <el-tab-pane label="基本信息" name="Consultation">
           <div class="detail-section" >
             
@@ -511,7 +506,7 @@ import { ElMessage, ElMessageBox, ElNotification, genFileId, type UploadFile, ty
 
 import {Delete, Edit, ZoomIn} from '@element-plus/icons-vue'
 import useBackCaseInfoStore from '@/store/back/case';
-import { onMounted, reactive, ref } from 'vue';
+import { onMounted, reactive, ref, watch } from 'vue';
 import type { addCaseTextData, caseTextInfoItem, deleteCaseTextData, deleteMediaData, editCaseTextData } from '@/api/back/case/type';
 import type { diseaseQuestionInfoArr } from '@/api/back/exam/questions/type';
 import useBackQuestionStore from "@/store/back/question"
@@ -880,8 +875,6 @@ const handleDeleteImage = async(imgUrl:string,category:string)=>{
 //删除视频--为什么那么慢？？？？？？？？？？
 //请求被挂起--超时！  
 const handleDeleteVideo=async (videoUrl:string,category:string)=>{
-
-
   try{    
     await ElMessageBox.confirm(
       '您确定删除该多媒体吗？',
@@ -908,7 +901,30 @@ const handleDeleteVideo=async (videoUrl:string,category:string)=>{
     });
   }
 }
-  
+watch(ShowCaseDetailDialogVisible,(newValue,oldValue)=>{
+  if(ShowCaseDetailDialogVisible.value==false){
+    const videoElements = document.querySelectorAll('video')
+    console.log(videoElements);
+    // 遍历每个视频元素并释放资源
+    videoElements.forEach(videoElement => {
+    videoElement.pause();            // 暂停视频播放
+    videoElement.removeAttribute('src'); // 清空视频源
+    videoElement.load();             // 重新加载视频，释放资源
+});
+  }
+})
+watch(editCaseDialogVisible,(newValue,oldValue)=>{
+  if(editCaseDialogVisible.value==false){
+    const videoElements = document.querySelectorAll('video')
+    console.log(videoElements);
+    // 遍历每个视频元素并释放资源
+    videoElements.forEach(videoElement => {
+    videoElement.pause();            // 暂停视频播放
+    videoElement.removeAttribute('src'); // 清空视频源
+    videoElement.load();             // 重新加载视频，释放资源
+});
+  }
+})
 </script>
 
 
