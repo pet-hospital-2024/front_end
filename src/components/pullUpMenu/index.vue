@@ -30,7 +30,8 @@ function toggleMenu() {
 
 function selectItem(index: number) {
   selectedItem.value = index;
-  useStore.role_id=index+1;
+  index++;
+  useStore.role_id=index.toString();
   isOpen.value = false;
 }
 </script>

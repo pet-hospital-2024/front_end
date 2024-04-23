@@ -36,7 +36,7 @@ const goPanorama = () => {
   $router.push({ path: "/front/panorama" });
 };
 const goStudy = () => {
-  $router.push({ path: "/front/case"});
+  $router.push({ path: "/front/study"});
 };
 const goTest = () => {
   $router.push({ path: "/front/testList" });

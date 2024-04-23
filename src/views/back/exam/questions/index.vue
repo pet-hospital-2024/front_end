@@ -28,8 +28,8 @@
 
         <!--表格展示信息-->
         <el-table :data="QuestionInfoStore.questionInfoArr" style="margin:10px 0" stripe 
-        empty-text="无题干!" v-loading="loading">
-            <el-table-column type="index" label="序号" min-width="10%" align="center"/>
+        empty-text="无题干!" >
+            <el-table-column prop="question_id" label="序号" min-width="15%" align="center"/>
 
             <el-table-column label="题目类型" min-width="10%" align="center">
                 <template v-slot="{ row }">
@@ -38,7 +38,7 @@
             </el-table-column>
 
             <el-table-column prop="question_body" label="题目描述" align="center" min-width="40%" />
-            <el-table-column align="center" class="operation" min-width="40%">
+            <el-table-column align="center" class="operation" min-width="35%">
             <template v-slot="{ row, index }">
               <el-button @click="handleShowDetail(index, row)" size="small" :icon="ZoomIn">详情</el-button>
               <el-button size="small" @click="handleEditQuestion(row)" :icon="Edit" type="info">编辑
@@ -216,7 +216,7 @@
 </el-dialog>
 
   <!--detail详情对话框-->
-  <el-dialog title="试题详情" width="600" align-center v-model="showDetail" :QuestionInfo="QuestionInfo">
+  <el-dialog title="试题详情" width="600" style="padding: 30px;" align-center v-model="showDetail" :QuestionInfo="QuestionInfo">
     <el-form label-width="auto">
       <el-form-item label="题目类型:">
         <span>{{ QuestionInfo.type==='choice'?'选择题':'判断题' }}</span>
