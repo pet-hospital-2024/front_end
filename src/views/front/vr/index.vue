@@ -1,5 +1,8 @@
 <template>
   <div class="container">
+    <div class="title">
+      <p>{{ data.currentRoom }}</p>
+    </div>
     <canvas class="webgl"> </canvas>
     <div class="vr">
       <!-- 切换房间 -->
@@ -376,11 +379,24 @@ onBeforeUnmount(() => {
 });
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 @import url("@/style/keyframes.scss");
 
 .container {
   font-family: Helvetica, Arial, sans-serif;
+  .title{
+    position: absolute;
+    font-size: 24px;
+    top:10vh;
+    left: 49vw;
+    z-index: 999;
+    font-family: Georgia, "Times New Roman", Times, serif;
+    // color: azure;
+    background-color:rgba(255, 255, 255, 0.5);
+    padding:5px 15px;
+    border: 2px solid rgb(255, 255, 255);
+    border-radius: 10px;
+  }
 
   .webgl {
     position: fixed;
@@ -440,5 +456,6 @@ onBeforeUnmount(() => {
       }
     }
   }
+
 }
 </style>

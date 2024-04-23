@@ -54,6 +54,7 @@ const goTest = () => {
   flex-direction: column;
   align-items: center;
   // justify-content: center;
+  
 
   .title {
     height: 40vh;
@@ -69,11 +70,13 @@ const goTest = () => {
       font-size: 56px;
       font-weight: 600;
       // color: rgb(255, 255, 255);
+      // font-family: Georgia, "Times New Roman", Times, serif;
     }
     h3 {
       margin-top: 30px;
       font-size: 36px;
       font-weight: 400;
+      font-family: Georgia, "Times New Roman", Times, serif;
       // color: rgb(255, 255, 255);
     }
   }
