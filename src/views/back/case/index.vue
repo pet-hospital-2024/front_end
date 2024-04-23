@@ -880,13 +880,32 @@ const handleDeleteImage = async(imgUrl:string,category:string)=>{
 //删除视频--为什么那么慢？？？？？？？？？？
 //请求被挂起--超时！  
 const handleDeleteVideo=async (videoUrl:string,category:string)=>{
+
+
+  try{    
+    await ElMessageBox.confirm(
+      '您确定删除该多媒体吗？',
+      '提示',
+      {
+        confirmButtonText: '确认',
+        cancelButtonText: '取消',
+        type: 'warning',
+      }
+    );
   
-  deleteMediaSendData.media_url=videoUrl;
-  
-  let res=await caseInfoStore.deleteMediaInfo(deleteMediaSendData)
+    deleteMediaSendData.media_url=videoUrl;
+    let res=await caseInfoStore.deleteMediaInfo(deleteMediaSendData)
   if(res=='ok'){
     await caseInfoStore.getMediaUrlInfo(editTextCaseForm.case_id,"video",category)
     VideoInfoArr.value=caseInfoStore.mediaUrlArr
+  }
+
+  } catch (error) {
+    // 取消删除时显示提示信息
+    ElMessage({
+      type: 'info',
+      message: '已取消删除',
+    });
   }
 }
   
