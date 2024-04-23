@@ -851,14 +851,31 @@ let deleteMediaSendData=reactive<deleteMediaData>({
   media_url:"",
 })
 const handleDeleteImage = async(imgUrl:string,category:string)=>{
-  deleteMediaSendData.media_url=imgUrl;
+  try {
+    await ElMessageBox.confirm(
+      '您确定删除该多媒体吗？',
+      '提示',
+      {
+        confirmButtonText: '确认',
+        cancelButtonText: '取消',
+        type: 'warning',
+      }
+    );
   
-  let res=await caseInfoStore.deleteMediaInfo(deleteMediaSendData)
-  if(res=='ok'){
+    deleteMediaSendData.media_url=imgUrl;
+    let res=await caseInfoStore.deleteMediaInfo(deleteMediaSendData)
+    if(res=='ok'){
     await caseInfoStore.getMediaUrlInfo(editTextCaseForm.case_id,"image",category)
     ImageInfoArr.value=caseInfoStore.mediaUrlArr
   }
 
+  } catch (error) {
+    // 取消删除时显示提示信息
+    ElMessage({
+      type: 'info',
+      message: '已取消删除',
+    });
+  }
 }
 //删除视频--为什么那么慢？？？？？？？？？？
 //请求被挂起--超时！  
