@@ -40,7 +40,7 @@
                   :zoom-rate="1.2"
                   :max-scale="7"
                   :min-scale="0.2"
-                  :preview-src-list="imgUrls"
+                  :preview-src-list="useStore.pictureList"
                   :initial-index="index"
                   fit="fill"
                 >
@@ -91,7 +91,7 @@
                   :zoom-rate="1.2"
                   :max-scale="7"
                   :min-scale="0.2"
-                  :preview-src-list="imgUrls"
+                  :preview-src-list="useStore.pictureList"
                   :initial-index="index"
                   fit="fill"
                 >
@@ -142,7 +142,7 @@
                   :zoom-rate="1.2"
                   :max-scale="7"
                   :min-scale="0.2"
-                  :preview-src-list="imgUrls"
+                  :preview-src-list="useStore.pictureList"
                   :initial-index="index"
                   fit="fill"
                 >
@@ -203,7 +203,7 @@
                   :zoom-rate="1.2"
                   :max-scale="7"
                   :min-scale="0.2"
-                  :preview-src-list="imgUrls"
+                  :preview-src-list="useStore.pictureList"
                   :initial-index="index"
                   fit="fill"
                 >

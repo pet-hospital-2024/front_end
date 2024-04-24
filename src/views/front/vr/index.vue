@@ -20,7 +20,7 @@
       </div>
     </div>
     <pullUpMenu />
-    <learnItem />
+    <learnItem v-if="useStore.itemVisibility"/>
   </div>
 </template>
 
