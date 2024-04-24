@@ -712,7 +712,7 @@ isDepartmentSelected.value=false;
 const handleDeleteCase = async (row: any) => {
   try {
     await ElMessageBox.confirm(
-      '您确定删除该科室吗？',
+      '您确定删除该病例吗？',
       '提示',
       {
         confirmButtonText: '确认',
