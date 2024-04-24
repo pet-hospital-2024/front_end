@@ -11,7 +11,7 @@ let usePanoramaStore = defineStore("panorama", {
       role_id: "1",
       itemVisibility: false,
       learnItem: {
-        learn_item_url: "",
+        learn_item_url: '',
         learn_item_name: "",
         learn_text: "",
       },

@@ -12,7 +12,7 @@
         <h2>教学视频</h2>
         <div class="videoContainer">
           <video width="100%" controls>
-            <source :src="useStore.learnItem.learn_item_url" type="video/mp4" />
+            <source :src="url" type="video/mp4" />
           </video>
         </div>
       </div>
@@ -30,6 +30,8 @@
 <script setup lang="ts">
 import usePanoramaStore from "@/store/front/panorama";
 let useStore = usePanoramaStore();
+
+const url='http://wxl475.cn:9000/syf/1713935793481_宠物医院宣传模板.mp4'
 </script>
 
 <script lang="ts">
