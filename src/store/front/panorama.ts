@@ -27,8 +27,9 @@ let usePanoramaStore = defineStore("panorama", {
       console.log(res);
       if (res.code == 1) {
         this.learnItem = res.data;
-        console.log(res.data);
+        // console.log(res.data);
       }
+      this.itemVisibility = true;
     },
   },
 });

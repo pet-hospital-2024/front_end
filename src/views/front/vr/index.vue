@@ -54,6 +54,7 @@ const map = new Map([
   ["平面003", 8],
   ["平面006", 9],
   ["平面002", 1],
+  ["平面007",10]
 ]);
 let location_id = map.get($route.query.key);
 
@@ -308,10 +309,10 @@ const initEvents = () => {
     const intersects = raycaster.intersectObjects(sprites);
     // console.log("click", intersects[0]);
     if (intersects.length > 0) {
-      useStore.itemVisibility = true;
       // console.log("click", intersects[0].texture);
       console.log(useStore.role_id, location_id);
       useStore.getLearnItem(location_id, useStore.role_id);
+      // useStore.itemVisibility = true;
     }
   };
   resizeHandler = () => {

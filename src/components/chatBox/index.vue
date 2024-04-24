@@ -9,7 +9,7 @@
         class="chat_message"
       >
         <div :class="['chat_message-text', message.isMe ? 'mine' : 'not-mine']">
-          <div v-html="parsedMarkdown(message.text)"></div>
+          <div v-html="message.text"></div>
         </div>
       </div>
       <div ref="endOfMessages"></div>
@@ -170,7 +170,7 @@ const getAIResponse = async (text: string) => {
         // console.log("返回数据", event);
         if (event.data) {
           const data = event.data;
-          // console.log(data);
+          console.log(data);
           // concatContent += data;
           if (index == 0) {
             useStore.messageArr.push({

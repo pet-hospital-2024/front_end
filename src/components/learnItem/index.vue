@@ -28,10 +28,16 @@
 </template>
 
 <script setup lang="ts">
+import { onMounted } from "vue";
 import usePanoramaStore from "@/store/front/panorama";
 let useStore = usePanoramaStore();
 
-const url='http://wxl475.cn:9000/syf/1713935793481_宠物医院宣传模板.mp4'
+let url='http://wxl475.cn:9000/syf/1713935793481_宠物医院宣传模板.mp4'
+onMounted(() => {
+  console.log(useStore.learnItem);
+  url=useStore.learnItem.learn_item_url;
+});
+
 </script>
 
 <script lang="ts">
