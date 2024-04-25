@@ -34,18 +34,18 @@ export const useFrontExamStore = defineStore("FrontExam", {
     async getQuestionListArr(paper_id: string) {
       let res: TestDetailResponseData = await reqTestDetail(paper_id);
       // console.log(111);
-      console.log(res.data);
+      
       if (res.code == 1) {
         //在得到的数据的基础上加上已选择项和状态
         this.testData = res.data;
         this.questionListArr = res.data.questions;
-        console.log(this.questionListArr);
+        // console.log(this.questionListArr);
         this.questionListArr = res.data.questions.map((question) => ({
           ...question,
           selectedOpt: null,
           status: "pending",
         }));
-        console.log(this.questionListArr);
+        // console.log(this.questionListArr);
       }
       return this.questionListArr;
     },

@@ -1,8 +1,10 @@
 import { defineStore } from "pinia";
 import { ElNotification } from "element-plus";
 import type { diseaseInfoBySliceState } from "./types/type";
-import { addDiseaseInfoByIdAndName, deleteDiseaseInfoById, editDiseaseInfoByIdAndName, getDiseaseInfoBySlice } from "@/api/back/deisease";
+import { addDiseaseInfoByIdAndName, deleteDiseaseInfoById, editDiseaseInfoByIdAndName, getDiseaseInfoBySlice, reqCheckDiseaseState } from "@/api/back/deisease";
 import type { addDiseaseData, deleteDiseaseData, diseaseInfoResponseData, editDiseaseData, responseData } from "@/api/back/deisease/type";
+import type { deleteDepartmentData } from "@/api/back/department/type";
+import { reqCheckDepartmentState } from "@/api/back/department";
 let useBackDiseaseInfoStore=defineStore("DiseaseManagement",{
     state:():diseaseInfoBySliceState=>{
         return{
@@ -71,6 +73,36 @@ let useBackDiseaseInfoStore=defineStore("DiseaseManagement",{
                     message:"编辑疾病失败！",
                 })
                 return Promise.reject(new Error(result.message));
+            }
+        },
+        async checkDiseaseState(data:deleteDiseaseData){
+            let res:responseData=await reqCheckDiseaseState(data);
+            if(res.code==2){
+                return "occupied"
+            }else if(res.code==1){
+                return "ok";
+            }else{
+                ElNotification({
+                    type:'error',
+                    message:"删除失败",
+                })
+                return Promise.reject(new Error(res.message));
+            
+            }
+        },
+        async checkDepartmentState(data:deleteDepartmentData){
+            let res:responseData=await reqCheckDepartmentState(data);
+            if(res.code==2){
+                return "occupied"
+            }else if(res.code==1){
+                return "ok";
+            }else{
+                ElNotification({
+                    type:'error',
+                    message:"删除失败",
+                })
+                return Promise.reject(new Error(res.message));
+            
             }
         }
     }

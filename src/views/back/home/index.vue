@@ -7,7 +7,7 @@
 </template>
 <script setup lang="ts">
 
-import { onMounted } from 'vue';
+
 //获取仓库对象
 import useUserStore from '@/store/modules/user';
 

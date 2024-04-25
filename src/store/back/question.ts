@@ -2,7 +2,7 @@ import { defineStore } from "pinia";
 import { ElNotification } from "element-plus";
 import type { questionInfoBySliceState } from "./types/type";
 import type { addQuestionData, responseQuestionData,responseData, diseaseAnddepartmentResponseData, editQuestionData, deleteQuestionData, searchQuestionResponseData } from "@/api/back/exam/questions/type";
-import { reqAddQuestionInfo, reqDeleteQuestionInfo, reqDepartmentAndDisease, reqEditQuestionInfo, reqQuestionInfoBySlice, reqSearchQuestionByName } from "@/api/back/exam/questions";
+import { reqAddQuestionInfo, reqCheckQuestionState, reqDeleteQuestionInfo, reqDepartmentAndDisease, reqEditQuestionInfo, reqQuestionInfoBySlice, reqSearchQuestionByName } from "@/api/back/exam/questions";
 let useBackQuestionStore = defineStore("QuestionManagement",{
     state:():questionInfoBySliceState =>{
         return{
@@ -80,7 +80,8 @@ let useBackQuestionStore = defineStore("QuestionManagement",{
                     message:"删除试题成功!",
                 })
                 return "ok";
-            }else{
+            }
+            else{
                 ElNotification({
                     type:'error',
                     message:"删除试题失败！",
@@ -104,6 +105,27 @@ let useBackQuestionStore = defineStore("QuestionManagement",{
                 });
                 Promise.reject(new Error(res.message));
                 return "fail"
+            }
+        },
+        async checkQuestionState(data:deleteQuestionData){
+            let res:responseData=await reqCheckQuestionState(data);
+            if(res.code==2){
+                // ElNotification({
+                //     type:"info",
+                //     message:"该题目被"
+                // })
+                console.log(res.message);
+                return 'occupied'
+            }
+            else if(res.code==1){
+                return "ok";
+            }
+            else{
+                ElNotification({
+                    type:'error',
+                    message:res.message,
+                });
+                return Promise.reject(new Error(res.message));
             }
         }
     }

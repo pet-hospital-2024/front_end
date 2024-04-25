@@ -6,6 +6,7 @@ enum API{
     ADDDISEASEINFO_URL="/disease/addDisease",
     DELETEDISEASEINFO_URL="/disease/deleteDisease",
     EDITDISEASEINFO_URL="/disease/changeDiseaseName",
+    CHECKDISEASE_URL="/disease/hasCase",
 }
 //获取所有疾病信息
 export const getDiseaseInfoBySlice=(department_id:string)=>request.get<any,diseaseInfoResponseData>(API.GETDISEASEINFOBYSLICE_URL,{params:{department_id}});
@@ -18,3 +19,5 @@ export const deleteDiseaseInfoById=(data:deleteDiseaseData)=>request.post<any,re
 //编辑疾病
 
 export const editDiseaseInfoByIdAndName=(data:editDiseaseData)=>request.post<any,responseData>(API.EDITDISEASEINFO_URL,data);
+//检查疾病是否被病例使用
+export const reqCheckDiseaseState=(data:deleteDiseaseData)=>request.post<any,responseData>(API.CHECKDISEASE_URL,data);

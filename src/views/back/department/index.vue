@@ -17,7 +17,7 @@
         </el-table-column>
         <el-table-column  label="选择科室" align="center" min-width="20%">
             <template v-slot="{ row, index}">
-                <el-button @click="handleEnterDepartment(index,row)" class="my-button" :icon="Pointer">管理</el-button>
+                <el-button @click="handleEnterDepartment(index,row)" class="my-button" :icon="Pointer">进入科室</el-button>
             </template>
         </el-table-column>
       </el-table>
@@ -192,7 +192,11 @@ const cancleAddDepartmentForm = ()=>{
 import type { deleteDepartmentData } from '@/api/back/department/type';
 //删除科室
   const handleDeleteDepartment = async (index: any, row: any) => {
-  try {
+    let deleteData=ref<deleteDepartmentData>({department_id:""});
+    deleteData.value.department_id=row.department_id;
+    let stateDept=await departmentInfoStore.checkDepartmentState(deleteData.value);
+    if(stateDept=="ok"){
+      try {
     await ElMessageBox.confirm(
       '您确定删除该科室吗？',
       '提示',
@@ -203,8 +207,7 @@ import type { deleteDepartmentData } from '@/api/back/department/type';
       }
     );
     // 用户确认删除后，调用删除用户方法，并传递用户名作为参数
-    let deleteData=ref<deleteDepartmentData>({department_id:""});
-    deleteData.value.department_id=row.department_id;
+
      let result = await departmentInfoStore.deleteDepartment(deleteData.value);  
      if(result==='ok'){
        departmentInfoStore.getAllDepartmentInfo(pageNo.value,pageSize.value);
@@ -218,6 +221,34 @@ import type { deleteDepartmentData } from '@/api/back/department/type';
       message: '已取消删除',
     });
   }
+    }else if(stateDept=="occupied"){
+      try {
+    await ElMessageBox.confirm(
+      '有疾病正在使用该科室，您确定删除该科室吗？',
+      '提示',
+      {
+        confirmButtonText: '确认',
+        cancelButtonText: '取消',
+        type: 'warning',
+      }
+    );
+    // 用户确认删除后，调用删除用户方法，并传递用户名作为参数
+
+     let result = await departmentInfoStore.deleteDepartment(deleteData.value);  
+     if(result==='ok'){
+       departmentInfoStore.getAllDepartmentInfo(pageNo.value,pageSize.value);
+       
+     }
+
+  } catch (error) {
+    // 取消删除时显示提示信息
+    ElMessage({
+      type: 'info',
+      message: '已取消删除',
+    });
+  }
+    }
+
 }
 //编辑科室
 let EditDialogVisible=ref<boolean>(false);
@@ -294,7 +325,11 @@ const submitAddDiseaseForm = async (department_id:any)=>{
 }
 //删除疾病
 const handleDeleteDisease = async (index: any, row: any) => {
-  try {
+  let deleteData=ref<deleteDiseaseData>({disease_id:""});
+    deleteData.value.disease_id=row.disease_id;
+    let state= await diseaseInfoStore.checkDiseaseState(deleteData.value);
+    if(state=="ok"){
+      try {
     await ElMessageBox.confirm(
       '您确定删除该疾病吗？',
       '提示',
@@ -305,8 +340,7 @@ const handleDeleteDisease = async (index: any, row: any) => {
       }
     );
     // 用户确认删除后，调用删除用户方法，并传递用户名作为参数
-    let deleteData=ref<deleteDiseaseData>({disease_id:""});
-    deleteData.value.disease_id=row.disease_id;
+
      let result = await diseaseInfoStore.deleteDiseaseInfo(deleteData.value);  
      if(result==='ok'){
        diseaseInfoStore.getAllDiseaseInfo(row.department_id);
@@ -319,6 +353,32 @@ const handleDeleteDisease = async (index: any, row: any) => {
       message: '已取消删除',
     });
   }
+    }else if(state=='occupied'){
+      try {
+    await ElMessageBox.confirm(
+      '存在某个病例使用该疾病，您确定删除该疾病吗？',
+      '提示',
+      {
+        confirmButtonText: '确认',
+        cancelButtonText: '取消',
+        type: 'warning',
+      }
+    );
+    // 用户确认删除后，调用删除用户方法，并传递用户名作为参数
+
+     let result = await diseaseInfoStore.deleteDiseaseInfo(deleteData.value);  
+     if(result==='ok'){
+       diseaseInfoStore.getAllDiseaseInfo(row.department_id);
+     }
+
+  } catch (error) {
+    // 取消删除时显示提示信息
+    ElMessage({
+      type: 'info',
+      message: '已取消删除',
+    });
+  }
+    }
 }
 //编辑病例
 let editDiseaseForm=reactive<editDiseaseData>({
@@ -352,5 +412,7 @@ const submitEditDiseaseForm=async ()=>{
     transition: transform 0.3s ease, box-shadow 0.3s ease;
   
 }
-
+.el-loading-mask {
+  z-index: 9 !important
+}
 </style>

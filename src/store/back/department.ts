@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { addDepartmentInfoByName, deleteDepartmentById, editDepartmentByIdAndName, getDepartmentInfoBySlice } from "@/api/back/department";
+import { addDepartmentInfoByName, deleteDepartmentById, editDepartmentByIdAndName, getDepartmentInfoBySlice, reqCheckDepartmentState } from "@/api/back/department";
 import type { departmentInfoBySliceState } from "./types/type";
 import type { addDepartmentData, deleteDepartmentData, editDepartmentData } from "@/api/back/department/type";
 import type { responseData } from "@/api/back/role/type";
@@ -77,6 +77,21 @@ let useBackDepartmentInfoStore = defineStore("DepartmentManagement", {
       return Promise.reject(new Error(result.message));
       }
     },
+    async checkDepartmentState(data:deleteDepartmentData){
+      let res:responseData=await reqCheckDepartmentState(data);
+      if(res.code==2){
+          return "occupied"
+      }else if(res.code==1){
+          return "ok";
+      }else{
+          ElNotification({
+              type:'error',
+              message:"删除失败",
+          })
+          return Promise.reject(new Error(res.message));
+      
+      }
+  }
   },
 });
 

@@ -30,12 +30,12 @@ let useUserStore = defineStore("User", {
   actions: {
     async userLogin(data: LoginData) {
       let result: LoginResponseData = await reqLogin(data);
-      console.log(result);
+      // console.log(result);
       if (result.code == 1) {
         this.token = result.data as string;
         const decoded = jwtDecode(this.token); // 使用jwtDecode解码
         this.userData = decoded;
-        console.log(this.userData.username);
+        
         SET_TOKEN(this.token);
         // //本地持久化存储
         // localStorage.setItem("TOKEN",result.data.token);

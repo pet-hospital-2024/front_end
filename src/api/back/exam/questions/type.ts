@@ -72,3 +72,6 @@ export interface searchQuestionResponseData extends responseData{
     list:questionArr;
   }
 }
+export interface checkQuestionStateData{
+  question_id:string;
+}

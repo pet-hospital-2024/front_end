@@ -474,11 +474,14 @@ const submitEditQuestionForm= async ()=>{
 import { ElMessage, ElMessageBox } from 'element-plus'
 
 
-
+let deleteData=reactive<deleteQuestionData>({question_id:""});
 const handleDeleteQuestion = async (index: any, row: any) => {
-  try {
+  deleteData.question_id=row.question_id;
+  let state=await QuestionInfoStore.checkQuestionState(deleteData);
+  if(state=="occupied"){
+    try {
     await ElMessageBox.confirm(
-      '您确定删除该问题吗？',
+      '该问题出现在试卷中,您确定删除该问题吗？',
       '提示',
       {
         confirmButtonText: '确认',
@@ -487,9 +490,7 @@ const handleDeleteQuestion = async (index: any, row: any) => {
       }
     );
     // 用户确认删除后，调用删除用户方法，并传递用户名作为参数
-    let deleteData=ref<deleteQuestionData>({question_id:""});
-    deleteData.value.question_id=row.question_id;
-     let result = await QuestionInfoStore.deleteQuestionInfo(deleteData.value);  
+     let result = await QuestionInfoStore.deleteQuestionInfo(deleteData);  
      if(result==='ok'){
        QuestionInfoStore.getAllQuestionInfo(pageNo.value,pageSize.value);
      }
@@ -500,6 +501,31 @@ const handleDeleteQuestion = async (index: any, row: any) => {
       type: 'info',
       message: '已取消删除',
     });
+  }
+  }else if(state==='ok'){
+    try {
+    await ElMessageBox.confirm(
+      '您确定删除该问题吗？',
+      '提示',
+      {
+        confirmButtonText: '确认',
+        cancelButtonText: '取消',
+        type: 'warning',
+      }
+    );
+    // 用户确认删除后，调用删除用户方法，并传递用户名作为参数
+     let result = await QuestionInfoStore.deleteQuestionInfo(deleteData);  
+     if(result==='ok'){
+       QuestionInfoStore.getAllQuestionInfo(pageNo.value,pageSize.value);
+     }
+
+  } catch (error) {
+    // 取消删除时显示提示信息
+    ElMessage({
+      type: 'info',
+      message: '已取消删除',
+    });
+  }
   }
 }
 
