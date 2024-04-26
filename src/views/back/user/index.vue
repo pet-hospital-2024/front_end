@@ -349,7 +349,6 @@ const rules = reactive<FormRules<RuleForm>>({
   ],
   phone_number: [
   { required: true, message: '请输入电话号码！', trigger: 'blur' },
-  {type:"number",message:"手机号必须为数字!"},
   { min: 11, max: 11, message: '电话号码必须是11位！', trigger: ['blur', 'change'] },
   
   ],
