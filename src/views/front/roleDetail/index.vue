@@ -52,8 +52,9 @@ import { useRouter,useRoute } from "vue-router";
 let $router = useRouter();
 let $route = useRoute();
 import useFrontRoleStore from "@/store/front/role";
-// import type { TabsPaneContext } from "element-plus";
+import usePanoramaStore from "@/store/front/panorama";
 
+let useVRStore = usePanoramaStore();
 let useStore=useFrontRoleStore();
 
 const activeName = ref("first");
@@ -85,6 +86,27 @@ const goBack = () => {
   // $router.replace({ path: "/front/study" });
   $router.go(-1);
 };
+
+const map = new Map([
+  ["6", "平面012"],
+  ["2", "平面004"],
+  ["5", "平面011"],
+  ["7", "平面001"],
+  ["8", "平面003"],
+  ["9", "平面006"],
+  ["1", "平面002"],
+]);
+
+const goRoom = (location_id:string,role:string) => {
+  // console.log(location_id,role);
+  useVRStore.role_id=role;
+  $router.push({
+    path: "/front/vr",
+    query: {
+      key: map.get(location_id),
+    },
+  });
+}
 
 const dutyData = [
   {
