@@ -2,9 +2,10 @@
   <div>
         <!--顶部搜索-->
   <el-card style="height: 80px" shadow="hover">
-    <el-form :inline="true" class="form" label-width="auto">
+    <el-form :inline="true" class="form" label-width="auto" @submit.prevent>
       <el-form-item label="用户名:" >
-        <el-input placeholder="请输入搜索用户名" v-model="searchKeyword"></el-input>
+        <el-input placeholder="请输入搜索用户名" v-model="searchKeyword" @keyup.enter="handleSearchUser"
+></el-input>
       </el-form-item>
       <el-form-item>
         <el-button
@@ -334,37 +335,85 @@ let userInfoForm = reactive<RuleForm>({
   phone_number:"",
   email:"",
 });
-const rules = reactive<FormRules<RuleForm>>({
-  username:[
-   { required:true, message:"请输入用户名！",trigger:'blur'},
-   {min: 4,max: 10, message: "用户名长度在4-10位之间！",trigger: "change",},
-  ],
-  password:[
-    {required:true, message:"请输入密码！",trigger:'blur'},
-    {min:6,max:15,message:"密码至少6位！",trigger:'change'},
+
+const validatorUserName = (rule: any, value: any, callback: any) => {
+  const reg = /^[a-zA-Z0-9]{4,10}$/;
+  if (reg.test(value)) {
+    callback();
+  } else {
+    callback(new Error("用户名必须为4到10位的英文或数字"));
+  }
+};
+const validatorPassword = (rule: any, value: any, callback: any) => {
+  if (value.length < 6 || value.length > 15) {
+    callback(new Error("密码长度必须在6到15位之间"));
+    return;
+  }
+  const hasLetter = /[a-zA-Z]/.test(value);
+  const hasNumber = /\d/.test(value);
+
+  if (hasLetter && hasNumber) {
+    callback();
+  } else {
+    callback(new Error("密码必须同时包含字母和数字"));
+  }
+};
+const validatorEmail = (rule: any, value: any, callback: any) => {
+  const reg = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+
+  if (reg.test(value)) {
+    callback();
+  } else {
+    callback(new Error("请输入有效的电子邮件地址"));
+  }
+};
+const validatorPhone = (rule: any, value: any, callback: any) => {
+  const reg = /^1[3-9]\d{9}$/;
+
+  if (reg.test(value)) {
+    callback();
+  } else {
+    callback(new Error("请输入有效的手机号"));
+  }
+};
+
+const rules = {
+  username: [{ trigger: "change", validator: validatorUserName }],
+  password: [{ trigger: "change", validator: validatorPassword }],
+  email: [{ trigger: "change", validator: validatorEmail }],
+  phone_number: [{ trigger: "change", validator: validatorPhone }],
+};
+// const rules = reactive<FormRules<RuleForm>>({
+//   username:[
+//    { required:true, message:"请输入用户名！",trigger:'blur'},
+//    {min: 4,max: 10, message: "用户名长度在4-10位之间！",trigger: "change",},
+//   ],
+//   password:[
+//     {required:true, message:"请输入密码！",trigger:'blur'},
+//     {min:6,max:15,message:"密码至少6位！",trigger:'change'},
     
-  ],
-  identity:[
-    {required:true,message:"请选择用户身份！",trigger:['blur', 'change']},
-  ],
-  phone_number: [
-  { required: true, message: '请输入电话号码！', trigger: 'blur' },
-  { min: 11, max: 11, message: '电话号码必须是11位！', trigger: ['blur', 'change'] },
+//   ],
+//   identity:[
+//     {required:true,message:"请选择用户身份！",trigger:['blur', 'change']},
+//   ],
+//   phone_number: [
+//   { required: true, message: '请输入电话号码！', trigger: 'blur' },
+//   { min: 11, max: 11, message: '电话号码必须是11位！', trigger: ['blur', 'change'] },
   
-  ],
-  email:[
-  {
-          required: true,
-          message: '请输入用户邮箱！',
-          trigger: 'blur',
-        },
-        {
-          type: 'email',
-          message: '请输入正确的邮箱！',
-          trigger: ['blur', 'change'],
-        },
-  ]
-})
+//   ],
+//   email:[
+//   {
+//           required: true,
+//           message: '请输入用户邮箱！',
+//           trigger: 'blur',
+//         },
+//         {
+//           type: 'email',
+//           message: '请输入正确的邮箱！',
+//           trigger: ['blur', 'change'],
+//         },
+//   ]
+// })
 
 //添加用户--check
 const submitFormAddUser = async (formEl: FormInstance | undefined) => {
