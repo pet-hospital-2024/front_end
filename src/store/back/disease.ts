@@ -13,8 +13,8 @@ let useBackDiseaseInfoStore=defineStore("DiseaseManagement",{
         }
     },
     actions:{
-        async getAllDiseaseInfo(department_id:string){
-            let result:diseaseInfoResponseData= await getDiseaseInfoBySlice(department_id);
+        async getAllDiseaseInfo(department_id:string,page:string,size:string){
+            let result:diseaseInfoResponseData= await getDiseaseInfoBySlice(department_id,page,size);
             if(result.code==1){
                 this.total=result.data.total;
                 this.diseaseInfoArr=result.data.list;
@@ -90,21 +90,7 @@ let useBackDiseaseInfoStore=defineStore("DiseaseManagement",{
             
             }
         },
-        async checkDepartmentState(data:deleteDepartmentData){
-            let res:responseData=await reqCheckDepartmentState(data);
-            if(res.code==2){
-                return "occupied"
-            }else if(res.code==1){
-                return "ok";
-            }else{
-                ElNotification({
-                    type:'error',
-                    message:"删除失败",
-                })
-                return Promise.reject(new Error(res.message));
-            
-            }
-        }
+
     }
 })
 export default useBackDiseaseInfoStore;

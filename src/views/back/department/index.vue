@@ -101,6 +101,15 @@
       
     </el-table>
   </el-card>
+  <el-pagination
+      v-model:current-page="innerPageNo"
+      v-model:page-size="innerPageSize"
+      :background="true"
+      layout="prev, pager, next, jumper, -> , total"
+      :total="departmentInfoStore.total"
+      @current-change="handleInnerPageChange"
+      style="margin-top:20px"
+/>
   <!-- 添加疾病对话框 -->
   <el-dialog v-model="AddDiseaseDialogVisible" title="添加疾病" width="600" align-center>
     <el-form style="max-width: 400px" :model="addDiseaseForm" ref="formRef" label-width="auto">
@@ -140,6 +149,8 @@
   </el-dialog>
   <!-- 删除疾病对话框 -->
   </el-drawer>
+      <!--分页器-->
+
   </div>
 </template>
 
@@ -291,11 +302,18 @@ const handleEnterDepartment = (index:any,row:any)=>{
 //疾病
 import useBackDiseaseInfoStore from "@/store/back/disease"
 let diseaseInfoStore=useBackDiseaseInfoStore();
+let innerPageNo=ref("1");
+let innerPageSize=ref("10");
 let current_department_id=ref<string>("");
 const open= async (department_id:string)=>{
-  await diseaseInfoStore.getAllDiseaseInfo(department_id);
+  await diseaseInfoStore.getAllDiseaseInfo(department_id,innerPageNo.value,innerPageSize.value);
   current_department_id.value=department_id;
 }
+const handleInnerPageChange = async(pager="1")=>{
+  innerPageNo.value=pager;
+  await departmentInfoStore.getAllDepartmentInfo(innerPageNo.value,innerPageSize.value);
+}
+
 //状态
 let AddDiseaseDialogVisible=ref<boolean>(false);
 let EditDiseaseDialogVisible=ref<boolean>(false);
@@ -320,7 +338,7 @@ const submitAddDiseaseForm = async (department_id:any)=>{
   let result= await diseaseInfoStore.addDiseaseInfo(addDiseaseForm);
   if(result==='ok'){
     AddDiseaseDialogVisible.value=false;
-    await diseaseInfoStore.getAllDiseaseInfo(department_id);
+    await diseaseInfoStore.getAllDiseaseInfo(department_id,innerPageNo.value,innerPageSize.value);
   }
 }
 //删除疾病
@@ -343,7 +361,7 @@ const handleDeleteDisease = async (index: any, row: any) => {
 
      let result = await diseaseInfoStore.deleteDiseaseInfo(deleteData.value);  
      if(result==='ok'){
-       diseaseInfoStore.getAllDiseaseInfo(row.department_id);
+       diseaseInfoStore.getAllDiseaseInfo(row.department_id,innerPageNo.value,innerPageSize.value);
      }
 
   } catch (error) {
@@ -368,7 +386,7 @@ const handleDeleteDisease = async (index: any, row: any) => {
 
      let result = await diseaseInfoStore.deleteDiseaseInfo(deleteData.value);  
      if(result==='ok'){
-       diseaseInfoStore.getAllDiseaseInfo(row.department_id);
+       diseaseInfoStore.getAllDiseaseInfo(row.department_id,innerPageNo.value,innerPageSize.value);
      }
 
   } catch (error) {
@@ -397,7 +415,7 @@ const submitEditDiseaseForm=async ()=>{
   let result= await diseaseInfoStore.editDiseaseInfo(editDiseaseForm);
   if(result==='ok'){
     EditDiseaseDialogVisible.value=false;
-    await diseaseInfoStore.getAllDiseaseInfo(current_department_id.value);
+    await diseaseInfoStore.getAllDiseaseInfo(current_department_id.value,innerPageNo.value,innerPageSize.value);
   }
 }
 </script>

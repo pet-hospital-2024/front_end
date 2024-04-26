@@ -9,7 +9,7 @@ enum API{
     CHECKDISEASE_URL="/disease/hasCase",
 }
 //获取所有疾病信息
-export const getDiseaseInfoBySlice=(department_id:string)=>request.get<any,diseaseInfoResponseData>(API.GETDISEASEINFOBYSLICE_URL,{params:{department_id}});
+export const getDiseaseInfoBySlice=(department_id:string,page:string,size:string)=>request.get<any,diseaseInfoResponseData>(API.GETDISEASEINFOBYSLICE_URL,{params:{department_id,page,size}});
 //添加疾病
 export const addDiseaseInfoByIdAndName=(data:addDiseaseData)=>request.post<any,responseData>(API.ADDDISEASEINFO_URL,data);
 
